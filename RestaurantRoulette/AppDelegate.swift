@@ -11,15 +11,50 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //MARK: CREATE DEFAULT FILTER OPTIONS
+        
+        //create a model context
+        //create a fetched results controller
+        var fetchedResultsController: NSFetchedResultsController<FilterSettings>?
+        
+        let moc = persistentContainer.viewContext
+        //prepare the request for the local data
+        let request = NSFetchRequest<FilterSettings>(entityName: "FilterSettings")
+        
+        //set a sort descriptor for how we retreive the keys
+        request.sortDescriptors = [NSSortDescriptor(key: "distance", ascending: false)]
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest:
+                                                                            request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try fetchedResultsController?.performFetch()
+            
+            if fetchedResultsController?.fetchedObjects?.isEmpty == true {
+                
+                let filterSettings = FilterSettings(context: moc)
+                filterSettings.minimumRating = 4
+                filterSettings.isAbovePriceRange = false
+                filterSettings.isBelowPriceRange = true
+                filterSettings.priceRangeLevel = 4
+                filterSettings.distance = 10
+                filterSettings.isDistanceInMiles = false
+                filterSettings.isDistanceInKM = true
+                
+                self.saveContext()
+            }else {
+                //do nothing as we dont need to set up the default keys
+            }
+        }catch {
+            print("fetch request failed")
+        }
+        
         return true
     }
 
     // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
@@ -33,7 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Core Data stack
-
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -62,7 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     // MARK: - Core Data Saving support
-
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
