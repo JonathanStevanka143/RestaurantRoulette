@@ -17,6 +17,8 @@
 		6309DD6A25AEBF6900C79246 /* RestaurantRouletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6309DD6925AEBF6900C79246 /* RestaurantRouletteTests.swift */; };
 		6309DD7525AEBF6900C79246 /* RestaurantRouletteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6309DD7425AEBF6900C79246 /* RestaurantRouletteUITests.swift */; };
 		6309DD9225AEC38B00C79246 /* tabVC1ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6309DD9125AEC38B00C79246 /* tabVC1ViewModel.swift */; };
+		63B8A02025B38ED30071654E /* filterSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */; };
+		63B8A02525B38EE30071654E /* filterSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B8A02425B38EE30071654E /* filterSettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		6309DD7425AEBF6900C79246 /* RestaurantRouletteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantRouletteUITests.swift; sourceTree = "<group>"; };
 		6309DD7625AEBF6900C79246 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6309DD9125AEC38B00C79246 /* tabVC1ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabVC1ViewModel.swift; sourceTree = "<group>"; };
+		63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterSettingsViewController.swift; sourceTree = "<group>"; };
+		63B8A02425B38EE30071654E /* filterSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterSettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				6309DD5325AEBF6600C79246 /* ViewController.swift */,
+				63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -147,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				6309DD9125AEC38B00C79246 /* tabVC1ViewModel.swift */,
+				63B8A02425B38EE30071654E /* filterSettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -289,9 +295,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6309DD5A25AEBF6600C79246 /* RestaurantRoulette.xcdatamodeld in Sources */,
+				63B8A02025B38ED30071654E /* filterSettingsViewController.swift in Sources */,
 				6309DD5425AEBF6600C79246 /* ViewController.swift in Sources */,
 				6309DD9225AEC38B00C79246 /* tabVC1ViewModel.swift in Sources */,
 				6309DD5025AEBF6600C79246 /* AppDelegate.swift in Sources */,
+				63B8A02525B38EE30071654E /* filterSettingsViewModel.swift in Sources */,
 				6309DD5225AEBF6600C79246 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

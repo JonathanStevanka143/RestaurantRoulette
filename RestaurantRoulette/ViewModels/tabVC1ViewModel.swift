@@ -5,7 +5,6 @@
 //  Created by Mac User on 2021-01-13.
 //
 
-import UIKit
 import CoreData
 
 class tabVC1ViewModel {
@@ -45,6 +44,37 @@ class tabVC1ViewModel {
         
     }
     
+    func getCategoryData(){
+        
+        let moc = container.viewContext
+        
+        //create a fetched results controller
+        var fetchedCategoriesController: NSFetchedResultsController<Categories>?
+        
+        //prepare the request for the local data
+        let request = NSFetchRequest<Categories>(entityName: "Categories")
+        
+        //set a sort descriptor for how we retreive the keys
+        request.sortDescriptors = [NSSortDescriptor(key: "categoryTitle", ascending: true)]
+        
+        //
+        fetchedCategoriesController = NSFetchedResultsController(fetchRequest:
+                                                                            request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try fetchedCategoriesController?.performFetch()
+            
+            if fetchedCategoriesController?.fetchedObjects?.isEmpty == false {
+                
+                delegate?.getCategoryDataBack(currentCategories: fetchedCategoriesController?.fetchedObjects)
+                
+            }else {
+                //do nothing as we dont need to set up the default keys
+            }
+        }catch {
+            print("fetch request failed")
+        }
+        
+    }
     
     
 }
@@ -54,5 +84,8 @@ protocol tabVC1ViewControllerDelegate: class {
     
     //this will allow the current viewcontroller to get data back to the controller
     func getFilterOptionsBack(currentFilterOptions:FilterSettings?)
+    
+    //this function will allow us to send back the array of categories back to the user
+    func getCategoryDataBack(currentCategories:[Categories]?)
     
 }
