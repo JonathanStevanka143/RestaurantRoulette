@@ -37,6 +37,8 @@ class filterSettingsViewController: UIViewController {
     
     //this holds the current filteroptions that were loaded from the device
     var filterOptions:FilterSettings!
+    //categories loaded from device
+    var categories:[Categories]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +75,8 @@ class filterSettingsViewController: UIViewController {
 
             }
         }
+        
+        print(categories)
         
         //set the persistent container on the viewmodel
         viewModel.container = container

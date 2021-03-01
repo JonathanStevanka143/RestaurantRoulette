@@ -34,13 +34,10 @@ class filterSettingsViewModel {
         fetchedResultsController = NSFetchedResultsController(fetchRequest:
                                                                             request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         
-        
         do {
             try fetchedResultsController?.performFetch()
             
             if fetchedResultsController?.fetchedObjects?.isEmpty == false {
-                
-                
                 
                 let filterSettings:FilterSettings! = fetchedResultsController?.fetchedObjects?.first
                 filterSettings.isBelowPriceRange = isBelowOrAbovePrice
