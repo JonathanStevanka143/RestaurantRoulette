@@ -16,7 +16,7 @@ class restarauntAPINetwork {
     //this will connect the endpoint
     let endpoint = "https://api.yelp.com/v3/businesses/search"
     
-    func getCloseRestaraunts(latitude:String,longitude:String,radius:String, completionHandler: @escaping ([restaurant]) -> ()){
+    func getCloseRestaraunts(latitude:String,longitude:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
         
         var url = URLComponents(string: "\(endpoint)")!
         
@@ -27,6 +27,7 @@ class restarauntAPINetwork {
             URLQueryItem(name: "radius", value: "\(radius)"),
             URLQueryItem(name: "categories", value: "beer"),
             URLQueryItem(name: "sort_by", value: "distance"),
+            URLQueryItem(name: "categories", value: categories)
         ]
         
         //create the request we will send off to our server

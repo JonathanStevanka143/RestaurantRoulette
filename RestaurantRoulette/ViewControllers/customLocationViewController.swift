@@ -21,6 +21,8 @@ class customLocationViewController: UIViewController {
     var centerMapCoord:CLLocationCoordinate2D!
     //this will hold the filter options saved on the phone
     var filterOptions:FilterSettings!
+    //this array of categories is what the user currently wants to search nearby with
+    var categories:[Categories]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,8 @@ class customLocationViewController: UIViewController {
                 destinationVC.centerMapCoord = customLocationMap.centerCoordinate
                 //set the filteroptions
                 destinationVC.filterOptions = filterOptions
+                //set the categories
+                destinationVC.categories = categories
             }
             
             break

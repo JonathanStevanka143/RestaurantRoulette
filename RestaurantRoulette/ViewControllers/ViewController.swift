@@ -46,8 +46,9 @@ class ViewController: UIViewController {
                  */
                 locationManager.requestLocation()
                 
-                //grab the filter results incase the user has updated them
+                //grab the filter results incase the user has updated them this keeps the user settings updated at all times
                 ViewModel.getFilterResults()
+                ViewModel.getCategoryData()
                 
             }else {
                 //location services not enabled do something here
@@ -133,6 +134,8 @@ class ViewController: UIViewController {
                 destinationVC.centerMapCoord = centerMapCoord
                 //set the filteroptions
                 destinationVC.filterOptions = filterOptions
+                //set the categories
+                destinationVC.categories = categories
             }
             
             
@@ -144,6 +147,8 @@ class ViewController: UIViewController {
             if let destinationVC = segue.destination as? customLocationViewController {
                 //set the filteroptions
                 destinationVC.filterOptions = filterOptions
+                //set the categories
+                destinationVC.categories = categories
             }
             
             break
@@ -187,6 +192,7 @@ extension ViewController:tabVC1ViewControllerDelegate {
         if currentCategories?.isEmpty == false {
             //set the categories top level so they can be utilized in as search results
             categories = currentCategories
+            
         }else {
             
         }

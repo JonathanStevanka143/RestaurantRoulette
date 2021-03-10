@@ -26,6 +26,9 @@ class filterSettingsViewController: UIViewController {
     @IBOutlet var distanceMeasurementControl: UISegmentedControl!
     @IBOutlet var distanceMeasurementSlider: UISlider!
     
+    //tags collectionview for food categories
+    @IBOutlet var tagsCollectionView: UICollectionView!
+    
     
     //per apple documentation
     //this is set in segue in viewcontroller
@@ -39,10 +42,16 @@ class filterSettingsViewController: UIViewController {
     var filterOptions:FilterSettings!
     //categories loaded from device
     var categories:[Categories]!
+    //this will hold the categories clicked by the user
+    var clickedOnCategories:[Categories]! = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set the tags collection view as the delegate and datasource
+        tagsCollectionView.dataSource = self
+        tagsCollectionView.delegate = self
         
         //set the UIviews to have the same data as on the phone
         //1. check if the filteroptions is not nil
@@ -75,13 +84,14 @@ class filterSettingsViewController: UIViewController {
 
             }
         }
-        
-        print(categories)
-        
+                
         //set the persistent container on the viewmodel
         viewModel.container = container
         //set the viewmodel delegate to receive information from the view model back
         viewModel.delegate = self
+        
+        print("t",tagsCollectionView.collectionViewLayout.collectionViewContentSize)
+        
     }
     
     
@@ -193,6 +203,80 @@ extension filterSettingsViewController:filterSettingsViewModelDelegate{
     
     func getSaveResultsFromButtonBack(didSave: Bool) {
         print(didSave)
+    }
+    
+}
+
+extension filterSettingsViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categories.count
+    }
+        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        var cellForTag = collectionView.dequeueReusableCell(withReuseIdentifier: "tagsCollectionViewCell", for: indexPath) as! TagCVcell
+        
+        //grab the current category being represented
+        let currentCategory = categories[indexPath.row]
+        
+        //set the outline view for the border so that it shows them it has yet to be selected
+        cellForTag.tagOutlineView.layer.cornerRadius = 10
+        cellForTag.tagOutlineView.layer.borderWidth = 1
+        cellForTag.tagOutlineView.layer.borderColor = UIColor.init(red: 1.0, green: 0.54, blue: 0.59, alpha: 1.0).cgColor
+        
+        if currentCategory.isCategoryChecked == true {
+            //if the cell is checked then we remove the background and set the outline instead
+            cellForTag.tagOutlineView.backgroundColor = UIColor.init(red: 1.0, green: 0.54, blue: 0.59, alpha: 1.0)
+            
+        }else {
+            //if the cell is not checked then when we click on it we change the background color
+            cellForTag.tagOutlineView.backgroundColor = nil
+            
+        }
+        
+        
+        //set the label of the category it is representing
+        cellForTag.categoryLabel.text = categories[indexPath.row].categoryTitle
+        
+        return cellForTag
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //grab the current cell based on indexpath
+        let currentCell = collectionView.cellForItem(at: indexPath) as! TagCVcell
+        //grab the current category being represented
+        let currentCategory = categories[indexPath.row]
+        
+        //check if the category is selected already, this will allow us to set the cell based on local data
+        //TRUE - means the category is selected
+        //FALSE - means the category is not selected
+        if currentCategory.isCategoryChecked == true {
+            //set the iscategorychecked to be false
+            currentCategory.isCategoryChecked = false
+            //if the cell is checked then we remove the background and set the outline instead
+            currentCell.tagOutlineView.backgroundColor = nil
+            
+            if clickedOnCategories.isEmpty == false {
+                //remove the category from the array if it exists
+                if clickedOnCategories.contains(currentCategory){
+                    clickedOnCategories.remove(at: clickedOnCategories.firstIndex(of: currentCategory)!)
+                    
+                }
+            }
+            
+        }else {
+            //set the iscategorychecked to be true
+            currentCategory.isCategoryChecked = true
+            //if the cell is not checked then when we click on it we change the background color
+            currentCell.tagOutlineView.backgroundColor = UIColor.init(red: 1.0, green: 0.54, blue: 0.59, alpha: 1.0)
+            
+            //add this newly selected cell into our array
+            clickedOnCategories.append(currentCategory)
+            
+        }
+        
     }
     
 }

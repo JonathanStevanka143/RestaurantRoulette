@@ -11,9 +11,12 @@ import CoreData
 
 class restarauntsListTableviewController: UIViewController {
     
+    //nav bar items
+    @IBOutlet var editButton: UIButton!
+    
     //views
     @IBOutlet var tableView: UITableView!
-    
+        
     //buttons
     @IBOutlet var continueButton: UIButton!
     
@@ -22,6 +25,8 @@ class restarauntsListTableviewController: UIViewController {
     
     //filter options from the phone, set by the sending VC
     var filterOptions:FilterSettings!
+    //this array of categories is what the user currently wants to search nearby with
+    var categories:[Categories]!
     
     //hook up the view model(where updates will be made etc)
     var ViewModel = restarauntsViewModel()
@@ -35,37 +40,73 @@ class restarauntsListTableviewController: UIViewController {
         
         //test grabbing the locations
         //tableview delegete set inside return delegate function
-        ViewModel.getCloseRestaraunts(latitude: "\(centerMapCoord.latitude)", longitude: "\(centerMapCoord.longitude)",options: filterOptions)
+        ViewModel.getCloseRestaraunts(latitude: "\(centerMapCoord.latitude)", longitude: "\(centerMapCoord.longitude)",options: filterOptions,categories: categories)
                 
         //set the tableview delegate
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
     }
     
     
     //MARK: BUTTON ACTIONS
+    @IBAction func editButtonPressed(_ sender: Any) {
+        //check to see if the table is in editing mode or not
+        if tableView.isEditing == false{
+            //begin the editing
+            tableView.isEditing = true
+            //set the text on the button to 'done'
+            editButton.setTitle("Done", for: .normal)
+        }else {
+            //end the editing
+            tableView.isEditing = false
+            //set the text on the button back to 'edit'
+            editButton.setTitle("Edit", for: .normal)
+        }
+    }
+    
+    
+    
     @IBAction func spinTheWheelButtonPressed(_ sender: Any) {
-        
+      
 //        print("t2:",self.tableView.frame)
 //
 //        let generator = UIImpactFeedbackGenerator(style: .heavy)
 //
-//        generator.impactOccurred()
-//
 //        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
 //
-//            self.tableView.frame.origin.y = 140
+//            self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+//            self.tableView.layoutIfNeeded()
 //
+//            generator.impactOccurred()
 //
 //        }, completion: { _ in
 //
-//            UIView.animate(withDuration: 3, delay: 0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+//            UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
 //
-//                self.tableView.frame.origin.y = -3000
+//                self.tableView.contentOffset = CGPoint(x: 0, y: 650)
+//                self.tableView.layoutIfNeeded()
 //
 //            }, completion: { _ in
-//                generator.impactOccurred()
 //
+//                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+//
+//                    self.tableView.contentOffset = CGPoint(x: 0, y: 1300)
+//                    self.tableView.layoutIfNeeded()
+//
+//                }, completion: { _ in
+//
+//                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+//
+//                        self.tableView.contentOffset = CGPoint(x: 0, y: 1950)
+//                        self.tableView.layoutIfNeeded()
+//
+//                    }, completion: { _ in
+//
+//
+//                    })
+//
+//                })
 //
 //            })
 //
@@ -84,6 +125,26 @@ extension restarauntsListTableviewController: UITableViewDelegate,UITableViewDat
             return restaraunts.count
         }else {
             return 0
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        switch editingStyle {
+        case .delete:
+            
+            //remove the selected cell
+            self.restaraunts.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
+            
+            //set the continue button with the total left
+            continueButton.setTitle("Continue(\(restaraunts.count))", for: .normal)
+            
+            break
+        default:
+            //code goes here
+            break
         }
         
     }
@@ -374,6 +435,9 @@ extension restarauntsListTableviewController:restarauntsViewModelDelegate {
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            
+            //set the continue button with the total left
+            self.continueButton.setTitle("Continue(\(self.restaraunts.count))", for: .normal)
         }
         
         
