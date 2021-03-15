@@ -14,9 +14,9 @@
             filePath = "RestaurantRoulette/Networks/restarauntAPINetwork.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "getCloseRestaraunts(latitude:longitude:radius:categories:completionHandler:)"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "getCloseRestaraunts(address:radius:categories:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -30,8 +30,8 @@
             filePath = "RestaurantRoulette/Networks/restarauntAPINetwork.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "convertRestaurantFromJson(fromJSON:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -48,40 +48,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
             endingLineNumber = "26"
-            landmarkName = "getCloseRestaraunts(latitude:longitude:options:categories:)"
+            landmarkName = "getCloseRestaraunts(address:options:categories:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "4449CD8B-B225-4C53-A461-6EA1855AC6EB - 45ed3fd76515d197"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "RestaurantRoulette.restarauntsViewModel.getCloseRestaraunts(latitude: Swift.String, longitude: Swift.String, options: RestaurantRoulette.FilterSettings) -&gt; ()"
-                  moduleName = "RestaurantRoulette"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macuser/Desktop/RestaurantRoulette/RestaurantRoulette/RestaurantRoulette/ViewModels/restarauntsViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
-                  offsetFromSymbolStart = "312">
-               </Location>
-               <Location
-                  uuid = "4449CD8B-B225-4C53-A461-6EA1855AC6EB - ea1d49d356c4ea7e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;RestaurantRoulette.restaurant&gt;) -&gt; () in RestaurantRoulette.restarauntsViewModel.getCloseRestaraunts(latitude: Swift.String, longitude: Swift.String, options: RestaurantRoulette.FilterSettings) -&gt; ()"
-                  moduleName = "RestaurantRoulette"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macuser/Desktop/RestaurantRoulette/RestaurantRoulette/RestaurantRoulette/ViewModels/restarauntsViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "32">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -112,7 +80,39 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
             endingLineNumber = "53"
-            landmarkName = "getCloseRestaraunts(latitude:longitude:options:categories:)"
+            landmarkName = "getCloseRestaraunts(address:options:categories:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E1A060B1-AE33-4583-80B8-290F96883A83"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RestaurantRoulette/ViewControllers/restaurantsListTableviewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
+            landmarkName = "resetAndShuffle(completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3753957D-EFA2-43F0-9A91-17145645AA59"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RestaurantRoulette/Networks/restarauntAPINetwork.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "getCloseRestaraunts(address:radius:categories:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

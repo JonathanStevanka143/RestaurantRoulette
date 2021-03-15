@@ -15,6 +15,9 @@ class restaurantsListTableviewController: UIViewController {
     //nav bar items
     @IBOutlet var editButton: UIButton!
     //views
+    @IBOutlet var indicatorView: UIActivityIndicatorView!
+    @IBOutlet var searchingLabel: UILabel!
+    
     @IBOutlet var tableView: UITableView!
     //buttons
     @IBOutlet var continueButton: UIButton!
@@ -40,9 +43,9 @@ class restaurantsListTableviewController: UIViewController {
         
         ViewModel.delegate = self
         
-        //test grabbing the locations
-        //tableview delegete set inside return delegate function
-        ViewModel.getCloseRestaraunts(latitude: "\(centerMapCoord.latitude)", longitude: "\(centerMapCoord.longitude)",options: filterOptions,categories: categories)
+        //1.create a function to reverse geocode an address and pass it to the API for more accurate results
+        geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
+        
         
         //set the tableview delegate
         self.tableView.delegate = self
@@ -68,51 +71,60 @@ class restaurantsListTableviewController: UIViewController {
     }
     
     
+    //this variable represents the phase of which the tableview is in
+    //phase1: the user can edit and remove items off the list, scrollview is still scrollable
+    //phase2: the 'game' has now begun the user has to click the spin button and the tableview will automatically begin the animation down, the data is also shuffled
     var phase2:Bool! = false
+    //this represents if the tableview has been spun yet, this will allow us to reset the layout if need be
     var hasSpun:Bool! = false
     @IBAction func spinTheWheelButtonPressed(_ sender: Any) {
         //set the button to be inactive
         continueButton.isEnabled = false
         
+        //if phase2 is set changed the UI accordingly
         if phase2 == true {
             //1.disable scrolling
             //2.set the button to say "remove & spin"
             continueButton.setTitle("Remove & Spin", for: .normal)
             
+            //if the table has been spun and a restauraunt has been selected, remove it
             if hasSpun == true {
                 
                 //remove the restaraunt from the list so it cant be used again
                 let removeThis = restaurants[currentlySelectedCell.row]
                 
+                //remove all copies of the model in the tableview data array
                 restaurants.removeAll{ $0 == removeThis }
                 
                 //reset the tableview
                 resetAndShuffle(completionHandler: {
                     didReset in
                     
+                    //set the layout on the table to update the new position of the tableview(repositioned back at the top)
                     self.tableView.layoutIfNeeded()
                     
+                    //if the reset returned true then 'spin the wheel' and present a restauraunt
                     if didReset == true {
+                        //spin the wheel
                         self.spinthewheel()
                     }
                     
                 })
-            
                 //set the continuebutton to be enabled again
                 continueButton.isEnabled = true
-                
                 
             }else {
-                //calling this function 'spins' the wheel
+                //spin the wheel
                 spinthewheel()
-                
                 //set the continuebutton to be enabled again
                 continueButton.isEnabled = true
-                
+                //change the haspun var to true
                 hasSpun = true
             }
             
-        }else{
+        }
+        //if phase2 is not been enabled yet
+        else{
             //hide the tableview
             tableView.isHidden = true
             
@@ -205,7 +217,8 @@ class restaurantsListTableviewController: UIViewController {
         //1.shuffle the data in the list
         //2.scroll to the top cell
         //3.reload the data
-        if restaurants.count > 20 {
+        if restaurants.count < 30 {
+            print("p:",restaurants.count)
             restaurants += restaurants
         }
         restaurants = restaurants.shuffled()
@@ -215,6 +228,43 @@ class restaurantsListTableviewController: UIViewController {
             completionHandler(true)
         }
     
+    }
+    
+    //MARK: REVERSE GEOCODE LAT/LONG TO ADDRESS
+    //this function is used to convert a users lat/longs to an actual address, done this way because yelp's API works better with streets than lat/longs
+    func geocodeLocation(lat: Double,long: Double) {
+        
+        //create a geocoder
+        let geoCoder = CLGeocoder()
+        //init a location from the users lat/long
+        let location = CLLocation(latitude: lat , longitude: long)
+        
+        //create a variable to hold the address
+        var address:String = ""
+        
+        //reverse the lat/long coords
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+ 
+            if let marker = placemarks?.first {
+                
+                let street = marker.subThoroughfare ?? ""
+                let city = marker.thoroughfare ?? ""
+                let province = marker.locality ?? ""
+                let zip = marker.postalCode ?? ""
+                let country = marker.country ?? ""
+                
+                //set the address string to be that of the conjoined address
+                address = "\(street), \(city), \(province), \(zip), \(country)"
+                
+                //now that we have the address fire the search
+                //tableview delegete set inside return delegate function
+                self.ViewModel.getCloseRestaraunts(address: address ,options: self.filterOptions,categories: self.categories)
+                
+                
+            }
+            
+        })
+                
     }
     
     
@@ -234,7 +284,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         
-        if tableView.isEditing == true {
+        if phase2 == false {
             return .delete
         }else{
             return .none
@@ -544,10 +594,17 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
     //this function will return our converted restaraunts
     func returnCloseRestaraunts(closeRestaraunts: [restaurant]?) {
         
+        //set the restauraunts array to be that of the returned array
         self.restaurants = closeRestaraunts
         
+        //using the main thread for UI updates
         DispatchQueue.main.async {
+            //reload the data
             self.tableView.reloadData()
+            //unhide the tableview
+            self.tableView.isHidden = false
+            //stop the indicatorview
+            self.indicatorView.stopAnimating()
             
             //set the continue button with the total left
             self.continueButton.setTitle("Continue(\(self.restaurants.count))", for: .normal)

@@ -129,7 +129,7 @@ class ViewController: UIViewController {
         //currentLocationViewController
         case "currentLocationSegue":
             
-            if let destinationVC = segue.destination as? restarauntsListTableviewController {
+            if let destinationVC = segue.destination as? restaurantsListTableviewController {
                 //set the centermapcoord on the receiving VC
                 destinationVC.centerMapCoord = centerMapCoord
                 //set the filteroptions

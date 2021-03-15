@@ -435,16 +435,43 @@
         <!--Restaurants-->
         <scene sceneID="RRj-QS-xSJ">
             <objects>
-                <viewController id="njC-6T-MoF" customClass="restarauntsListTableviewController" customModule="RestaurantRoulette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="njC-6T-MoF" customClass="restaurantsListTableviewController" customModule="RestaurantRoulette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cGm-Sb-iNw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VUI-TT-r1e">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCl-2i-Ytj">
+                                <rect key="frame" x="0.0" y="760" width="414" height="53"/>
+                                <color key="backgroundColor" red="0.18242378749999999" green="0.3482390984" blue="1" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="53" id="wX0-Gx-q31"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="spinTheWheelButtonPressed:" destination="njC-6T-MoF" eventType="touchUpInside" id="fsI-q9-hzB"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="3I0-2V-i6A">
+                                <rect key="frame" x="182" y="214" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="5vM-fN-MFd"/>
+                                    <constraint firstAttribute="width" constant="50" id="PuQ-yi-YLs"/>
+                                </constraints>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching near you..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdf-IB-FUo">
+                                <rect key="frame" x="20" y="278" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemGray2Color"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VUI-TT-r1e">
                                 <rect key="frame" x="0.0" y="88" width="414" height="672"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="restaurantTableviewCell" rowHeight="112" id="nxJ-bh-Z0a" customClass="restarauntTableViewCell" customModule="RestaurantRoulette" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="restaurantTableviewCell" id="nxJ-bh-Z0a" customClass="restarauntTableViewCell" customModule="RestaurantRoulette" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="112"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nxJ-bh-Z0a" id="zsn-Gn-6RA">
@@ -772,37 +799,29 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCl-2i-Ytj">
-                                <rect key="frame" x="0.0" y="760" width="414" height="53"/>
-                                <color key="backgroundColor" red="0.18242378749999999" green="0.3482390984" blue="1" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="53" id="wX0-Gx-q31"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Continue">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="spinTheWheelButtonPressed:" destination="njC-6T-MoF" eventType="touchUpInside" id="fsI-q9-hzB"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Lf3-mH-6nz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="rCl-2i-Ytj" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" id="0QL-ZE-dFV"/>
                             <constraint firstItem="Lf3-mH-6nz" firstAttribute="trailing" secondItem="rCl-2i-Ytj" secondAttribute="trailing" id="2ye-qC-KrZ"/>
+                            <constraint firstItem="Lf3-mH-6nz" firstAttribute="trailing" secondItem="3I0-2V-i6A" secondAttribute="trailing" constant="182" id="6kJ-dH-jh3"/>
+                            <constraint firstItem="Jdf-IB-FUo" firstAttribute="top" secondItem="3I0-2V-i6A" secondAttribute="bottom" constant="14" id="95z-ja-2OL"/>
+                            <constraint firstItem="3I0-2V-i6A" firstAttribute="top" secondItem="Lf3-mH-6nz" secondAttribute="top" constant="126" id="GOe-WI-RlM"/>
                             <constraint firstItem="VUI-TT-r1e" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" id="JBW-mu-bZt"/>
                             <constraint firstItem="VUI-TT-r1e" firstAttribute="top" secondItem="Lf3-mH-6nz" secondAttribute="top" id="VVI-ex-vpw"/>
+                            <constraint firstItem="Lf3-mH-6nz" firstAttribute="trailing" secondItem="Jdf-IB-FUo" secondAttribute="trailing" constant="20" id="eBS-7f-j89"/>
                             <constraint firstItem="Lf3-mH-6nz" firstAttribute="bottom" secondItem="rCl-2i-Ytj" secondAttribute="bottom" id="eu0-eF-otp"/>
                             <constraint firstItem="rCl-2i-Ytj" firstAttribute="top" secondItem="VUI-TT-r1e" secondAttribute="bottom" id="fNW-O0-XR2"/>
+                            <constraint firstItem="Jdf-IB-FUo" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" constant="20" id="wE4-pP-rRp"/>
                             <constraint firstItem="VUI-TT-r1e" firstAttribute="trailing" secondItem="Lf3-mH-6nz" secondAttribute="trailing" id="xqE-CO-3L2"/>
+                            <constraint firstItem="3I0-2V-i6A" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" constant="182" id="zAQ-uJ-vtj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Restaurants" id="OZu-Ei-8do">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="y0n-uP-aCy">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="oOV-9N-2g5">
-                                <rect key="frame" x="364" y="7" width="40" height="30"/>
+                                <rect key="frame" x="354" y="7" width="40" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
@@ -814,6 +833,8 @@
                     <connections>
                         <outlet property="continueButton" destination="rCl-2i-Ytj" id="mTx-Ia-FjZ"/>
                         <outlet property="editButton" destination="oOV-9N-2g5" id="OQa-Dw-aE0"/>
+                        <outlet property="indicatorView" destination="3I0-2V-i6A" id="5M9-2d-cVC"/>
+                        <outlet property="searchingLabel" destination="Jdf-IB-FUo" id="SWx-FX-rHu"/>
                         <outlet property="tableView" destination="VUI-TT-r1e" id="iop-hd-m65"/>
                     </connections>
                 </viewController>
@@ -823,7 +844,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Kgm-zL-UgU"/>
+        <segue reference="m6u-2g-1q0"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="cancel" width="512" height="512"/>

@@ -19,7 +19,7 @@ class restarauntsViewModel {
 
     
     //this function will find all of the close restaraunts in the vicinity by using the user filterOptions
-    func getCloseRestaraunts(latitude:String,longitude:String,options:FilterSettings,categories:[Categories]){
+    func getCloseRestaraunts(address:String,options:FilterSettings,categories:[Categories]){
         
         //left off here
 //        print(options)
@@ -52,10 +52,7 @@ class restarauntsViewModel {
 //        print(optionString)
         
         
-        
-        
-        
-        apiNetwork.getCloseRestaraunts(latitude: "\(latitude)", longitude: "\(longitude)", radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaraunts in
+        apiNetwork.getCloseRestaraunts(address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaraunts in
             
             //call the delegate so the viewcontroller can get restaraunts back
             self.delegate?.returnCloseRestaraunts(closeRestaraunts: restaraunts)

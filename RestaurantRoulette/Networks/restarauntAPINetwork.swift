@@ -16,17 +16,16 @@ class restarauntAPINetwork {
     //this will connect the endpoint
     let endpoint = "https://api.yelp.com/v3/businesses/search"
     
-    func getCloseRestaraunts(latitude:String,longitude:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
+    func getCloseRestaraunts(address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
         
         var url = URLComponents(string: "\(endpoint)")!
         
         url.queryItems = [
-            URLQueryItem(name: "term", value: "restaraunts"),
-            URLQueryItem(name: "latitude", value: latitude),
-            URLQueryItem(name: "longitude", value: "\(longitude)"),
+            URLQueryItem(name: "term", value: "food"),
+            URLQueryItem(name: "location", value: address),
             URLQueryItem(name: "radius", value: "\(radius)"),
-            URLQueryItem(name: "categories", value: "beer"),
             URLQueryItem(name: "sort_by", value: "distance"),
+            URLQueryItem(name: "limit", value: "40"),
             URLQueryItem(name: "categories", value: categories)
         ]
         

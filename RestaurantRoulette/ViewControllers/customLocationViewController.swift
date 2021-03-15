@@ -38,7 +38,7 @@ class customLocationViewController: UIViewController {
         
         case "customLocationToRestaraunts":
             
-            if let destinationVC = segue.destination as? restarauntsListTableviewController {
+            if let destinationVC = segue.destination as? restaurantsListTableviewController {
                 
                 //set the centermapcoord on the receiving VC
                 destinationVC.centerMapCoord = customLocationMap.centerCoordinate
