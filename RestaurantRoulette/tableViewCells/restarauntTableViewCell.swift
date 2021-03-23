@@ -11,6 +11,9 @@ import CoreData
 
 class restarauntTableViewCell: UITableViewCell {
     
+    //this is the view that holds the data, used for adding a corner radius and giving it a nice "pop" look
+    @IBOutlet var dataView: UIView!
+    
     @IBOutlet var restarauntTitle: UILabel!
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var totalReviewsLabel: UILabel!
