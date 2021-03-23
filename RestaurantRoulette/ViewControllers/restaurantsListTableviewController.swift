@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 import CoreData
+import MapKit
+import CoreLocation
 
 class restaurantsListTableviewController: UIViewController {
     
@@ -18,7 +20,44 @@ class restaurantsListTableviewController: UIViewController {
     @IBOutlet var indicatorView: UIActivityIndicatorView!
     @IBOutlet var searchingLabel: UILabel!
     
+    @IBOutlet var tableViewHolder: UIView!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var tableViewTintOverlayView: UIView!
+    @IBOutlet var restaurantSelectedView: UIView!
+    
+    /**
+     OUTLETS/LABELS/BUTTONS FOR THE SELECTED RESTARAUNT
+     */
+    @IBOutlet var restaurantSelectedMapView: MKMapView!
+    @IBOutlet var restaurantSelectedTitle: UILabel!
+    @IBOutlet var restaurantSelectedDistance: UILabel!
+    @IBOutlet var restaurantSelectedReviews: UILabel!
+    @IBOutlet var restaurantSelectedTags: UILabel!
+    @IBOutlet var restaurantSelectedPricerange: UILabel!
+    @IBOutlet var restaurantSelectedPickupImage: UIImageView!
+    @IBOutlet var restaurantSelectedDeliveryImage: UIImageView!
+    @IBOutlet var restaurantSelectedPhonenumber: UILabel!
+    
+    @IBOutlet var restaurantSelectedFavview1: UIView!
+    @IBOutlet var restaurantSelectedFavView1HalfView: UIView!
+    @IBOutlet var restaurantSelectedFavview2: UIView!
+    @IBOutlet var restaurantSelectedFavView2HalfView: UIView!
+    @IBOutlet var restaurantSelectedFavview3: UIView!
+    @IBOutlet var restaurantSelectedFavView3HalfView: UIView!
+    @IBOutlet var restaurantSelectedFavview4: UIView!
+    @IBOutlet var restaurantSelectedFavView4HalfView: UIView!
+    @IBOutlet var restaurantSelectedFavview5: UIView!
+    @IBOutlet var restaurantSelectedFavView5HalfView: UIView!
+    
+    @IBOutlet var callCircleView: UIView!
+    @IBOutlet var callButton: UIButton!
+    
+    @IBOutlet var directionsCircleView: UIView!
+    @IBOutlet var directionsButton: UIButton!
+    
+    @IBOutlet var moreInfoCircleView: UIView!
+    @IBOutlet var infoButton: UIButton!
+    
     //buttons
     @IBOutlet var continueButton: UIButton!
     
@@ -51,6 +90,23 @@ class restaurantsListTableviewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        //set the alpha on the restaraunt overview to be "hidden"
+        restaurantSelectedView.alpha = 0
+        //set the border radius on the selected view
+        restaurantSelectedView.layer.cornerRadius = 10
+        //set the border color and the width for the three selected restaurant buttons
+        //callview setup
+        callCircleView.layer.cornerRadius = 30
+        callCircleView.layer.borderWidth = 1
+        callCircleView.layer.borderColor = UIColor.red.cgColor
+        //directionview setup
+        directionsCircleView.layer.cornerRadius = 30
+        directionsCircleView.layer.borderWidth = 1
+        directionsCircleView.layer.borderColor = UIColor.red.cgColor
+        //infoview setup
+        moreInfoCircleView.layer.cornerRadius = 30
+        moreInfoCircleView.layer.borderWidth = 1
+        moreInfoCircleView.layer.borderColor = UIColor.red.cgColor
     }
     
     
@@ -69,6 +125,37 @@ class restaurantsListTableviewController: UIViewController {
             editButton.setTitle("Edit", for: .normal)
         }
     }
+    
+    var phonenumberForCall:String!
+    @IBAction func callButtonPressed(_ sender: Any) {
+                
+        //scrub the phone number first to make it "callable"
+        phonenumberForCall.removeAll{$0 == "-"}
+        phonenumberForCall.removeAll{$0 == "("}
+        phonenumberForCall.removeAll{$0 == ")"}
+        phonenumberForCall.removeAll{$0 == " "}
+        
+        let url = URL(string: "tel://" + phonenumberForCall)
+        
+        if UIApplication.shared.canOpenURL(url!) == true {
+            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+        }
+        
+    }
+    
+    //create a string that will hold the address
+    var directionsForMap:MKMapItem!
+    @IBAction func directionButtonPressed(_ sender: Any) {
+        
+        directionsForMap.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+        
+    }
+    
+    @IBAction func moreInfoButtonPressed(_ sender: Any) {
+        
+        
+    }
+    
     
     
     //this variable represents the phase of which the tableview is in
@@ -210,20 +297,183 @@ class restaurantsListTableviewController: UIViewController {
         tableView.selectRow(at: visibleCells![Int(visibleCells!.count / 2)], animated: true, scrollPosition: .middle)
         //set the currently selectedRow, used to remove and view cells
         currentlySelectedCell = visibleCells![Int(visibleCells!.count / 2)]
+        
+        //1. set the selected details for the restauraunt in the VIEW
+        //2. animate the view covering the tableview to be heavily tinted
+        //3. animate in the view
+        
+        
+        //1. set the data
+        //grab the current cell
+        let currentCell = tableView.cellForRow(at: currentlySelectedCell) as! restarauntTableViewCell
+        //grab the current model data for the specific cell
+        let currentModel = restaurants[currentlySelectedCell.row]
+        
+        
+        var address:String!
+        //set the mapview location based on the restauraunt address
+        if currentModel.location.display_address[0] != "" {
+            address = "\(currentModel.location.display_address[0])"
+        }else if currentModel.location.display_address[0] != "" && currentModel.location.display_address[1] != "" {
+            address = "\(currentModel.location.display_address[0]), \(currentModel.location.display_address[1])"
+        }
+        
+        //init a geocoder
+        let geocoder = CLGeocoder()
+        //convert the address above to a location that we can use on the map
+        geocoder.geocodeAddressString(address, completionHandler: { placemarks,error in
+            
+            //check the placemarks using a guard statement
+            guard let placemarks = placemarks,
+                  let firstLoc = placemarks.first?.location
+            else {
+                return
+            }
+            
+            //if the guard did not fall through set the location on the mapview here
+            let newRegion = MKCoordinateRegion(center: firstLoc.coordinate, latitudinalMeters: 2500, longitudinalMeters: 2500)
+            self.restaurantSelectedMapView.setRegion(newRegion, animated: false)
+            
+            //remove all existing markers on the map
+            self.restaurantSelectedMapView.removeAnnotations(self.restaurantSelectedMapView.annotations)
+            
+            let mapMarker = MKPointAnnotation()
+            mapMarker.coordinate = firstLoc.coordinate
+            mapMarker.title = "\(currentModel.name)"
+            
+            //add the annotation to the map
+            self.restaurantSelectedMapView.addAnnotation(mapMarker)
+            
+            
+            
+            
+            
+            //if the user wants directions we need to give it to them, for this we will use a mapitem
+            let directionsMapItem = MKMapItem(placemark: MKPlacemark(coordinate: firstLoc.coordinate))
+            directionsMapItem.name = "\(currentModel.name)"
+            //set this top level to our other mapitem
+            self.directionsForMap = directionsMapItem
+            
+        })
+        
+        //copy contents from the cell over to the main view
+        //set the title
+        restaurantSelectedTitle.text = currentCell.restarauntTitle.text
+        //set the distance
+        restaurantSelectedDistance.text = currentCell.distanceLabel.text
+        //set the reviews
+        restaurantSelectedReviews.text = currentCell.totalReviewsLabel.text
+        //set the tags
+        restaurantSelectedTags.text = currentCell.tagsLabel.text
+        //set the pricelevel
+        restaurantSelectedPricerange.attributedText = currentCell.totalPriceLabel.attributedText
+        //set the pickup image
+        restaurantSelectedPickupImage.image = currentCell.pickupImageView.image
+        restaurantSelectedPickupImage.tintColor = currentCell.pickupImageView.tintColor
+        //set the delivery image
+        restaurantSelectedDeliveryImage.image = currentCell.deliveryImageView.image
+        restaurantSelectedDeliveryImage.tintColor = currentCell.deliveryImageView.tintColor
+        //set the phone number
+        restaurantSelectedPhonenumber.text = currentModel.display_phone
+        
+        //set the phone number for the call feature
+        phonenumberForCall = currentModel.display_phone
+        
+        
+        //favview1
+        if currentCell.halfLikeView1.isHidden == true {
+            restaurantSelectedFavview1.backgroundColor = currentCell.favView1.backgroundColor
+            restaurantSelectedFavView1HalfView.isHidden = true
+        }else{
+            restaurantSelectedFavview1.backgroundColor = UIColor.lightGray
+            restaurantSelectedFavView1HalfView.isHidden = false
+        }
+        
+        //favview2
+        if currentCell.halfLikeView2.isHidden == true {
+            restaurantSelectedFavview2.backgroundColor = currentCell.favView2.backgroundColor
+            restaurantSelectedFavView2HalfView.isHidden = true
+        }else{
+            restaurantSelectedFavview2.backgroundColor = UIColor.lightGray
+            restaurantSelectedFavView2HalfView.isHidden = false
+        }
+        
+        //favview3
+        if currentCell.halfLikeView3.isHidden == true {
+            restaurantSelectedFavview3.backgroundColor = currentCell.favView3.backgroundColor
+            restaurantSelectedFavView3HalfView.isHidden = true
+        }else{
+            restaurantSelectedFavview3.backgroundColor = UIColor.lightGray
+            restaurantSelectedFavView3HalfView.isHidden = false
+        }
+        
+        //favview4
+        if currentCell.halfLikeView4.isHidden == true {
+            restaurantSelectedFavview4.backgroundColor = currentCell.favView4.backgroundColor
+            restaurantSelectedFavView4HalfView.isHidden = true
+        }else{
+            restaurantSelectedFavview4.backgroundColor = UIColor.lightGray
+            restaurantSelectedFavView4HalfView.isHidden = false
+        }
+        
+        //favview5
+        if currentCell.halfLikeView5.isHidden == true {
+            restaurantSelectedFavview5.backgroundColor = currentCell.favView5.backgroundColor
+            restaurantSelectedFavView5HalfView.isHidden = true
+        }else{
+            restaurantSelectedFavview5.backgroundColor = UIColor.lightGray
+            restaurantSelectedFavView5HalfView.isHidden = false
+        }
+        
+        
+        //2. animate the view from being hidden to not hidden
+        tableViewTintOverlayView.isHidden = false
+        UIView.animate(withDuration: 0.8, animations: {
+            
+            self.tableViewTintOverlayView.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.58)
+            
+            //3. animate the view in
+            self.restaurantSelectedView.alpha = 1
+            //set the userInteraction to enabled so the users can use the buttons
+            self.restaurantSelectedView.isUserInteractionEnabled = true
+            
+        }, completion: { _ in
+            
+        })
+        
     }
     
     //MARK: RE-SETTING THE TABLEVIEW
     func resetAndShuffle(completionHandler: @escaping (Bool) -> ()){
         //1.shuffle the data in the list
         //2.scroll to the top cell
-        //3.reload the data
+        //3.re-hide the tint and the selectedView.alpha
+        //4.reload the data
+        
+        //1.
         if restaurants.count < 30 {
             print("p:",restaurants.count)
             restaurants += restaurants
         }
         restaurants = restaurants.shuffled()
+        
+        //3
+        UIView.animate(withDuration: 0.2, animations: {
+            
+            self.tableViewTintOverlayView.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0)
+            self.restaurantSelectedView.alpha = 0
+            //set the userInteraction to disabled
+            self.restaurantSelectedView.isUserInteractionEnabled = false
+            
+        }, completion: { _ in
+            
+        })
+        
+        
         DispatchQueue.main.async {
+            //4
             self.tableView.reloadData()
+            //2
             self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             completionHandler(true)
         }
@@ -318,6 +568,9 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         let currentRestaraunt:restaurant = restaurants[indexPath.row]
         
         let testCell = tableView.dequeueReusableCell(withIdentifier: "restaurantTableviewCell") as! restarauntTableViewCell
+        
+        //set a corner radius on the cell
+        testCell.dataView.layer.cornerRadius = 15
         
         //set the title
         testCell.restarauntTitle.text = "\(currentRestaraunt.name)"
@@ -602,7 +855,7 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
             //reload the data
             self.tableView.reloadData()
             //unhide the tableview
-            self.tableView.isHidden = false
+            self.tableViewHolder.isHidden = false
             //stop the indicatorview
             self.indicatorView.stopAnimating()
             

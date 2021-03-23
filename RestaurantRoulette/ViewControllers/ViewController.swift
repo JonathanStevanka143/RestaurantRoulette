@@ -208,7 +208,6 @@ extension ViewController: CLLocationManagerDelegate {
         defer { currentLocation = locations.last }
         
         if currentLocation == nil {
-            print("tata")
             // Zoom to user location
             if let userLocation = locations.last {
                 let viewRegion = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
