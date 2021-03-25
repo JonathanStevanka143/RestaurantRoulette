@@ -168,6 +168,8 @@ class restaurantsListTableviewController: UIViewController {
         //set the button to be inactive
         continueButton.isEnabled = false
         
+        print(restaurants.count)
+        
         //if phase2 is set changed the UI accordingly
         if phase2 == true {
             //1.disable scrolling
@@ -180,8 +182,17 @@ class restaurantsListTableviewController: UIViewController {
                 //remove the restaraunt from the list so it cant be used again
                 let removeThis = restaurants[currentlySelectedCell.row]
                 
-                //remove all copies of the model in the tableview data array
-                restaurants.removeAll{ $0 == removeThis }
+                //check to see if the array contains all the same element, the same as being at 1 model in the array
+                let allModelsTheSame = restaurants.allSatisfy({ $0 == restaurants.first })
+                if allModelsTheSame == false {
+                    //remove all copies of the model in the tableview data array
+                    restaurants.removeAll{ $0 == removeThis }
+                }else {
+                    
+                    //DO SOMETHING HERE INSTEAD OF JUST SPINNING THE VIEW OVER AND OVER
+                    
+                }
+                
                 
                 //reset the tableview
                 resetAndShuffle(completionHandler: {
@@ -222,6 +233,18 @@ class restaurantsListTableviewController: UIViewController {
             //5.change the phase so we can control flow with the button
             editButton.isHidden = true
             continueButton.setTitle("Spin the wheel", for: .normal)
+            
+            //fix the table not having the proper amount of cells to spin the table
+            if restaurants.count <= 30 {
+                
+                print("30 into 3", 30 / restaurants.count)
+                print("leftover", 30 % restaurants.count)
+                
+                restaurants.append(contentsOf: restaurants)
+                restaurants.append(contentsOf: restaurants)
+                                
+            }
+            
             restaurants += restaurants
             restaurants = restaurants.shuffled()
             DispatchQueue.main.async {
@@ -240,6 +263,17 @@ class restaurantsListTableviewController: UIViewController {
     func spinthewheel(){
         
         let generator = UIImpactFeedbackGenerator(style: .heavy)
+        
+        
+        //check to see if the array contains all the same element, the same as being at 1 model in the array
+        let allModelsTheSame = restaurants.allSatisfy({ $0 == restaurants.first })
+        //still other options in the array
+        if allModelsTheSame == false {
+            
+        }else {
+            //set the continue button to say "Spin" instead of remove and spin
+            continueButton.setTitle("Spin", for: .normal)
+        }
         
         UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
             
@@ -309,13 +343,12 @@ class restaurantsListTableviewController: UIViewController {
         //grab the current model data for the specific cell
         let currentModel = restaurants[currentlySelectedCell.row]
         
-        
         var address:String!
         //set the mapview location based on the restauraunt address
-        if currentModel.location.display_address[0] != "" {
-            address = "\(currentModel.location.display_address[0])"
-        }else if currentModel.location.display_address[0] != "" && currentModel.location.display_address[1] != "" {
+        if currentModel.location.display_address[0] != "" && currentModel.location.display_address[1] != "" {
             address = "\(currentModel.location.display_address[0]), \(currentModel.location.display_address[1])"
+        }else if currentModel.location.display_address[0] != "" {
+            address = "\(currentModel.location.display_address[0])"
         }
         
         //init a geocoder
@@ -343,9 +376,6 @@ class restaurantsListTableviewController: UIViewController {
             
             //add the annotation to the map
             self.restaurantSelectedMapView.addAnnotation(mapMarker)
-            
-            
-            
             
             
             //if the user wants directions we need to give it to them, for this we will use a mapitem

@@ -52,10 +52,10 @@ class restarauntsViewModel {
 //        print(optionString)
         
         
-        apiNetwork.getCloseRestaraunts(address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaraunts in
+        apiNetwork.getCloseRestaraunts(address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
             
             //call the delegate so the viewcontroller can get restaraunts back
-            self.delegate?.returnCloseRestaraunts(closeRestaraunts: restaraunts)
+            self.delegate?.returnCloseRestaraunts(closeRestaraunts: restaurants)
         }
         
     }
