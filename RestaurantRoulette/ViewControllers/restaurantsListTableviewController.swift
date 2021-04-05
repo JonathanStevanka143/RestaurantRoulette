@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 import CoreData
 import MapKit
 import CoreLocation
@@ -174,8 +175,8 @@ class restaurantsListTableviewController: UIViewController {
         if phase2 == true {
             //1.disable scrolling
             //2.set the button to say "remove & spin"
-            continueButton.setTitle("Remove & Spin", for: .normal)
-            
+            continueButton.setTitle("Spinning...", for: .normal)
+            continueButton.isEnabled = false
             //if the table has been spun and a restauraunt has been selected, remove it
             if hasSpun == true {
                 
@@ -208,14 +209,12 @@ class restaurantsListTableviewController: UIViewController {
                     }
                     
                 })
-                //set the continuebutton to be enabled again
-                continueButton.isEnabled = true
                 
             }else {
                 //spin the wheel
                 spinthewheel()
-                //set the continuebutton to be enabled again
-                continueButton.isEnabled = true
+                //set the continuebutton to be disabled during the animation block
+                continueButton.isEnabled = false
                 //change the haspun var to true
                 hasSpun = true
             }
@@ -262,8 +261,8 @@ class restaurantsListTableviewController: UIViewController {
     //MARK: WHEEL SPIN FUNCTION
     func spinthewheel(){
         
+        var impactTimer:Timer!
         let generator = UIImpactFeedbackGenerator(style: .heavy)
-        
         
         //check to see if the array contains all the same element, the same as being at 1 model in the array
         let allModelsTheSame = restaurants.allSatisfy({ $0 == restaurants.first })
@@ -275,6 +274,7 @@ class restaurantsListTableviewController: UIViewController {
             continueButton.setTitle("Spin", for: .normal)
         }
         
+        
         UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
             
             self.tableView.contentOffset = CGPoint(x: 0, y: -125)
@@ -285,6 +285,8 @@ class restaurantsListTableviewController: UIViewController {
         }, completion: { _ in
             
             UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                
+                impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
                 
                 self.tableView.contentOffset = CGPoint(x: 0, y: 650)
                 self.tableView.layoutIfNeeded()
@@ -298,15 +300,18 @@ class restaurantsListTableviewController: UIViewController {
                     
                 }, completion: { _ in
                     
+                    
                     UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                         
                         self.tableView.setContentOffset(CGPoint(x: 0, y: 1950), animated: false)
                         self.tableView.layoutIfNeeded()
                         
                     }, completion: { _ in
+//                        impactTimer.invalidate()
                         
                         self.grabSelectedRestaraunt()
-                        
+                        impactTimer.invalidate()
+
                     })
                     
                 })
@@ -318,6 +323,16 @@ class restaurantsListTableviewController: UIViewController {
         
     }
     
+    //MARK: TIMERS FOR IMPACT SENSORS
+    //this is the apple pay sound
+    let systemSoundID: SystemSoundID = 1407
+    //this allows us to let the user feel vibrations
+    let generator = UIImpactFeedbackGenerator(style: .heavy)
+    
+    @objc func mainImpactRythem() {
+        generator.impactOccurred()
+    }
+
     //MARK: GRAB THE 'WINNING' INDEXPATH
     func grabSelectedRestaraunt(){
         
@@ -332,10 +347,22 @@ class restaurantsListTableviewController: UIViewController {
         //set the currently selectedRow, used to remove and view cells
         currentlySelectedCell = visibleCells![Int(visibleCells!.count / 2)]
         
+        
+        
+        let allModelsTheSame = restaurants.allSatisfy({ $0 == restaurants.first })
+        if allModelsTheSame == true {
+            //set the title to Spin
+            continueButton.setTitle("Spin", for: .normal)
+        }else {
+            //reset the title as if it was done animating through the block for UIX
+            continueButton.setTitle("Remove & Spin", for: .normal)
+        }
+        //enable the continue button here after setting the currently selected cell incase the user wants to continue
+        continueButton.isEnabled = true
+        
         //1. set the selected details for the restauraunt in the VIEW
         //2. animate the view covering the tableview to be heavily tinted
         //3. animate in the view
-        
         
         //1. set the data
         //grab the current cell
@@ -467,9 +494,13 @@ class restaurantsListTableviewController: UIViewController {
             //set the userInteraction to enabled so the users can use the buttons
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
+            //play the sounds so they know this is the one
+            AudioServicesPlaySystemSound(self.systemSoundID)
+            
         }, completion: { _ in
             
         })
+        
         
     }
     
