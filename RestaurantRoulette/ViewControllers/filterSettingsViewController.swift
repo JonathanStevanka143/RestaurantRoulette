@@ -223,11 +223,11 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         //set the outline view for the border so that it shows them it has yet to be selected
         cellForTag.tagOutlineView.layer.cornerRadius = 10
         cellForTag.tagOutlineView.layer.borderWidth = 1
-        cellForTag.tagOutlineView.layer.borderColor = UIColor.init(red: 1.0, green: 0.54, blue: 0.59, alpha: 1.0).cgColor
+        cellForTag.tagOutlineView.layer.borderColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
         
         if currentCategory.isCategoryChecked == true {
             //if the cell is checked then we remove the background and set the outline instead
-            cellForTag.tagOutlineView.backgroundColor = UIColor.init(red: 1.0, green: 0.54, blue: 0.59, alpha: 1.0)
+            cellForTag.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
             
         }else {
             //if the cell is not checked then when we click on it we change the background color
@@ -270,7 +270,7 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
             //set the iscategorychecked to be true
             currentCategory.isCategoryChecked = true
             //if the cell is not checked then when we click on it we change the background color
-            currentCell.tagOutlineView.backgroundColor = UIColor.init(red: 1.0, green: 0.54, blue: 0.59, alpha: 1.0)
+            currentCell.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
             
             //add this newly selected cell into our array
             clickedOnCategories.append(currentCategory)
