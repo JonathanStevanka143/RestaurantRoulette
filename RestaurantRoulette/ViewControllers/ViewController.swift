@@ -41,10 +41,9 @@ class ViewController: UIViewController {
         if isFirstTimeOpening == false {
             //check to see if the location services are enabled
             if CLLocationManager.locationServicesEnabled() {
-                /**
-                 this needs to be tested before commit
-                 */
-                locationManager.requestLocation()
+                
+                //start updating the users location
+                locationManager.startUpdatingLocation()
                 
                 //grab the filter results incase the user has updated them this keeps the user settings updated at all times
                 ViewModel.getFilterResults()
@@ -72,16 +71,21 @@ class ViewController: UIViewController {
         locationManager = CLLocationManager()
         //set the delegate of the LM manager to self
         locationManager.delegate = self
-        //set the desired accuracy of the location manager
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         //ask for permission from the user to display the map
         locationManager.requestWhenInUseAuthorization()
         //check to see if the location services are enabled
         if CLLocationManager.locationServicesEnabled() {
             //ask to use while in use
             locationManager.requestWhenInUseAuthorization()
+            //set the distance property where the app should update the location
+            locationManager.distanceFilter = 10
             //start updating the location
             locationManager.startUpdatingLocation()
+            //set the accuracy
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+            //set pauses location updates to false
+            locationManager.pausesLocationUpdatesAutomatically = false
+            
         }else {
             //location services not enabled do something here
             
@@ -106,6 +110,7 @@ class ViewController: UIViewController {
         
         //set the isfirsttimeviewing variable to false to update the map everytime the user opens the app
         isFirstTimeOpening = false
+        
     }
     
     //prepare function will allow us to send data to any screens we want
@@ -140,7 +145,7 @@ class ViewController: UIViewController {
             
             
             break
-        
+            
         //customLocationViewController
         case "CustomlocationSegue":
             
@@ -163,7 +168,7 @@ class ViewController: UIViewController {
     //MARK: BUTTON ACTIONS
     
     @IBAction func didTapOnCurrentLocationButton(_ sender: Any) {
-                
+        
         //set the centerMapCoord to be that of the current location map
         centerMapCoord = currentLocationMapView.centerCoordinate
         
@@ -205,15 +210,23 @@ extension ViewController: CLLocationManagerDelegate {
     
     //extend the function so that we can receive updates on where the user is currently
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        defer { currentLocation = locations.last }
         
-        if currentLocation == nil {
-            // Zoom to user location
-            if let userLocation = locations.last {
-                let viewRegion = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
-                currentLocationMapView.setRegion(viewRegion, animated: false)
-            }
+        if locations.last != nil {
+            currentLocation = locations.last
         }
+        
+        if currentLocation != nil {
+            
+//            print("------")
+//            print(currentLocation)
+            
+            // Zoom to user location
+            let viewRegion = MKCoordinateRegion(center: currentLocation!.coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000)
+            currentLocationMapView.setRegion(viewRegion, animated: false)
+            
+        }
+        
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

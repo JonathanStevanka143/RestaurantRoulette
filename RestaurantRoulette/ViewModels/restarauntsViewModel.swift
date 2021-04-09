@@ -34,6 +34,10 @@ class restarauntsViewModel {
         }else {
             //setting the meteres based on MILES
             distanceMeteres = Int(options.distance * 1609)
+            //check to see if the distance is greater than 40,000. if it is set it to 40,000
+            if distanceMeteres > 40000 {
+                distanceMeteres = 40000
+            }
         }
                 
         

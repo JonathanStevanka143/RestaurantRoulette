@@ -44,6 +44,27 @@ class filterSettingsViewController: UIViewController {
     var categories:[Categories]!
     //this will hold the categories clicked by the user
     var clickedOnCategories:[Categories]! = []
+    //this bool represents if the save button has been clicked since the user has pressed a tag button
+    var is_saved:Bool = false
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //check here too see if the save button has been pressed
+        if is_saved == false {
+            print("items to revert because no save:",clickedOnCategories.count)
+            
+            for cat in clickedOnCategories {
+                if cat.isCategoryChecked == true {
+                    cat.isCategoryChecked = false
+                }else if cat.isCategoryChecked == false {
+                    cat.isCategoryChecked = true
+                }
+            }
+        }else if is_saved == true {
+            //remove all objects from the list as the data has been saved
+            clickedOnCategories.removeAll()
+        }
+        
+    }
     
     
     override func viewDidLoad() {
@@ -73,12 +94,16 @@ class filterSettingsViewController: UIViewController {
             if filterOptions.isDistanceInKM == true {
                 
                 distanceMeasurementControl.selectedSegmentIndex = 0
+                distanceMeasurementSlider.minimumValue = 1
+                distanceMeasurementSlider.maximumValue = 40
                 totalDistanceTextField.text = "\(filterOptions.distance) km"
                 distanceMeasurementSlider.value = Float(filterOptions.distance)
                 
             }else {
                 
                 distanceMeasurementControl.selectedSegmentIndex = 1
+                distanceMeasurementSlider.minimumValue = 1
+                distanceMeasurementSlider.maximumValue = 25
                 totalDistanceTextField.text = "\(filterOptions.distance) miles"
                 distanceMeasurementSlider.value = Float(filterOptions.distance)
 
@@ -111,17 +136,24 @@ class filterSettingsViewController: UIViewController {
     //MARK: DISTANCE ACTIONS
     @IBAction func distanceMeasurementControlChanged(_ sender: Any) {
         
-        let distanceInInt = Int(distanceMeasurementSlider.value.rounded())
+        var distanceInInt = Int(distanceMeasurementSlider.value.rounded())
         
         //check what distance measurement it is
         //0 = km
         //1 = miles
         if distanceMeasurementControl.selectedSegmentIndex == 0 {
             
+            distanceMeasurementSlider.minimumValue = 1
+            distanceMeasurementSlider.maximumValue = 40
             totalDistanceTextField.text = "\(distanceInInt) km"
             
         }else if distanceMeasurementControl.selectedSegmentIndex == 1 {
             
+            distanceMeasurementSlider.minimumValue = 1
+            distanceMeasurementSlider.maximumValue = 25
+            if distanceInInt >= 25 {
+                distanceInInt = 25
+            }
             totalDistanceTextField.text = "\(distanceInInt) miles"
             
         }
@@ -192,6 +224,9 @@ class filterSettingsViewController: UIViewController {
         //call the viewmodel function to save the data
         viewModel.saveResultsFromButton(isBelowOrAbovePrice: isBelowOrAbovePrice, priceLevel: priceLevel, distance: distance, isDistanceInKm: isDistanceInKm)
         
+        //set the is_saved variable to true
+        is_saved = true
+        
         self.navigationController?.popViewController(animated: true)
         
     }
@@ -228,10 +263,14 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         if currentCategory.isCategoryChecked == true {
             //if the cell is checked then we remove the background and set the outline instead
             cellForTag.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+            //set the text color to be white
+            cellForTag.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             
         }else {
             //if the cell is not checked then when we click on it we change the background color
             cellForTag.tagOutlineView.backgroundColor = nil
+            //set the text color to be black
+            cellForTag.categoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             
         }
         
@@ -257,25 +296,24 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
             currentCategory.isCategoryChecked = false
             //if the cell is checked then we remove the background and set the outline instead
             currentCell.tagOutlineView.backgroundColor = nil
-            
-            if clickedOnCategories.isEmpty == false {
-                //remove the category from the array if it exists
-                if clickedOnCategories.contains(currentCategory){
-                    clickedOnCategories.remove(at: clickedOnCategories.firstIndex(of: currentCategory)!)
-                    
-                }
-            }
+            //set the text color to be black
+            currentCell.categoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             
         }else {
             //set the iscategorychecked to be true
             currentCategory.isCategoryChecked = true
             //if the cell is not checked then when we click on it we change the background color
             currentCell.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
-            
-            //add this newly selected cell into our array
-            clickedOnCategories.append(currentCategory)
-            
+            //set the text color to be white
+            currentCell.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
         }
+        
+        //add this newly selected cell into our array
+        clickedOnCategories.append(currentCategory)
+        
         
     }
     

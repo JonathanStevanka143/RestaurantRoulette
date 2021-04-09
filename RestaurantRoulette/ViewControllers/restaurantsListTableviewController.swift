@@ -56,8 +56,9 @@ class restaurantsListTableviewController: UIViewController {
     @IBOutlet var directionsCircleView: UIView!
     @IBOutlet var directionsButton: UIButton!
     
-    @IBOutlet var moreInfoCircleView: UIView!
-    @IBOutlet var infoButton: UIButton!
+    @IBOutlet var websiteCircleView: UIView!
+    @IBOutlet var websiteButton: UIButton!
+    
     
     //buttons
     @IBOutlet var continueButton: UIButton!
@@ -78,10 +79,12 @@ class restaurantsListTableviewController: UIViewController {
     //this holds the currently selected cell number
     var currentlySelectedCell:IndexPath! = nil
     
-    
     override func viewDidLoad() {
         
         ViewModel.delegate = self
+        
+        
+        print("Device:",UIDevice.modelName)
         
         //1.create a function to reverse geocode an address and pass it to the API for more accurate results
         geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
@@ -98,16 +101,10 @@ class restaurantsListTableviewController: UIViewController {
         //set the border color and the width for the three selected restaurant buttons
         //callview setup
         callCircleView.layer.cornerRadius = 30
-        callCircleView.layer.borderWidth = 1
-        callCircleView.layer.borderColor = UIColor.red.cgColor
         //directionview setup
         directionsCircleView.layer.cornerRadius = 30
-        directionsCircleView.layer.borderWidth = 1
-        directionsCircleView.layer.borderColor = UIColor.red.cgColor
-        //infoview setup
-        moreInfoCircleView.layer.cornerRadius = 30
-        moreInfoCircleView.layer.borderWidth = 1
-        moreInfoCircleView.layer.borderColor = UIColor.red.cgColor
+        //website setup
+        websiteCircleView.layer.cornerRadius = 30
     }
     
     
@@ -129,7 +126,7 @@ class restaurantsListTableviewController: UIViewController {
     
     var phonenumberForCall:String!
     @IBAction func callButtonPressed(_ sender: Any) {
-                
+        
         //scrub the phone number first to make it "callable"
         phonenumberForCall.removeAll{$0 == "-"}
         phonenumberForCall.removeAll{$0 == "("}
@@ -152,11 +149,31 @@ class restaurantsListTableviewController: UIViewController {
         
     }
     
-    @IBAction func moreInfoButtonPressed(_ sender: Any) {
+    @IBAction func reviewsButtonPressed(_ sender: Any) {
         
         
     }
     
+    @IBAction func websiteButtonPressed(_ sender: Any) {
+        
+        if currentlySelectedCell != nil {
+            
+            //grab the selected data from the array
+            let selected = restaurants[currentlySelectedCell.row]
+            
+            if let websiteURL = URL(string: selected.url){
+                
+                UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
+                
+            }else{
+                
+                //make a popup say invalid or something?
+                
+            }
+            
+        }
+        
+    }
     
     
     //this variable represents the phase of which the tableview is in
@@ -241,7 +258,7 @@ class restaurantsListTableviewController: UIViewController {
                 
                 restaurants.append(contentsOf: restaurants)
                 restaurants.append(contentsOf: restaurants)
-                                
+                
             }
             
             restaurants += restaurants
@@ -275,52 +292,152 @@ class restaurantsListTableviewController: UIViewController {
         }
         
         
-        UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+        //here we need to check the type of device being used for the app so we can properly set our animations so that it wont make UI errors
+        if UIDevice.modelName == "iPhone 8" {
             
-            self.tableView.contentOffset = CGPoint(x: 0, y: -125)
-            self.tableView.layoutIfNeeded()
             
-            generator.impactOccurred()
-            
-        }, completion: { _ in
-            
-            UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
-                impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
-                
-                self.tableView.contentOffset = CGPoint(x: 0, y: 650)
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
                 self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
                 
             }, completion: { _ in
                 
-                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
                     
-                    self.tableView.contentOffset = CGPoint(x: 0, y: 1300)
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 350)
                     self.tableView.layoutIfNeeded()
                     
                 }, completion: { _ in
                     
-                    
-                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
                         
-                        self.tableView.setContentOffset(CGPoint(x: 0, y: 1950), animated: false)
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 850)
                         self.tableView.layoutIfNeeded()
                         
                     }, completion: { _ in
-//                        impactTimer.invalidate()
                         
-                        self.grabSelectedRestaraunt()
-                        impactTimer.invalidate()
-
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1350), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
                     })
                     
                 })
                 
             })
             
-        })
-        
-        
+            
+        }else if UIDevice.modelName == "iPhone X" {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 550)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 1050)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1350), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+            
+        }else {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 650)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 1300)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1950), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        }
     }
     
     //MARK: TIMERS FOR IMPACT SENSORS
@@ -332,7 +449,7 @@ class restaurantsListTableviewController: UIViewController {
     @objc func mainImpactRythem() {
         generator.impactOccurred()
     }
-
+    
     //MARK: GRAB THE 'WINNING' INDEXPATH
     func grabSelectedRestaraunt(){
         
@@ -372,8 +489,10 @@ class restaurantsListTableviewController: UIViewController {
         
         var address:String!
         //set the mapview location based on the restauraunt address
-        if currentModel.location.display_address[0] != "" && currentModel.location.display_address[1] != "" {
-            address = "\(currentModel.location.display_address[0]), \(currentModel.location.display_address[1])"
+        if currentModel.location.display_address.count >= 2{
+            if currentModel.location.display_address[0] != "" && currentModel.location.display_address[1] != "" {
+                address = "\(currentModel.location.display_address[0]), \(currentModel.location.display_address[1])"
+            }
         }else if currentModel.location.display_address[0] != "" {
             address = "\(currentModel.location.display_address[0])"
         }
@@ -538,7 +657,7 @@ class restaurantsListTableviewController: UIViewController {
             self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             completionHandler(true)
         }
-    
+        
     }
     
     //MARK: REVERSE GEOCODE LAT/LONG TO ADDRESS
@@ -555,7 +674,7 @@ class restaurantsListTableviewController: UIViewController {
         
         //reverse the lat/long coords
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
- 
+            
             if let marker = placemarks?.first {
                 
                 let street = marker.subThoroughfare ?? ""
@@ -575,7 +694,7 @@ class restaurantsListTableviewController: UIViewController {
             }
             
         })
-                
+        
     }
     
     
@@ -863,7 +982,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "" {
-            testCell.totalPriceLabel.text = "$$$$"
+            testCell.totalPriceLabel.text = "N/A"
         }
         
         //set the pickup/delivery availability
