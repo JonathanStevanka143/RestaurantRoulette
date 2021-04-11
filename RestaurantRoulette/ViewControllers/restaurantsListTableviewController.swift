@@ -259,6 +259,14 @@ class restaurantsListTableviewController: UIViewController {
                 restaurants.append(contentsOf: restaurants)
                 restaurants.append(contentsOf: restaurants)
                 
+                //just incase there is not enough room
+                if restaurants.count <= 30 {
+                    
+                    restaurants.append(contentsOf: restaurants)
+                    restaurants.append(contentsOf: restaurants)
+                    
+                }
+                
             }
             
             restaurants += restaurants
@@ -972,13 +980,13 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.price == "$$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
-            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:2))
+            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:3))
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
-            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:3))
+            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:4))
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "" {

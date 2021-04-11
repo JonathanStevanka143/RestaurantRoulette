@@ -24,6 +24,48 @@ class restarauntsViewModel {
         //left off here
 //        print(options)
         
+        
+        
+        //this will allow us to return the restaraunts that are below/above the pricerange for the users options
+        
+        print(options.isBelowPriceRange)
+        print(options.priceRangeLevel)
+        
+        //create a string to hold the price level(s)
+        var priceRange:String!
+        
+        //check if the pricerange is below or above
+        if options.isBelowPriceRange == true {
+            
+            //if the number selected is 4, the string would contain (1,2,3,4)
+            if options.priceRangeLevel == 1 {
+                priceRange = "1"
+            }else if options.priceRangeLevel == 2 {
+                priceRange = "1,2"
+            }else if options.priceRangeLevel == 3 {
+                priceRange = "1,2,3"
+            }else if options.priceRangeLevel == 4 {
+                priceRange = "1,2,3,4"
+            }
+            
+        }else {
+            
+            //if the number selected is 4, the string would contain (4)
+            if options.priceRangeLevel == 1 {
+                priceRange = "1,2,3,4"
+            }else if options.priceRangeLevel == 2 {
+                priceRange = "2,3,4"
+            }else if options.priceRangeLevel == 3 {
+                priceRange = "3,4"
+            }else if options.priceRangeLevel == 4 {
+                priceRange = "4"
+            }
+            
+        }
+        
+//        print(priceRange)
+        
+        
         //create a variable to conver the distance option
         var distanceMeteres:Int!
         
@@ -56,7 +98,7 @@ class restarauntsViewModel {
 //        print(optionString)
         
         
-        apiNetwork.getCloseRestaraunts(address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
+        apiNetwork.getCloseRestaraunts(priceLevel: priceRange,address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
             
             //call the delegate so the viewcontroller can get restaraunts back
             self.delegate?.returnCloseRestaraunts(closeRestaraunts: restaurants)

@@ -15,6 +15,7 @@ class filterSettingsViewController: UIViewController {
     @IBOutlet var distanceUIVIEW: UIView!
     
     //buttons
+    @IBOutlet var resetNavButton: UIButton!
     @IBOutlet var saveButton: UIButton!
     
     //price range controls
@@ -25,6 +26,9 @@ class filterSettingsViewController: UIViewController {
     @IBOutlet var totalDistanceTextField: UITextField!
     @IBOutlet var distanceMeasurementControl: UISegmentedControl!
     @IBOutlet var distanceMeasurementSlider: UISlider!
+    
+    
+    @IBOutlet var tagsCVHeightCnst: NSLayoutConstraint!
     
     //tags collectionview for food categories
     @IBOutlet var tagsCollectionView: UICollectionView!
@@ -46,19 +50,32 @@ class filterSettingsViewController: UIViewController {
     var clickedOnCategories:[Categories]! = []
     //this bool represents if the save button has been clicked since the user has pressed a tag button
     var is_saved:Bool = false
+    //this boolean will represent when the save button has been clicked
+    var is_reset:Bool = false
     
     override func viewWillDisappear(_ animated: Bool) {
         //check here too see if the save button has been pressed
+        print("saved:",is_saved)
+        print("is_reset:",is_reset)
         if is_saved == false {
             print("items to revert because no save:",clickedOnCategories.count)
-            
+                        
             for cat in clickedOnCategories {
                 if cat.isCategoryChecked == true {
                     cat.isCategoryChecked = false
                 }else if cat.isCategoryChecked == false {
-                    cat.isCategoryChecked = true
+                    if clickedOnCategories.count != 0 {
+                        if is_reset == true {
+                            cat.isCategoryChecked = false
+                        }else {
+                            cat.isCategoryChecked = true
+                        }
+                    }
                 }
             }
+            
+            clickedOnCategories.removeAll()
+            
         }else if is_saved == true {
             //remove all objects from the list as the data has been saved
             clickedOnCategories.removeAll()
@@ -74,6 +91,16 @@ class filterSettingsViewController: UIViewController {
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
         
+        //set up the UIviews
+        priceRangesUIVIEW.layer.cornerRadius = 10
+        priceRangesUIVIEW.layer.shadowOffset = .zero
+        priceRangesUIVIEW.layer.shadowRadius = 5
+        priceRangesUIVIEW.layer.shadowOpacity = 0.3
+        distanceUIVIEW.layer.cornerRadius = 10
+        distanceUIVIEW.layer.shadowOffset = .zero
+        distanceUIVIEW.layer.shadowRadius = 5
+        distanceUIVIEW.layer.shadowOpacity = 0.3
+
         //set the UIviews to have the same data as on the phone
         //1. check if the filteroptions is not nil
         //2. set the 'below price | above price
@@ -115,7 +142,14 @@ class filterSettingsViewController: UIViewController {
         //set the viewmodel delegate to receive information from the view model back
         viewModel.delegate = self
         
-        print("t",tagsCollectionView.collectionViewLayout.collectionViewContentSize)
+        //set the collection view to be self sizing
+        let collectionViewHeight = tagsCollectionView.collectionViewLayout.collectionViewContentSize.height
+        //set the height on the constraint
+        tagsCVHeightCnst.constant = collectionViewHeight
+        //use the view to set the layout to the correct size
+        self.view.layoutIfNeeded()
+        //set the height constraint the be the new height of the table
+        tagsCVHeightCnst.constant = tagsCollectionView.collectionViewLayout.collectionViewContentSize.height
         
     }
     
@@ -228,6 +262,35 @@ class filterSettingsViewController: UIViewController {
         is_saved = true
         
         self.navigationController?.popViewController(animated: true)
+        
+    }
+    
+    
+    @IBAction func resetNavButtonClicked(_ sender: Any){
+        
+        //create an alert
+        let alert = UIAlertController(title: "Are you sure?", message: "This will reset all tags back to default values", preferredStyle: .alert)
+        //add the reset tags action
+        alert.addAction(UIAlertAction(title: "Reset tags", style: .destructive, handler: { action in
+            
+            //for clearing the tags
+            for cat in self.categories {
+                //set the ischecked to be true and then re-load the view
+                cat.isCategoryChecked = false
+                //add the categories to the array list so they can be scrubbed if not saved
+                self.clickedOnCategories.append(cat)
+            }
+            
+            self.tagsCollectionView.reloadData()
+            
+            //set the is_reset to true
+            self.is_reset = true
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+        
         
     }
     
