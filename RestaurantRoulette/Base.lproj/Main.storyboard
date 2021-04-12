@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" name="primaryColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="rJ8-KO-BeL" kind="relationship" relationship="viewControllers" id="yPi-rE-jzn"/>
@@ -34,12 +34,16 @@
         <scene sceneID="hIG-eC-xZa">
             <objects>
                 <navigationController id="rJ8-KO-BeL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Roulette" id="1nB-tr-e3F">
-                        <imageReference key="image" image="pencil.circle.fill" catalog="system" symbolScale="large"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Roulette" image="casino" largeContentSizeImage="casino" selectedImage="casino" id="1nB-tr-e3F"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DOm-lp-TCE">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" systemColor="labelColor"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" systemColor="labelColor"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="bMY-t9-Afz" kind="relationship" relationship="rootViewController" id="K2w-ud-e11"/>
@@ -254,10 +258,10 @@
                     <navigationItem key="navigationItem" title="Search Options" id="1Sr-Id-jJG">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="Q8L-cf-chc">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kSP-vw-Qjf">
-                                <rect key="frame" x="362" y="6" width="32" height="32"/>
+                                <rect key="frame" x="366" y="8" width="28" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor"/>
-                                <state key="normal" image="pencil.circle" catalog="system"/>
+                                <color key="tintColor" name="primaryColor"/>
+                                <state key="normal" image="undoButton"/>
                                 <connections>
                                     <action selector="resetNavButtonClicked:" destination="SVF-LX-6vb" eventType="touchUpInside" id="7wR-b2-ogQ"/>
                                 </connections>
@@ -312,7 +316,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.082172927461139911" green="0.082172927461139911" blue="0.082172927461139911" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.2418473065" green="0.2418473065" blue="0.2418473065" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="qoU-aL-gWn" firstAttribute="top" secondItem="D0z-Z9-OIs" secondAttribute="top" constant="8" id="7JX-qX-7Uq"/>
                                             <constraint firstAttribute="bottom" secondItem="qoU-aL-gWn" secondAttribute="bottom" constant="8" id="9XR-hQ-XOt"/>
@@ -354,7 +358,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.082172927461139911" green="0.082172927461139911" blue="0.082172927461139911" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.2418473065" green="0.2418473065" blue="0.2418473065" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="gL1-Hi-Rff" secondAttribute="trailing" constant="8" id="FfN-tL-DfP"/>
                                             <constraint firstItem="gL1-Hi-Rff" firstAttribute="leading" secondItem="Yg1-73-cI2" secondAttribute="leading" constant="8" id="cNQ-23-6V0"/>
@@ -394,8 +398,11 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ddb-by-B6w">
                                 <rect key="frame" x="362" y="6" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor"/>
-                                <state key="normal" image="slider.horizontal.3" catalog="system"/>
+                                <color key="tintColor" name="primaryColor"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="slider.horizontal.3" catalog="system" renderingMode="template"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="light"/>
+                                </state>
                                 <connections>
                                     <segue destination="SVF-LX-6vb" kind="show" identifier="filterScreenSegue" id="2tx-Bh-OIC"/>
                                 </connections>
@@ -426,7 +433,7 @@
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xJW-am-iC1">
                                 <rect key="frame" x="0.0" y="760" width="414" height="53"/>
-                                <color key="backgroundColor" name="primaryColor"/>
+                                <color key="backgroundColor" red="0.82745098039215681" green="0.18431372549019609" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="53" id="sWu-Lb-w0k"/>
                                 </constraints>
@@ -581,7 +588,7 @@
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cancel" translatesAutoresizingMaskIntoConstraints="NO" id="ukB-WP-AKX">
                                                                     <rect key="frame" x="143.5" y="82" width="18" height="18"/>
-                                                                    <color key="tintColor" red="1" green="0.0" blue="0.0093617555427760735" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="tintColor" name="primaryColor"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="18" id="1PU-5x-RZq"/>
                                                                         <constraint firstAttribute="height" constant="18" id="tTF-xT-AcB"/>
@@ -589,7 +596,7 @@
                                                                 </imageView>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check-mark" translatesAutoresizingMaskIntoConstraints="NO" id="Foj-mA-iIe">
                                                                     <rect key="frame" x="59.5" y="82" width="18" height="18"/>
-                                                                    <color key="tintColor" red="0.0" green="1" blue="0.30919555589999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="tintColor" red="0.0" green="0.60392156862745094" blue="0.035294117647058823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="18" id="bw7-pJ-nk5"/>
                                                                         <constraint firstAttribute="width" constant="18" id="fDM-RI-CUv"/>
@@ -1383,27 +1390,13 @@
                             <constraint firstItem="3I0-2V-i6A" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" constant="182" id="zAQ-uJ-vtj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Restaurants" id="OZu-Ei-8do">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="y0n-uP-aCy">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="oOV-9N-2g5">
-                                <rect key="frame" x="354" y="7" width="40" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Edit">
-                                    <color key="titleColor" systemColor="labelColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="editButtonPressed:" destination="njC-6T-MoF" eventType="touchUpInside" id="h6b-o7-SHU"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Restaurants" id="OZu-Ei-8do"/>
                     <connections>
                         <outlet property="callButton" destination="COa-JJ-BWW" id="vs8-lQ-HGR"/>
                         <outlet property="callCircleView" destination="vyl-07-eL0" id="BpI-9Q-umX"/>
                         <outlet property="continueButton" destination="rCl-2i-Ytj" id="mTx-Ia-FjZ"/>
                         <outlet property="directionsButton" destination="H4N-Lp-MKS" id="a6o-jk-hRy"/>
                         <outlet property="directionsCircleView" destination="SlG-yY-ACP" id="z03-os-0Lb"/>
-                        <outlet property="editButton" destination="oOV-9N-2g5" id="OQa-Dw-aE0"/>
                         <outlet property="indicatorView" destination="3I0-2V-i6A" id="5M9-2d-cVC"/>
                         <outlet property="restaurantSelectedDeliveryImage" destination="c0g-2S-2ca" id="gbR-N8-7wP"/>
                         <outlet property="restaurantSelectedDistance" destination="HVJ-tk-6z7" id="2eW-AG-Xdu"/>
@@ -1439,19 +1432,19 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Kgm-zL-UgU"/>
+        <segue reference="m6u-2g-1q0"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="call" width="512" height="512"/>
         <image name="cancel" width="512" height="512"/>
+        <image name="casino" width="25" height="25"/>
         <image name="check-mark" width="512" height="512"/>
         <image name="directions" width="512" height="512"/>
         <image name="internet" width="512" height="512"/>
-        <image name="pencil.circle" catalog="system" width="128" height="121"/>
-        <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
         <image name="pin.fill" catalog="system" width="119" height="128"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="100"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
+        <image name="undoButton" width="25" height="24"/>
         <namedColor name="primaryColor">
             <color red="0.82700002193450928" green="0.18400000035762787" blue="0.18400000035762787" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

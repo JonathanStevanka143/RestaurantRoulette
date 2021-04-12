@@ -60,6 +60,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set the color of the navbar back button
+        self.navigationController?.navigationBar.tintColor = UIColor.init(named: "primaryColor")
+        
         //setup button label shadows here etc
         currentLocationButton.layer.shadowRadius = 10.0
         currentLocationButton.layer.shadowOpacity = 1

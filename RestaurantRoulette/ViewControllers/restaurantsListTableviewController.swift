@@ -15,8 +15,6 @@ import CoreLocation
 class restaurantsListTableviewController: UIViewController {
     
     //FIRST PHASE OUTLETS
-    //nav bar items
-    @IBOutlet var editButton: UIButton!
     //views
     @IBOutlet var indicatorView: UIActivityIndicatorView!
     @IBOutlet var searchingLabel: UILabel!
@@ -83,7 +81,6 @@ class restaurantsListTableviewController: UIViewController {
         
         ViewModel.delegate = self
         
-        
         print("Device:",UIDevice.modelName)
         
         //1.create a function to reverse geocode an address and pass it to the API for more accurate results
@@ -109,21 +106,6 @@ class restaurantsListTableviewController: UIViewController {
     
     
     //MARK: BUTTON ACTIONS
-    @IBAction func editButtonPressed(_ sender: Any) {
-        //check to see if the table is in editing mode or not
-        if tableView.isEditing == false{
-            //begin the editing
-            tableView.isEditing = true
-            //set the text on the button to 'done'
-            editButton.setTitle("Done", for: .normal)
-        }else {
-            //end the editing
-            tableView.isEditing = false
-            //set the text on the button back to 'edit'
-            editButton.setTitle("Edit", for: .normal)
-        }
-    }
-    
     var phonenumberForCall:String!
     @IBAction func callButtonPressed(_ sender: Any) {
         
@@ -247,7 +229,6 @@ class restaurantsListTableviewController: UIViewController {
             //3.double the tableviewcells and then make sure the scrollview is at the top
             //4.shuffle the restaraunts
             //5.change the phase so we can control flow with the button
-            editButton.isHidden = true
             continueButton.setTitle("Spin the wheel", for: .normal)
             
             //fix the table not having the proper amount of cells to spin the table
@@ -450,7 +431,7 @@ class restaurantsListTableviewController: UIViewController {
     
     //MARK: TIMERS FOR IMPACT SENSORS
     //this is the apple pay sound
-    let systemSoundID: SystemSoundID = 1407
+    let systemSoundID: SystemSoundID = 1322
     //this allows us to let the user feel vibrations
     let generator = UIImpactFeedbackGenerator(style: .heavy)
     
@@ -621,8 +602,8 @@ class restaurantsListTableviewController: UIViewController {
             //set the userInteraction to enabled so the users can use the buttons
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
-            //play the sounds so they know this is the one
-            AudioServicesPlaySystemSound(self.systemSoundID)
+            //play the completion sound
+            AudioServicesPlayAlertSound(self.systemSoundID)
             
         }, completion: { _ in
             
@@ -968,25 +949,25 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         if currentRestaraunt.price == "$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
-            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:1))
+            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:1))
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
-            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:2))
+            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:2))
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
-            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:3))
+            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:3))
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
-            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.green, range: NSRange(location:0,length:4))
+            myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:4))
             testCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "" {
@@ -1000,24 +981,24 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             if currentRestaraunt.transactions.contains("delivery") {
                 //set the available image for delivery
                 testCell.pickupImageView.image = #imageLiteral(resourceName: "check-mark")
-                testCell.pickupImageView.tintColor = UIColor.green
+                testCell.pickupImageView.tintColor = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.03529411765, alpha: 1)
                 
             }else {
                 //set the image to be 'not available'
                 testCell.pickupImageView.image = #imageLiteral(resourceName: "cancel")
-                testCell.pickupImageView.tintColor = UIColor.red
+                testCell.pickupImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
                 
             }
             
             if currentRestaraunt.transactions.contains("pickup") {
                 //set the available image for pickup
                 testCell.deliveryImageView.image = #imageLiteral(resourceName: "check-mark")
-                testCell.deliveryImageView.tintColor = UIColor.green
+                testCell.deliveryImageView.tintColor = #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1)
                 
             }else {
                 //set the image to be 'not available'
                 testCell.deliveryImageView.image = #imageLiteral(resourceName: "cancel")
-                testCell.deliveryImageView.tintColor = UIColor.red
+                testCell.deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
             }
             
             
