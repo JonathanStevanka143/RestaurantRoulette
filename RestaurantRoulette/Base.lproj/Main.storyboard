@@ -56,7 +56,7 @@
         <!--Search Options-->
         <scene sceneID="JS5-Qa-Iie">
             <objects>
-                <viewController id="SVF-LX-6vb" customClass="filterSettingsViewController" customModule="RestaurantRoulette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="SVF-LX-6vb" customClass="filterSettingsViewController" customModule="Roulette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="ehg-Bx-BrP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -77,7 +77,7 @@
                                             <inset key="sectionInset" minX="5" minY="2" maxX="5" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="tagsCollectionViewCell" id="1ac-1D-KjL" customClass="TagCVcell" customModule="RestaurantRoulette" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="tagsCollectionViewCell" id="1ac-1D-KjL" customClass="TagCVcell" customModule="Roulette" customModuleProvider="target">
                                                 <rect key="frame" x="5" y="2" width="45" height="46"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dRG-aJ-fe1">
@@ -289,7 +289,7 @@
         <!--Roulette-->
         <scene sceneID="TkN-iZ-sG7">
             <objects>
-                <viewController id="bMY-t9-Afz" customClass="ViewController" customModule="RestaurantRoulette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bMY-t9-Afz" customClass="ViewController" customModule="Roulette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fNM-XB-qgV">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -423,7 +423,7 @@
         <!--Choose location-->
         <scene sceneID="iIL-dx-ySL">
             <objects>
-                <viewController id="RMT-3e-DDY" customClass="customLocationViewController" customModule="RestaurantRoulette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="RMT-3e-DDY" customClass="customLocationViewController" customModule="Roulette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QAF-aT-88v">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -481,7 +481,7 @@
         <!--Restaurants-->
         <scene sceneID="RRj-QS-xSJ">
             <objects>
-                <viewController id="njC-6T-MoF" customClass="restaurantsListTableviewController" customModule="RestaurantRoulette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="njC-6T-MoF" customClass="restaurantsListTableviewController" customModule="Roulette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cGm-Sb-iNw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -520,7 +520,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="restaurantTableviewCell" rowHeight="120" id="nxJ-bh-Z0a" customClass="restarauntTableViewCell" customModule="RestaurantRoulette" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="restaurantTableviewCell" rowHeight="120" id="nxJ-bh-Z0a" customClass="restarauntTableViewCell" customModule="Roulette" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="414" height="120"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nxJ-bh-Z0a" id="zsn-Gn-6RA">
@@ -1432,7 +1432,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="m6u-2g-1q0"/>
+        <segue reference="Kgm-zL-UgU"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="call" width="512" height="512"/>

@@ -49,7 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6309DD4C25AEBF6600C79246 /* RestaurantRoulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantRoulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6309DD4C25AEBF6600C79246 /* Roulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6309DD4F25AEBF6600C79246 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6309DD5125AEBF6600C79246 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6309DD5325AEBF6600C79246 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 		6309DD4D25AEBF6600C79246 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6309DD4C25AEBF6600C79246 /* RestaurantRoulette.app */,
+				6309DD4C25AEBF6600C79246 /* Roulette.app */,
 				6309DD6525AEBF6900C79246 /* RestaurantRouletteTests.xctest */,
 				6309DD7025AEBF6900C79246 /* RestaurantRouletteUITests.xctest */,
 			);
@@ -229,9 +229,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6309DD4B25AEBF6600C79246 /* RestaurantRoulette */ = {
+		6309DD4B25AEBF6600C79246 /* Roulette */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "RestaurantRoulette" */;
+			buildConfigurationList = 6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "Roulette" */;
 			buildPhases = (
 				6309DD4825AEBF6600C79246 /* Sources */,
 				6309DD4925AEBF6600C79246 /* Frameworks */,
@@ -241,9 +241,9 @@
 			);
 			dependencies = (
 			);
-			name = RestaurantRoulette;
+			name = Roulette;
 			productName = RestaurantRoulette;
-			productReference = 6309DD4C25AEBF6600C79246 /* RestaurantRoulette.app */;
+			productReference = 6309DD4C25AEBF6600C79246 /* Roulette.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6309DD6425AEBF6900C79246 /* RestaurantRouletteTests */ = {
@@ -317,7 +317,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6309DD4B25AEBF6600C79246 /* RestaurantRoulette */,
+				6309DD4B25AEBF6600C79246 /* Roulette */,
 				6309DD6425AEBF6900C79246 /* RestaurantRouletteTests */,
 				6309DD6F25AEBF6900C79246 /* RestaurantRouletteUITests */,
 			);
@@ -397,12 +397,12 @@
 /* Begin PBXTargetDependency section */
 		6309DD6725AEBF6900C79246 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6309DD4B25AEBF6600C79246 /* RestaurantRoulette */;
+			target = 6309DD4B25AEBF6600C79246 /* Roulette */;
 			targetProxy = 6309DD6625AEBF6900C79246 /* PBXContainerItemProxy */;
 		};
 		6309DD7225AEBF6900C79246 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6309DD4B25AEBF6600C79246 /* RestaurantRoulette */;
+			target = 6309DD4B25AEBF6600C79246 /* Roulette */;
 			targetProxy = 6309DD7125AEBF6900C79246 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -677,7 +677,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "RestaurantRoulette" */ = {
+		6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "Roulette" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6309DD7A25AEBF6900C79246 /* Debug */,
