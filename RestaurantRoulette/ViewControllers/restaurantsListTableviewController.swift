@@ -158,7 +158,7 @@ class restaurantsListTableviewController: UIViewController {
         //set the button to be inactive
         continueButton.isEnabled = false
         
-        print(restaurants.count)
+//        print(restaurants.count)
         
         //if phase2 is set changed the UI accordingly
         if phase2 == true {
@@ -219,7 +219,6 @@ class restaurantsListTableviewController: UIViewController {
             //3.double the tableviewcells and then make sure the scrollview is at the top
             //4.shuffle the restaraunts
             //5.change the phase so we can control flow with the button
-            continueButton.setTitle("Spin the wheel", for: .normal)
             
             //fix the table not having the proper amount of cells to spin the table
             if restaurants.count <= 30 {
@@ -249,7 +248,24 @@ class restaurantsListTableviewController: UIViewController {
                 self.tableView.isHidden = false
                 self.tableView.isScrollEnabled = false
                 self.phase2 = true
+                //reset the tableview
+                self.resetAndShuffle(completionHandler: {
+                    didReset in
+                    
+                    //set the layout on the table to update the new position of the tableview(repositioned back at the top)
+                    self.tableView.layoutIfNeeded()
+                    
+                    //if the reset returned true then 'spin the wheel' and present a restauraunt
+                    if didReset == true {
+                        //spin the wheel
+                        self.spinthewheel()
+                        self.continueButton.setTitle("Spinning...", for: .normal)
+                        self.hasSpun = true
+                    }
+                    
+                })
             }
+
         }
         
     }
@@ -922,13 +938,13 @@ class restaurantsListTableviewController: UIViewController {
             
             //3. animate the view in
             self.restaurantSelectedView.alpha = 1
-            //set the userInteraction to enabled so the users can use the buttons
-            self.restaurantSelectedView.isUserInteractionEnabled = true
             
             //play the completion sound
             AudioServicesPlayAlertSound(self.systemSoundID)
             
         }, completion: { _ in
+            //set the userInteraction to enabled so the users can use the buttons
+            self.restaurantSelectedView.isUserInteractionEnabled = true
             
         })
         
@@ -1044,7 +1060,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             self.tableView.deleteRows(at: [indexPath], with: .left)
             
             //set the continue button with the total left
-            continueButton.setTitle("Continue(\(restaurants.count))", for: .normal)
+            continueButton.setTitle("Shuffle & Spin(\(restaurants.count))", for: .normal)
             
             break
         default:
@@ -1233,7 +1249,7 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
             self.indicatorView.stopAnimating()
             
             //set the continue button with the total left
-            self.continueButton.setTitle("Continue(\(self.restaurants.count))", for: .normal)
+            self.continueButton.setTitle("Shuffle & Spin(\(self.restaurants.count))", for: .normal)
         }
         
         
