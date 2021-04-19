@@ -37,17 +37,7 @@ class restaurantsListTableviewController: UIViewController {
     @IBOutlet var restaurantSelectedDeliveryImage: UIImageView!
     @IBOutlet var restaurantSelectedPhonenumber: UILabel!
     
-    @IBOutlet var restaurantSelectedFavview1: UIView!
-    @IBOutlet var restaurantSelectedFavView1HalfView: UIView!
-    @IBOutlet var restaurantSelectedFavview2: UIView!
-    @IBOutlet var restaurantSelectedFavView2HalfView: UIView!
-    @IBOutlet var restaurantSelectedFavview3: UIView!
-    @IBOutlet var restaurantSelectedFavView3HalfView: UIView!
-    @IBOutlet var restaurantSelectedFavview4: UIView!
-    @IBOutlet var restaurantSelectedFavView4HalfView: UIView!
-    @IBOutlet var restaurantSelectedFavview5: UIView!
-    @IBOutlet var restaurantSelectedFavView5HalfView: UIView!
-    
+    @IBOutlet var restaurantSelectedRatingImageView: UIImageView!
     @IBOutlet var callCircleView: UIView!
     @IBOutlet var callButton: UIButton!
     
@@ -282,8 +272,195 @@ class restaurantsListTableviewController: UIViewController {
         
         
         //here we need to check the type of device being used for the app so we can properly set our animations so that it wont make UI errors
-        if UIDevice.modelName == "iPhone 8" {
+        if UIDevice.modelName == "iPhone SE"{
             
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 350)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 750)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1150), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        }else if UIDevice.modelName == "iPhone SE (2nd generation)" {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 450)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 850)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1250), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        }else if UIDevice.modelName == "iPhone 6s" || UIDevice.modelName == "iPhone 6s Plus" {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 450)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 950)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1450), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        }else if UIDevice.modelName == "iPhone 7" || UIDevice.modelName == "iPhone 7 Plus"{
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 350)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 850)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1350), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        }else if UIDevice.modelName == "iPhone 8" || UIDevice.modelName == "iPhone 8 Plus" {
             
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
@@ -331,7 +508,7 @@ class restaurantsListTableviewController: UIViewController {
             })
             
             
-        }else if UIDevice.modelName == "iPhone X" {
+        }else if UIDevice.modelName == "iPhone X" || UIDevice.modelName == "iPhone XR" {
             
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
@@ -378,9 +555,55 @@ class restaurantsListTableviewController: UIViewController {
                 
             })
             
+        }else if UIDevice.modelName == "iPhone XS" || UIDevice.modelName == "iPhone XS Max"{
             
-        }else {
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 550)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 1050)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1350), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
             
+        }else if UIDevice.modelName == "iPhone 11"{
+         
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
                 self.tableView.contentOffset = CGPoint(x: 0, y: -125)
@@ -426,7 +649,104 @@ class restaurantsListTableviewController: UIViewController {
                 
             })
             
+        }else if UIDevice.modelName == "iPhone 12 mini" {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 450)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 950)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1450), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 550)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 1150)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1550), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
         }
+        
+        
+        
     }
     
     //MARK: TIMERS FOR IMPACT SENSORS
@@ -545,49 +865,52 @@ class restaurantsListTableviewController: UIViewController {
         phonenumberForCall = currentModel.display_phone
         
         
-        //favview1
-        if currentCell.halfLikeView1.isHidden == true {
-            restaurantSelectedFavview1.backgroundColor = currentCell.favView1.backgroundColor
-            restaurantSelectedFavView1HalfView.isHidden = true
-        }else{
-            restaurantSelectedFavview1.backgroundColor = UIColor.lightGray
-            restaurantSelectedFavView1HalfView.isHidden = false
-        }
-        
-        //favview2
-        if currentCell.halfLikeView2.isHidden == true {
-            restaurantSelectedFavview2.backgroundColor = currentCell.favView2.backgroundColor
-            restaurantSelectedFavView2HalfView.isHidden = true
-        }else{
-            restaurantSelectedFavview2.backgroundColor = UIColor.lightGray
-            restaurantSelectedFavView2HalfView.isHidden = false
-        }
-        
-        //favview3
-        if currentCell.halfLikeView3.isHidden == true {
-            restaurantSelectedFavview3.backgroundColor = currentCell.favView3.backgroundColor
-            restaurantSelectedFavView3HalfView.isHidden = true
-        }else{
-            restaurantSelectedFavview3.backgroundColor = UIColor.lightGray
-            restaurantSelectedFavView3HalfView.isHidden = false
-        }
-        
-        //favview4
-        if currentCell.halfLikeView4.isHidden == true {
-            restaurantSelectedFavview4.backgroundColor = currentCell.favView4.backgroundColor
-            restaurantSelectedFavView4HalfView.isHidden = true
-        }else{
-            restaurantSelectedFavview4.backgroundColor = UIColor.lightGray
-            restaurantSelectedFavView4HalfView.isHidden = false
-        }
-        
-        //favview5
-        if currentCell.halfLikeView5.isHidden == true {
-            restaurantSelectedFavview5.backgroundColor = currentCell.favView5.backgroundColor
-            restaurantSelectedFavView5HalfView.isHidden = true
-        }else{
-            restaurantSelectedFavview5.backgroundColor = UIColor.lightGray
-            restaurantSelectedFavView5HalfView.isHidden = false
+        //set the rating
+        if currentModel.rating == 5 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "5StarRating")
+            
+        }else if currentModel.rating == 4.5 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "4HalfStarRating")
+            
+        }else if currentModel.rating == 4 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "4StarRating")
+            
+        }else if currentModel.rating == 3.5 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "3HalfStarRating")
+
+            
+        }else if currentModel.rating == 3 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "3StarRating")
+
+            
+        }else if currentModel.rating == 2.5 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "2HalfStarRating")
+
+            
+        }else if currentModel.rating == 2 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "2StarRating")
+
+        }else if currentModel.rating == 1.5 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "1HalfStarRating")
+
+            
+        }else if currentModel.rating == 1 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "1StarRating")
+
+            
+        }else if currentModel.rating == 0 {
+            //set the imageview
+            restaurantSelectedRatingImageView.image = UIImage(named: "0StarRating")
+            
         }
         
         
@@ -736,13 +1059,13 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         //grab the restaraunt data for the current cell index
         let currentRestaraunt:restaurant = restaurants[indexPath.row]
         
-        let testCell = tableView.dequeueReusableCell(withIdentifier: "restaurantTableviewCell") as! restarauntTableViewCell
+        let currentCell = tableView.dequeueReusableCell(withIdentifier: "restaurantTableviewCell") as! restarauntTableViewCell
         
         //set a corner radius on the cell
-        testCell.dataView.layer.cornerRadius = 15
+        currentCell.dataView.layer.cornerRadius = 15
         
         //set the title
-        testCell.restarauntTitle.text = "\(currentRestaraunt.name)"
+        currentCell.restarauntTitle.text = "\(currentRestaraunt.name)"
         
         //set the distance
         if currentRestaraunt.distance < 1000 {
@@ -750,181 +1073,62 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             let distance: Int = Int(currentRestaraunt.distance)
             
             //set the distance in meteres
-            testCell.distanceLabel.text = "\(distance) m"
+            currentCell.distanceLabel.text = "\(distance) m"
             
         }else {
             let distance: Double = Double(currentRestaraunt.distance / 1000)
             let totaldistanceString: String = String(format: "%.1f", distance)
             //set the distance in km
-            testCell.distanceLabel.text = "\(totaldistanceString) km"
+            currentCell.distanceLabel.text = "\(totaldistanceString) km"
             
         }
         
-        
-        //hide the half cells
-        testCell.halfLikeView1.isHidden = true
-        testCell.halfLikeView2.isHidden = true
-        testCell.halfLikeView3.isHidden = true
-        testCell.halfLikeView4.isHidden = true
-        testCell.halfLikeView5.isHidden = true
-        
-        
+
         //set the rating
         if currentRestaraunt.rating == 5 {
-            
-            //set the current cells
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            testCell.favView3.backgroundColor = UIColor.red
-            testCell.favView4.backgroundColor = UIColor.red
-            testCell.favView5.backgroundColor = UIColor.red
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "5StarRating")
             
         }else if currentRestaraunt.rating == 4.5 {
-            
-            //1. set the cells up to the 4rd fav cell
-            //2. on the 4th fav cell set the halflikeView to be unhidden
-            
-            //1
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            testCell.favView3.backgroundColor = UIColor.red
-            testCell.favView4.backgroundColor = UIColor.red
-            
-            //2
-            //set the correct cell to be hidden
-            testCell.halfLikeView5.isHidden = false
-            
-            //set the background cell to be lightgray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "4HalfStarRating")
+
         }else if currentRestaraunt.rating == 4 {
-            
-            //set the current cells
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            testCell.favView3.backgroundColor = UIColor.red
-            testCell.favView4.backgroundColor = UIColor.red
-            
-            //set the buttons to grey
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "4StarRating")
+
         }else if currentRestaraunt.rating == 3.5 {
-            
-            //1. set the cells up to the 3rd fav cell
-            //2. on the 3th fav cell set the halflikeView to be unhidden
-            
-            //1
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            testCell.favView3.backgroundColor = UIColor.red
-            
-            //2
-            //set the correct cell to be hidden
-            testCell.halfLikeView4.isHidden = false
-            
-            //set the background cell to be lightgray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "3HalfStarRating")
+
         }else if currentRestaraunt.rating == 3 {
-            
-            //set the current cells
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            testCell.favView3.backgroundColor = UIColor.red
-            
-            //set the buttons to grey
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "3StarRating")
+
         }else if currentRestaraunt.rating == 2.5 {
-            
-            //1. set the cells up to the 2rd fav cell
-            //2. on the 2th fav cell set the halflikeView to be unhidden
-            
-            //1
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            
-            //2
-            //set the correct cell to be hidden
-            testCell.halfLikeView3.isHidden = false
-            
-            //set the background cell to be lightgray
-            testCell.favView3.backgroundColor = UIColor.lightGray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "2HalfStarRating")
             
         }else if currentRestaraunt.rating == 2 {
-            
-            //set the current cells
-            testCell.favView1.backgroundColor = UIColor.red
-            testCell.favView2.backgroundColor = UIColor.red
-            
-            //set the buttons to grey
-            testCell.favView3.backgroundColor = UIColor.lightGray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "2StarRating")
+
         }else if currentRestaraunt.rating == 1.5 {
-            
-            //1. set the cells up to the 1rd fav cell
-            //2. on the 1th fav cell set the halflikeView to be unhidden
-            
-            //1
-            testCell.favView1.backgroundColor = UIColor.red
-            
-            //2
-            //set the correct cell to be hidden
-            testCell.halfLikeView2.isHidden = false
-            
-            //set the background cell to be lightgray
-            testCell.favView2.backgroundColor = UIColor.lightGray
-            testCell.favView3.backgroundColor = UIColor.lightGray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "1HalfStarRating")
             
         }else if currentRestaraunt.rating == 1 {
-            
-            //set the current cells
-            testCell.favView1.backgroundColor = UIColor.red
-            
-            //set the buttons to grey
-            testCell.favView2.backgroundColor = UIColor.lightGray
-            testCell.favView3.backgroundColor = UIColor.lightGray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
-        }else if currentRestaraunt.rating == 0.5 {
-            
-            //1. on the 1th fav cell set the halflikeView to be unhidden
-            
-            //1
-            //set the correct cell to be hidden
-            testCell.halfLikeView1.isHidden = false
-            
-            //set the background cell to be lightgray
-            testCell.favView1.backgroundColor = UIColor.lightGray
-            testCell.favView2.backgroundColor = UIColor.lightGray
-            testCell.favView3.backgroundColor = UIColor.lightGray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
-            
-            
+            //set the imageview
+            currentCell.ratingImageView.image = UIImage(named: "1StarRating")
+
         }else if currentRestaraunt.rating == 0 {
-            //set the buttons to grey
-            testCell.favView1.backgroundColor = UIColor.lightGray
-            testCell.favView2.backgroundColor = UIColor.lightGray
-            testCell.favView3.backgroundColor = UIColor.lightGray
-            testCell.favView4.backgroundColor = UIColor.lightGray
-            testCell.favView5.backgroundColor = UIColor.lightGray
+            //set the imageview
+
         }
         
         
         //set review count
-        testCell.totalReviewsLabel.text = "\(currentRestaraunt.review_count) reviews"
+        currentCell.totalReviewsLabel.text = "\(currentRestaraunt.review_count) reviews"
         
         //set the categories
         //this string will be the final representation of the tags label output string
@@ -937,7 +1141,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             }
         }
         //set the tags label
-        testCell.tagsLabel.text = finalString
+        currentCell.tagsLabel.text = finalString
         
         //set the pricerange
         print("test:",currentRestaraunt.price)
@@ -950,28 +1154,28 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
             myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:1))
-            testCell.totalPriceLabel.attributedText = myMutableString
+            currentCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
             myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:2))
-            testCell.totalPriceLabel.attributedText = myMutableString
+            currentCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
             myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:3))
-            testCell.totalPriceLabel.attributedText = myMutableString
+            currentCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "$$$$" {
             
             myMutableString = NSMutableAttributedString(string: priceString, attributes: nil)
             myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1), range: NSRange(location:0,length:4))
-            testCell.totalPriceLabel.attributedText = myMutableString
+            currentCell.totalPriceLabel.attributedText = myMutableString
             
         }else if currentRestaraunt.price == "" {
-            testCell.totalPriceLabel.text = "N/A"
+            currentCell.totalPriceLabel.text = "N/A"
         }
         
         //set the pickup/delivery availability
@@ -980,32 +1184,32 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             
             if currentRestaraunt.transactions.contains("delivery") {
                 //set the available image for delivery
-                testCell.pickupImageView.image = #imageLiteral(resourceName: "check-mark")
-                testCell.pickupImageView.tintColor = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.03529411765, alpha: 1)
+                currentCell.pickupImageView.image = #imageLiteral(resourceName: "check-mark")
+                currentCell.pickupImageView.tintColor = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.03529411765, alpha: 1)
                 
             }else {
                 //set the image to be 'not available'
-                testCell.pickupImageView.image = #imageLiteral(resourceName: "cancel")
-                testCell.pickupImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+                currentCell.pickupImageView.image = #imageLiteral(resourceName: "cancel")
+                currentCell.pickupImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
                 
             }
             
             if currentRestaraunt.transactions.contains("pickup") {
                 //set the available image for pickup
-                testCell.deliveryImageView.image = #imageLiteral(resourceName: "check-mark")
-                testCell.deliveryImageView.tintColor = #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1)
+                currentCell.deliveryImageView.image = #imageLiteral(resourceName: "check-mark")
+                currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1)
                 
             }else {
                 //set the image to be 'not available'
-                testCell.deliveryImageView.image = #imageLiteral(resourceName: "cancel")
-                testCell.deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+                currentCell.deliveryImageView.image = #imageLiteral(resourceName: "cancel")
+                currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
             }
             
             
         }
         
         
-        return testCell
+        return currentCell
         
     }
     

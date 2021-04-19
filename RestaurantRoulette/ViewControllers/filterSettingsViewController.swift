@@ -313,10 +313,12 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var cellForTag = collectionView.dequeueReusableCell(withReuseIdentifier: "tagsCollectionViewCell", for: indexPath) as! TagCVcell
+        let cellForTag = collectionView.dequeueReusableCell(withReuseIdentifier: "tagsCollectionViewCell", for: indexPath) as! TagCVcell
         
         //grab the current category being represented
         let currentCategory = categories[indexPath.row]
+        
+        let TagsCellColor:UIColor! = UIColor(named: "tagCellColor")
         
         //set the outline view for the border so that it shows them it has yet to be selected
         cellForTag.tagOutlineView.layer.cornerRadius = 10
@@ -327,13 +329,23 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
             //if the cell is checked then we remove the background and set the outline instead
             cellForTag.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
             //set the text color to be white
+//            cellForTag.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            
+            
+            //set the text color to be black
             cellForTag.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            cellForTag.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+            
             
         }else {
             //if the cell is not checked then when we click on it we change the background color
             cellForTag.tagOutlineView.backgroundColor = nil
             //set the text color to be black
-            cellForTag.categoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+//            cellForTag.categoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                cellForTag.categoryLabel.textColor = TagsCellColor
+            }
             
         }
         
@@ -351,6 +363,8 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         //grab the current category being represented
         let currentCategory = categories[indexPath.row]
         
+        let TagsCellColor:UIColor! = UIColor(named: "tagCellColor")
+        
         //check if the category is selected already, this will allow us to set the cell based on local data
         //TRUE - means the category is selected
         //FALSE - means the category is not selected
@@ -359,24 +373,49 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
             currentCategory.isCategoryChecked = false
             //if the cell is checked then we remove the background and set the outline instead
             currentCell.tagOutlineView.backgroundColor = nil
-            //set the text color to be black
-            currentCell.categoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                
+                //set the text color to be white
+                currentCell.categoryLabel.textColor = TagsCellColor
+                currentCell.categoryLabel.highlightedTextColor = TagsCellColor
+
+            }else if UITraitCollection.current.userInterfaceStyle == .light {
+                
+                //set the text color to be black
+                currentCell.categoryLabel.textColor = TagsCellColor
+                currentCell.categoryLabel.highlightedTextColor = TagsCellColor
+            }
+            
+//            currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             
         }else {
             //set the iscategorychecked to be true
             currentCategory.isCategoryChecked = true
             //if the cell is not checked then when we click on it we change the background color
             currentCell.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
-            //set the text color to be white
-            currentCell.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            
+            
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                
+                //set the text color to be white
+                currentCell.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
+            }else if UITraitCollection.current.userInterfaceStyle == .light {
+                
+                //set the text color to be white
+                currentCell.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
+            }
+            
+            
 
         }
         
         //add this newly selected cell into our array
         clickedOnCategories.append(currentCategory)
-        
         
     }
     
