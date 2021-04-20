@@ -16,12 +16,13 @@ class restarauntAPINetwork {
     //this will connect the endpoint
     let endpoint = "https://api.yelp.com/v3/businesses/search"
     
-    func getCloseRestaraunts(address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
+    func getCloseRestaraunts(priceLevel:String,address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
         
         var url = URLComponents(string: "\(endpoint)")!
         
         url.queryItems = [
             URLQueryItem(name: "term", value: "food"),
+            URLQueryItem(name: "price", value: priceLevel),
             URLQueryItem(name: "location", value: address),
             URLQueryItem(name: "radius", value: "\(radius)"),
             URLQueryItem(name: "sort_by", value: "distance"),
@@ -45,7 +46,7 @@ class restarauntAPINetwork {
             (data,response,error) in
             
             if let error = error {
-                print("There was an error grabbing the users posts: \(error.localizedDescription)")
+                print("There was an error grabbing the data: \(error.localizedDescription)")
             }else {
                 do{
                     
@@ -99,15 +100,15 @@ class restarauntAPINetwork {
         
         //create guard statement to
         guard let name = json["name"] as? String,
-              let url = json["url"] as? String ?? "",
+              let url = json["url"] as? String? ?? "",
               let review_count = json["review_count"] as? Int,
-              let rating = json["rating"] as? Double ?? 0,
-              let phone = json["phone"] as? String ?? "",
-              let display_phone = json["display_phone"] as? String ?? "",
+              let rating = json["rating"] as? Double? ?? 0,
+              let phone = json["phone"] as? String? ?? "",
+              let display_phone = json["display_phone"] as? String? ?? "",
               let distance = json["distance"] as? Double,
-              let price = json["price"] as? String ?? "",
+              let price = json["price"] as? String? ?? "",
               let categoriesArray = json["categories"] as? Array<Any>,
-              let transactionArray = json["transactions"] as? [String] ?? [""],
+              let transactionArray = json["transactions"] as? [String]? ?? [""],
               let locationArray = json["location"] else {
             
             print("not enough, or wrong information to make: restaurant object")
@@ -140,9 +141,9 @@ class restarauntAPINetwork {
     func convertLocationFromJson( json: [String:Any]) -> location? {
     
         
-        guard let address1 = json["address1"] as? String ?? "",
-              let address2 = json["address2"] as? String ?? "",
-              let address3 = json["address3"] as? String ?? "",
+        guard let address1 = json["address1"] as? String? ?? "",
+              let address2 = json["address2"] as? String? ?? "",
+              let address3 = json["address3"] as? String? ?? "",
               let city = json["city"] as? String,
               let zip_code = json["zip_code"] as? String,
               let country = json["country"] as? String,

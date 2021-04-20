@@ -27,7 +27,7 @@
 		63AE466E25BA8C4E001FA57D /* restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE466D25BA8C4E001FA57D /* restaurant.swift */; };
 		63B8A02025B38ED30071654E /* filterSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */; };
 		63B8A02525B38EE30071654E /* filterSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B8A02425B38EE30071654E /* filterSettingsViewModel.swift */; };
-		63DB07A026029C2000E17521 /* restaurantSingleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DB079F26029C2000E17521 /* restaurantSingleViewController.swift */; };
+		63CF18C7261FA84400448C64 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CF18C6261FA84400448C64 /* UIDeviceExtension.swift */; };
 		63E077BF25ED9CF40074B0B3 /* TagCVcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E077BE25ED9CF40074B0B3 /* TagCVcell.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,7 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6309DD4C25AEBF6600C79246 /* RestaurantRoulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantRoulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6309DD4C25AEBF6600C79246 /* Roulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6309DD4F25AEBF6600C79246 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6309DD5125AEBF6600C79246 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6309DD5325AEBF6600C79246 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 		63AE466D25BA8C4E001FA57D /* restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = restaurant.swift; sourceTree = "<group>"; };
 		63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterSettingsViewController.swift; sourceTree = "<group>"; };
 		63B8A02425B38EE30071654E /* filterSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterSettingsViewModel.swift; sourceTree = "<group>"; };
-		63DB079F26029C2000E17521 /* restaurantSingleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = restaurantSingleViewController.swift; sourceTree = "<group>"; };
+		63CF18C6261FA84400448C64 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		63E077BE25ED9CF40074B0B3 /* TagCVcell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCVcell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,7 +117,7 @@
 		6309DD4D25AEBF6600C79246 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6309DD4C25AEBF6600C79246 /* RestaurantRoulette.app */,
+				6309DD4C25AEBF6600C79246 /* Roulette.app */,
 				6309DD6525AEBF6900C79246 /* RestaurantRouletteTests.xctest */,
 				6309DD7025AEBF6900C79246 /* RestaurantRouletteUITests.xctest */,
 			);
@@ -127,6 +127,7 @@
 		6309DD4E25AEBF6600C79246 /* RestaurantRoulette */ = {
 			isa = PBXGroup;
 			children = (
+				63CF18C5261FA82C00448C64 /* Extensions */,
 				63E077B725ED9CB40074B0B3 /* CollectionViewCells */,
 				63AE466725BA82A9001FA57D /* Networks */,
 				63AE464925BA6409001FA57D /* tableViewCells */,
@@ -169,7 +170,6 @@
 				63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */,
 				63AE463F25B9FAE9001FA57D /* customLocationViewController.swift */,
 				63AE464425BA628B001FA57D /* restaurantsListTableviewController.swift */,
-				63DB079F26029C2000E17521 /* restaurantSingleViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -210,6 +210,14 @@
 			path = Networks;
 			sourceTree = "<group>";
 		};
+		63CF18C5261FA82C00448C64 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				63CF18C6261FA84400448C64 /* UIDeviceExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		63E077B725ED9CB40074B0B3 /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,9 +229,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6309DD4B25AEBF6600C79246 /* RestaurantRoulette */ = {
+		6309DD4B25AEBF6600C79246 /* Roulette */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "RestaurantRoulette" */;
+			buildConfigurationList = 6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "Roulette" */;
 			buildPhases = (
 				6309DD4825AEBF6600C79246 /* Sources */,
 				6309DD4925AEBF6600C79246 /* Frameworks */,
@@ -233,9 +241,9 @@
 			);
 			dependencies = (
 			);
-			name = RestaurantRoulette;
+			name = Roulette;
 			productName = RestaurantRoulette;
-			productReference = 6309DD4C25AEBF6600C79246 /* RestaurantRoulette.app */;
+			productReference = 6309DD4C25AEBF6600C79246 /* Roulette.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6309DD6425AEBF6900C79246 /* RestaurantRouletteTests */ = {
@@ -309,7 +317,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6309DD4B25AEBF6600C79246 /* RestaurantRoulette */,
+				6309DD4B25AEBF6600C79246 /* Roulette */,
 				6309DD6425AEBF6900C79246 /* RestaurantRouletteTests */,
 				6309DD6F25AEBF6900C79246 /* RestaurantRouletteUITests */,
 			);
@@ -364,7 +372,7 @@
 				6309DD5225AEBF6600C79246 /* SceneDelegate.swift in Sources */,
 				63AE466E25BA8C4E001FA57D /* restaurant.swift in Sources */,
 				63E077BF25ED9CF40074B0B3 /* TagCVcell.swift in Sources */,
-				63DB07A026029C2000E17521 /* restaurantSingleViewController.swift in Sources */,
+				63CF18C7261FA84400448C64 /* UIDeviceExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,12 +397,12 @@
 /* Begin PBXTargetDependency section */
 		6309DD6725AEBF6900C79246 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6309DD4B25AEBF6600C79246 /* RestaurantRoulette */;
+			target = 6309DD4B25AEBF6600C79246 /* Roulette */;
 			targetProxy = 6309DD6625AEBF6900C79246 /* PBXContainerItemProxy */;
 		};
 		6309DD7225AEBF6900C79246 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6309DD4B25AEBF6600C79246 /* RestaurantRoulette */;
+			target = 6309DD4B25AEBF6600C79246 /* Roulette */;
 			targetProxy = 6309DD7125AEBF6900C79246 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -470,7 +478,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -525,7 +533,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -543,10 +551,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4Q5R34W6CG;
 				INFOPLIST_FILE = RestaurantRoulette/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.16;
 				PRODUCT_BUNDLE_IDENTIFIER = jonathanstevanka.RestaurantRoulette;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -562,10 +572,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4Q5R34W6CG;
 				INFOPLIST_FILE = RestaurantRoulette/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.16;
 				PRODUCT_BUNDLE_IDENTIFIER = jonathanstevanka.RestaurantRoulette;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -669,7 +681,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "RestaurantRoulette" */ = {
+		6309DD7925AEBF6900C79246 /* Build configuration list for PBXNativeTarget "Roulette" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6309DD7A25AEBF6900C79246 /* Debug */,

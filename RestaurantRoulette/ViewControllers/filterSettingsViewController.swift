@@ -15,6 +15,7 @@ class filterSettingsViewController: UIViewController {
     @IBOutlet var distanceUIVIEW: UIView!
     
     //buttons
+    @IBOutlet var resetNavButton: UIButton!
     @IBOutlet var saveButton: UIButton!
     
     //price range controls
@@ -25,6 +26,9 @@ class filterSettingsViewController: UIViewController {
     @IBOutlet var totalDistanceTextField: UITextField!
     @IBOutlet var distanceMeasurementControl: UISegmentedControl!
     @IBOutlet var distanceMeasurementSlider: UISlider!
+    
+    
+    @IBOutlet var tagsCVHeightCnst: NSLayoutConstraint!
     
     //tags collectionview for food categories
     @IBOutlet var tagsCollectionView: UICollectionView!
@@ -44,6 +48,40 @@ class filterSettingsViewController: UIViewController {
     var categories:[Categories]!
     //this will hold the categories clicked by the user
     var clickedOnCategories:[Categories]! = []
+    //this bool represents if the save button has been clicked since the user has pressed a tag button
+    var is_saved:Bool = false
+    //this boolean will represent when the save button has been clicked
+    var is_reset:Bool = false
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        //check here too see if the save button has been pressed
+        print("saved:",is_saved)
+        print("is_reset:",is_reset)
+        if is_saved == false {
+            print("items to revert because no save:",clickedOnCategories.count)
+                        
+            for cat in clickedOnCategories {
+                if cat.isCategoryChecked == true {
+                    cat.isCategoryChecked = false
+                }else if cat.isCategoryChecked == false {
+                    if clickedOnCategories.count != 0 {
+                        if is_reset == true {
+                            cat.isCategoryChecked = false
+                        }else {
+                            cat.isCategoryChecked = true
+                        }
+                    }
+                }
+            }
+            
+            clickedOnCategories.removeAll()
+            
+        }else if is_saved == true {
+            //remove all objects from the list as the data has been saved
+            clickedOnCategories.removeAll()
+        }
+        
+    }
     
     
     override func viewDidLoad() {
@@ -53,6 +91,16 @@ class filterSettingsViewController: UIViewController {
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
         
+        //set up the UIviews
+        priceRangesUIVIEW.layer.cornerRadius = 10
+        priceRangesUIVIEW.layer.shadowOffset = .zero
+        priceRangesUIVIEW.layer.shadowRadius = 5
+        priceRangesUIVIEW.layer.shadowOpacity = 0.3
+        distanceUIVIEW.layer.cornerRadius = 10
+        distanceUIVIEW.layer.shadowOffset = .zero
+        distanceUIVIEW.layer.shadowRadius = 5
+        distanceUIVIEW.layer.shadowOpacity = 0.3
+
         //set the UIviews to have the same data as on the phone
         //1. check if the filteroptions is not nil
         //2. set the 'below price | above price
@@ -73,12 +121,16 @@ class filterSettingsViewController: UIViewController {
             if filterOptions.isDistanceInKM == true {
                 
                 distanceMeasurementControl.selectedSegmentIndex = 0
+                distanceMeasurementSlider.minimumValue = 1
+                distanceMeasurementSlider.maximumValue = 40
                 totalDistanceTextField.text = "\(filterOptions.distance) km"
                 distanceMeasurementSlider.value = Float(filterOptions.distance)
                 
             }else {
                 
                 distanceMeasurementControl.selectedSegmentIndex = 1
+                distanceMeasurementSlider.minimumValue = 1
+                distanceMeasurementSlider.maximumValue = 25
                 totalDistanceTextField.text = "\(filterOptions.distance) miles"
                 distanceMeasurementSlider.value = Float(filterOptions.distance)
 
@@ -90,7 +142,14 @@ class filterSettingsViewController: UIViewController {
         //set the viewmodel delegate to receive information from the view model back
         viewModel.delegate = self
         
-        print("t",tagsCollectionView.collectionViewLayout.collectionViewContentSize)
+        //set the collection view to be self sizing
+        let collectionViewHeight = tagsCollectionView.collectionViewLayout.collectionViewContentSize.height
+        //set the height on the constraint
+        tagsCVHeightCnst.constant = collectionViewHeight
+        //use the view to set the layout to the correct size
+        self.view.layoutIfNeeded()
+        //set the height constraint the be the new height of the table
+        tagsCVHeightCnst.constant = tagsCollectionView.collectionViewLayout.collectionViewContentSize.height
         
     }
     
@@ -111,17 +170,24 @@ class filterSettingsViewController: UIViewController {
     //MARK: DISTANCE ACTIONS
     @IBAction func distanceMeasurementControlChanged(_ sender: Any) {
         
-        let distanceInInt = Int(distanceMeasurementSlider.value.rounded())
+        var distanceInInt = Int(distanceMeasurementSlider.value.rounded())
         
         //check what distance measurement it is
         //0 = km
         //1 = miles
         if distanceMeasurementControl.selectedSegmentIndex == 0 {
             
+            distanceMeasurementSlider.minimumValue = 1
+            distanceMeasurementSlider.maximumValue = 40
             totalDistanceTextField.text = "\(distanceInInt) km"
             
         }else if distanceMeasurementControl.selectedSegmentIndex == 1 {
             
+            distanceMeasurementSlider.minimumValue = 1
+            distanceMeasurementSlider.maximumValue = 25
+            if distanceInInt >= 25 {
+                distanceInInt = 25
+            }
             totalDistanceTextField.text = "\(distanceInInt) miles"
             
         }
@@ -192,7 +258,39 @@ class filterSettingsViewController: UIViewController {
         //call the viewmodel function to save the data
         viewModel.saveResultsFromButton(isBelowOrAbovePrice: isBelowOrAbovePrice, priceLevel: priceLevel, distance: distance, isDistanceInKm: isDistanceInKm)
         
+        //set the is_saved variable to true
+        is_saved = true
+        
         self.navigationController?.popViewController(animated: true)
+        
+    }
+    
+    
+    @IBAction func resetNavButtonClicked(_ sender: Any){
+        
+        //create an alert
+        let alert = UIAlertController(title: "Are you sure?", message: "This will reset all tags back to default values", preferredStyle: .alert)
+        //add the reset tags action
+        alert.addAction(UIAlertAction(title: "Reset tags", style: .destructive, handler: { action in
+            
+            //for clearing the tags
+            for cat in self.categories {
+                //set the ischecked to be true and then re-load the view
+                cat.isCategoryChecked = false
+                //add the categories to the array list so they can be scrubbed if not saved
+                self.clickedOnCategories.append(cat)
+            }
+            
+            self.tagsCollectionView.reloadData()
+            
+            //set the is_reset to true
+            self.is_reset = true
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+        
         
     }
     
@@ -215,10 +313,12 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var cellForTag = collectionView.dequeueReusableCell(withReuseIdentifier: "tagsCollectionViewCell", for: indexPath) as! TagCVcell
+        let cellForTag = collectionView.dequeueReusableCell(withReuseIdentifier: "tagsCollectionViewCell", for: indexPath) as! TagCVcell
         
         //grab the current category being represented
         let currentCategory = categories[indexPath.row]
+        
+        let TagsCellColor:UIColor! = UIColor(named: "tagCellColor")
         
         //set the outline view for the border so that it shows them it has yet to be selected
         cellForTag.tagOutlineView.layer.cornerRadius = 10
@@ -228,10 +328,24 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         if currentCategory.isCategoryChecked == true {
             //if the cell is checked then we remove the background and set the outline instead
             cellForTag.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+            //set the text color to be white
+//            cellForTag.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            
+            
+            //set the text color to be black
+            cellForTag.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            cellForTag.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+            
             
         }else {
             //if the cell is not checked then when we click on it we change the background color
             cellForTag.tagOutlineView.backgroundColor = nil
+            //set the text color to be black
+//            cellForTag.categoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            if UITraitCollection.current.userInterfaceStyle == .light {
+                cellForTag.categoryLabel.textColor = TagsCellColor
+            }
             
         }
         
@@ -249,6 +363,8 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         //grab the current category being represented
         let currentCategory = categories[indexPath.row]
         
+        let TagsCellColor:UIColor! = UIColor(named: "tagCellColor")
+        
         //check if the category is selected already, this will allow us to set the cell based on local data
         //TRUE - means the category is selected
         //FALSE - means the category is not selected
@@ -258,13 +374,20 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
             //if the cell is checked then we remove the background and set the outline instead
             currentCell.tagOutlineView.backgroundColor = nil
             
-            if clickedOnCategories.isEmpty == false {
-                //remove the category from the array if it exists
-                if clickedOnCategories.contains(currentCategory){
-                    clickedOnCategories.remove(at: clickedOnCategories.firstIndex(of: currentCategory)!)
-                    
-                }
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                
+                //set the text color to be white
+                currentCell.categoryLabel.textColor = TagsCellColor
+                currentCell.categoryLabel.highlightedTextColor = TagsCellColor
+
+            }else if UITraitCollection.current.userInterfaceStyle == .light {
+                
+                //set the text color to be black
+                currentCell.categoryLabel.textColor = TagsCellColor
+                currentCell.categoryLabel.highlightedTextColor = TagsCellColor
             }
+            
+//            currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             
         }else {
             //set the iscategorychecked to be true
@@ -272,10 +395,27 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
             //if the cell is not checked then when we click on it we change the background color
             currentCell.tagOutlineView.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
             
-            //add this newly selected cell into our array
-            clickedOnCategories.append(currentCategory)
             
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                
+                //set the text color to be white
+                currentCell.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
+            }else if UITraitCollection.current.userInterfaceStyle == .light {
+                
+                //set the text color to be white
+                currentCell.categoryLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                currentCell.categoryLabel.highlightedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
+            }
+            
+            
+
         }
+        
+        //add this newly selected cell into our array
+        clickedOnCategories.append(currentCategory)
         
     }
     

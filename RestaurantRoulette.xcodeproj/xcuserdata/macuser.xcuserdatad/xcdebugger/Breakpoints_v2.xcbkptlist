@@ -14,25 +14,9 @@
             filePath = "RestaurantRoulette/Networks/restarauntAPINetwork.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "getCloseRestaraunts(address:radius:categories:completionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "81F83F70-0093-415E-A165-98DD278AB145"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RestaurantRoulette/Networks/restarauntAPINetwork.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "convertRestaurantFromJson(fromJSON:)"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "getCloseRestaraunts(priceLevel:address:radius:categories:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -55,22 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "75B85541-C32E-43CF-94EF-9296EFD7EB84"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RestaurantRoulette/ViewControllers/filterSettingsViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "DC187DFC-4242-41BF-BB35-575DBFA5740B"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -78,8 +46,8 @@
             filePath = "RestaurantRoulette/ViewModels/restarauntsViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "getCloseRestaraunts(address:options:categories:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +62,8 @@
             filePath = "RestaurantRoulette/ViewControllers/restaurantsListTableviewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "516"
-            endingLineNumber = "516"
+            startingLineNumber = "1012"
+            endingLineNumber = "1012"
             landmarkName = "resetAndShuffle(completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,9 +78,25 @@
             filePath = "RestaurantRoulette/Networks/restarauntAPINetwork.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "getCloseRestaraunts(address:radius:categories:completionHandler:)"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "getCloseRestaraunts(priceLevel:address:radius:categories:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "28EA10A9-4B9E-45BF-BF07-3348AC2D63A0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RestaurantRoulette/ViewModels/restarauntsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "getCloseRestaraunts(address:options:categories:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
