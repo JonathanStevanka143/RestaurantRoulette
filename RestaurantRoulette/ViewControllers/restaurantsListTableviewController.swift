@@ -260,6 +260,7 @@ class restaurantsListTableviewController: UIViewController {
                         //spin the wheel
                         self.spinthewheel()
                         self.continueButton.setTitle("Spinning...", for: .normal)
+                        self.continueButton.isEnabled = false
                         self.hasSpun = true
                     }
                     
@@ -618,7 +619,7 @@ class restaurantsListTableviewController: UIViewController {
                 
             })
             
-        }else if UIDevice.modelName == "iPhone 11"{
+        }else if UIDevice.modelName == "iPhone 11" || UIDevice.modelName == "iPhone 11 Pro Max"{
          
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
@@ -664,6 +665,54 @@ class restaurantsListTableviewController: UIViewController {
                 })
                 
             })
+            
+        }else if UIDevice.modelName == "iPhone 11 Pro" {
+            
+            UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.tableView.contentOffset = CGPoint(x: 0, y: -125)
+                self.tableView.layoutIfNeeded()
+                
+                generator.impactOccurred()
+                
+            }, completion: { _ in
+                
+                UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    
+                    impactTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.mainImpactRythem), userInfo: nil, repeats: true)
+                    
+                    self.tableView.contentOffset = CGPoint(x: 0, y: 450)
+                    self.tableView.layoutIfNeeded()
+                    
+                }, completion: { _ in
+                    
+                    UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 950)
+                        self.tableView.layoutIfNeeded()
+                        
+                    }, completion: { _ in
+                        
+                        
+                        UIView.animate(withDuration: 0.8, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                            
+                            self.tableView.setContentOffset(CGPoint(x: 0, y: 1450), animated: false)
+                            self.tableView.layoutIfNeeded()
+                            
+                        }, completion: { _ in
+                            //                        impactTimer.invalidate()
+                            
+                            self.grabSelectedRestaraunt()
+                            impactTimer.invalidate()
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
             
         }else if UIDevice.modelName == "iPhone 12 mini" {
             
