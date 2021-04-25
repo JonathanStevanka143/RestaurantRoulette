@@ -1180,6 +1180,23 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         
     }
     
+    //this is for selecting a row
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //grab the cell connected with the clicked cell
+        let currentModel = restaurants[indexPath.row]
+        //check if it can be converted to a URL
+        if let websiteURL = URL(string: currentModel.url){
+            //launch the web view to the internet
+            UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
+            
+        }else{
+            //make a popup say invalid or something?
+            
+        }
+        
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //grab the restaraunt data for the current cell index
