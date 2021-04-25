@@ -17,6 +17,9 @@
 		6309DD6A25AEBF6900C79246 /* RestaurantRouletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6309DD6925AEBF6900C79246 /* RestaurantRouletteTests.swift */; };
 		6309DD7525AEBF6900C79246 /* RestaurantRouletteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6309DD7425AEBF6900C79246 /* RestaurantRouletteUITests.swift */; };
 		6309DD9225AEC38B00C79246 /* tabVC1ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6309DD9125AEC38B00C79246 /* tabVC1ViewModel.swift */; };
+		632FC9FB2632259F00E2FE4B /* favouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632FC9FA2632259F00E2FE4B /* favouritesViewController.swift */; };
+		632FCA00263225F600E2FE4B /* favouriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632FC9FF263225F600E2FE4B /* favouriteViewModel.swift */; };
+		632FCA0B2635DCEB00E2FE4B /* favouriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632FCA0A2635DCEB00E2FE4B /* favouriteTableViewCell.swift */; };
 		63416F4225BCC4CE007B16D3 /* category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63416F4125BCC4CE007B16D3 /* category.swift */; };
 		63416F4725BCD0FA007B16D3 /* location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63416F4625BCD0FA007B16D3 /* location.swift */; };
 		63AE464025B9FAE9001FA57D /* customLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE463F25B9FAE9001FA57D /* customLocationViewController.swift */; };
@@ -65,6 +68,9 @@
 		6309DD7425AEBF6900C79246 /* RestaurantRouletteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantRouletteUITests.swift; sourceTree = "<group>"; };
 		6309DD7625AEBF6900C79246 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6309DD9125AEC38B00C79246 /* tabVC1ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabVC1ViewModel.swift; sourceTree = "<group>"; };
+		632FC9FA2632259F00E2FE4B /* favouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = favouritesViewController.swift; sourceTree = "<group>"; };
+		632FC9FF263225F600E2FE4B /* favouriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = favouriteViewModel.swift; sourceTree = "<group>"; };
+		632FCA0A2635DCEB00E2FE4B /* favouriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = favouriteTableViewCell.swift; sourceTree = "<group>"; };
 		63416F4125BCC4CE007B16D3 /* category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = category.swift; sourceTree = "<group>"; };
 		63416F4625BCD0FA007B16D3 /* location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = location.swift; sourceTree = "<group>"; };
 		63AE463F25B9FAE9001FA57D /* customLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customLocationViewController.swift; sourceTree = "<group>"; };
@@ -170,6 +176,7 @@
 				63B8A01F25B38ED30071654E /* filterSettingsViewController.swift */,
 				63AE463F25B9FAE9001FA57D /* customLocationViewController.swift */,
 				63AE464425BA628B001FA57D /* restaurantsListTableviewController.swift */,
+				632FC9FA2632259F00E2FE4B /* favouritesViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -180,6 +187,7 @@
 				6309DD9125AEC38B00C79246 /* tabVC1ViewModel.swift */,
 				63B8A02425B38EE30071654E /* filterSettingsViewModel.swift */,
 				63AE466225BA8089001FA57D /* restarauntsViewModel.swift */,
+				632FC9FF263225F600E2FE4B /* favouriteViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -198,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				63AE465D25BA7C3A001FA57D /* restarauntTableViewCell.swift */,
+				632FCA0A2635DCEB00E2FE4B /* favouriteTableViewCell.swift */,
 			);
 			path = tableViewCells;
 			sourceTree = "<group>";
@@ -361,10 +370,13 @@
 				63B8A02025B38ED30071654E /* filterSettingsViewController.swift in Sources */,
 				6309DD5425AEBF6600C79246 /* ViewController.swift in Sources */,
 				63AE465E25BA7C3A001FA57D /* restarauntTableViewCell.swift in Sources */,
+				632FCA00263225F600E2FE4B /* favouriteViewModel.swift in Sources */,
 				6309DD9225AEC38B00C79246 /* tabVC1ViewModel.swift in Sources */,
 				63AE466925BA82E7001FA57D /* restarauntAPINetwork.swift in Sources */,
 				63416F4225BCC4CE007B16D3 /* category.swift in Sources */,
+				632FC9FB2632259F00E2FE4B /* favouritesViewController.swift in Sources */,
 				6309DD5025AEBF6600C79246 /* AppDelegate.swift in Sources */,
+				632FCA0B2635DCEB00E2FE4B /* favouriteTableViewCell.swift in Sources */,
 				63AE464525BA628B001FA57D /* restaurantsListTableviewController.swift in Sources */,
 				63B8A02525B38EE30071654E /* filterSettingsViewModel.swift in Sources */,
 				63AE466325BA8089001FA57D /* restarauntsViewModel.swift in Sources */,

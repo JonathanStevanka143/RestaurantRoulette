@@ -18,4 +18,10 @@ class category: NSObject,Codable {
         self.alias = alias
         self.title = title
     }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(alias, forKey: alias)
+        coder.encode(title, forKey: title)
+    }
+    
 }

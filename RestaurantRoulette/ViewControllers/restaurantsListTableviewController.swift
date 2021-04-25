@@ -37,6 +37,7 @@ class restaurantsListTableviewController: UIViewController {
     @IBOutlet var restaurantSelectedDeliveryImage: UIImageView!
     @IBOutlet var restaurantSelectedPhonenumber: UILabel!
     
+    @IBOutlet var restaurantSelectedFavouriteButton: UIButton!
     @IBOutlet var restaurantSelectedRatingImageView: UIImageView!
     @IBOutlet var callCircleView: UIView!
     @IBOutlet var callButton: UIButton!
@@ -46,7 +47,6 @@ class restaurantsListTableviewController: UIViewController {
     
     @IBOutlet var websiteCircleView: UIView!
     @IBOutlet var websiteButton: UIButton!
-    
     
     //buttons
     @IBOutlet var continueButton: UIButton!
@@ -60,22 +60,40 @@ class restaurantsListTableviewController: UIViewController {
     var categories:[Categories]!
     //hook up the view model(where updates will be made etc)
     var ViewModel = restarauntsViewModel()
+    //use the favouritesviewmodel so that we can access the save methods(code reusability)
+    var favRestaurantViewModel = favouriteViewModel()
     //this will hold all of the tableview data
     var restaurants:[restaurant]! = []
     
     //SECOND PHASE VARIABLES
     //this holds the currently selected cell number
     var currentlySelectedCell:IndexPath! = nil
+    //this variable will hold the favourite restaurant data to compare against
+    var userFavourites:[FavouriteRestaurant]!
+    //this variable will represent the viewmodel for the favourites controller, this way we can access the data instead of repeating code
+    var favViewModel = favouriteViewModel()
+    //per apple documentation use this when we are adding or removing objects from the core data stack such as hitting the "favourite button"
+    var container: NSPersistentContainer! {
+        //this allows it to work on all IOS levels supported
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    }
+    
+    
     
     override func viewDidLoad() {
         
+        //set the view model delegate for this page
         ViewModel.delegate = self
+        //set the delegate for the favourites view model this way we can run the favourites against the currently retreived. better UX
+        favViewModel.delegate = self
+//        print("Device:",UIDevice.modelName)
+        favViewModel.grabFavourites()
         
-        print("Device:",UIDevice.modelName)
+        //disable the continue button until results have loaded in
+        continueButton.isEnabled = false
         
         //1.create a function to reverse geocode an address and pass it to the API for more accurate results
         geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
-        
         
         //set the tableview delegate
         self.tableView.delegate = self
@@ -92,6 +110,8 @@ class restaurantsListTableviewController: UIViewController {
         directionsCircleView.layer.cornerRadius = 30
         //website setup
         websiteCircleView.layer.cornerRadius = 30
+        //favourite button setup
+        restaurantSelectedFavouriteButton.layer.cornerRadius = 20
     }
     
     
@@ -121,9 +141,39 @@ class restaurantsListTableviewController: UIViewController {
         
     }
     
-    @IBAction func reviewsButtonPressed(_ sender: Any) {
-        
-        
+    //create a bool value to deal if the button has been clicked before or not
+    var is_favourited:Bool! = false
+    @IBAction func FavouriteButtonClicked(_ sender: Any) {
+        //grab the current model
+        let currentModel = restaurants[currentlySelectedCell.row]
+        if is_favourited == false {
+            //set the image on the button to be heart.fill
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            //set the model to represent that it is a favourite
+            currentModel.is_favourite = true
+            favRestaurantViewModel.saveRestaurant(restaurant: currentModel)
+            //set the bool value to indicate that it has been saved
+            is_favourited = true
+            //grab the updated list
+            favViewModel.grabFavourites()
+        }else if is_favourited == true {
+            //delete the object from the MOC
+            if userFavourites != nil {
+                for rest in userFavourites {
+                    if currentModel.id == rest.id {
+                        print("YIPPIE")
+                        container.viewContext.delete(rest)
+                        break
+                    }
+                }
+            }
+            
+            //set the image on the button to be heart.fill
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            currentModel.is_favourite = false
+            //set the bool value to indicate that it has been un-saved
+            is_favourited = false
+        }
     }
     
     @IBAction func websiteButtonPressed(_ sender: Any) {
@@ -221,7 +271,7 @@ class restaurantsListTableviewController: UIViewController {
             //5.change the phase so we can control flow with the button
             
             //fix the table not having the proper amount of cells to spin the table
-            if restaurants.count <= 30 {
+            if restaurants.count <= 30 && restaurants.count != 0{
                 
                 print("30 into 3", 30 / restaurants.count)
                 print("leftover", 30 % restaurants.count)
@@ -839,7 +889,6 @@ class restaurantsListTableviewController: UIViewController {
         currentlySelectedCell = visibleCells![Int(visibleCells!.count / 2)]
         
         
-        
         let allModelsTheSame = restaurants.allSatisfy({ $0 == restaurants.first })
         if allModelsTheSame == true {
             //set the title to Spin
@@ -860,6 +909,18 @@ class restaurantsListTableviewController: UIViewController {
         let currentCell = tableView.cellForRow(at: currentlySelectedCell) as! restarauntTableViewCell
         //grab the current model data for the specific cell
         let currentModel = restaurants[currentlySelectedCell.row]
+    
+        //check to see if this model has been favourited before
+        if currentModel.is_favourite == true {
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            //set the button bool to match this change
+            is_favourited = true
+        }else {
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            //set the button bool to match this change
+            is_favourited = false
+        }
+        
         
         var address:String!
         //set the mapview location based on the restauraunt address
@@ -1271,6 +1332,15 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             }
             
             
+        }else {
+            //set both the pickup and delivery logo to be red x's
+            //set the image to be 'not available' for delivery
+            currentCell.deliveryImageView.image = #imageLiteral(resourceName: "cancel")
+            currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+            //set the image to be 'not available' for pickup
+            //set the image to be 'not available'
+            currentCell.pickupImageView.image = #imageLiteral(resourceName: "cancel")
+            currentCell.pickupImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
         }
         
         
@@ -1288,6 +1358,17 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
         //set the restauraunts array to be that of the returned array
         self.restaurants = closeRestaraunts
         
+        if userFavourites != nil {
+            for fav in userFavourites {
+                for place in (closeRestaraunts)! {
+                    if fav.id == place.id {
+                        //set the is_favourited bool in the 'closerestaraunts' array
+                        place.is_favourite = true
+                    }
+                }
+            }
+        }
+        
         //using the main thread for UI updates
         DispatchQueue.main.async {
             //reload the data
@@ -1296,7 +1377,8 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
             self.tableViewHolder.isHidden = false
             //stop the indicatorview
             self.indicatorView.stopAnimating()
-            
+            //enable the button
+            self.continueButton.isEnabled = true
             //set the continue button with the total left
             self.continueButton.setTitle("Shuffle & Spin(\(self.restaurants.count))", for: .normal)
         }
@@ -1304,7 +1386,12 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
         
     }
     
+}
+extension restaurantsListTableviewController: favouriteViewModelDelegate {
     
-    
+    //set the local data so we can use it
+    func returnAllFavourites(favouriteRestaurants: [FavouriteRestaurant]?) {
+        userFavourites = favouriteRestaurants
+    }
     
 }

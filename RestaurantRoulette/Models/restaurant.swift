@@ -11,11 +11,10 @@ import CoreData
 
 class restaurant: NSObject,Codable {
     
+    var id:String
     var name:String
     var url:String
-    
     var categories:[category]
-    
     var review_count:Int
     var rating:Double
     
@@ -29,8 +28,12 @@ class restaurant: NSObject,Codable {
     
     var transactions:[String]
     
-    init(name:String,url:String,review_count:Int,rating:Double,phone:String,display_phone:String,distance:Double,price:String,categories:[category],location:location,transactions:[String]) {
+    //this variable will keep track if the model is a favourite or not
+    var is_favourite:Bool = false
+    
+    init(id:String,name:String,url:String,review_count:Int,rating:Double,phone:String,display_phone:String,distance:Double,price:String,categories:[category],location:location,transactions:[String]) {
         
+        self.id = id
         self.name = name
         self.url = url
         self.review_count = review_count
