@@ -165,6 +165,8 @@ class restaurantsListTableviewController: UIViewController {
                 for rest in userFavourites {
                     if currentModel.id == rest.id {
                         container.viewContext.delete(rest)
+                        //save the currentContext so that our changes are persisteddx
+                        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
                         break
                     }
                 }
