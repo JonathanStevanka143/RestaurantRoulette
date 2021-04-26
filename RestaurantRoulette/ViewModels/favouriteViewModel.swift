@@ -142,10 +142,10 @@ class favouriteViewModel {
             if transaction == "pickup" {
                 transactionArray.add(["pickup"])
             }
-            print("tt:",transaction)
+//            print("tt:",transaction)
             
         }
-        //print("trans:",transactionArray)
+        
         favouriteRestaurant.transactions = transactionArray
         //save the context
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()

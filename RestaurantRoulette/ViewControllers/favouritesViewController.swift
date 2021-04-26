@@ -8,7 +8,12 @@
 import Foundation
 import UIKit
 
-class favouritesViewController: UITableViewController {
+class favouritesViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    //MARK: OUTLETS
+    @IBOutlet var TableViewHolder: UIView!
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var spinFavouriteButton: UIButton!
     
     //create a connection to the viewmodel
     var viewModel = favouriteViewModel()
@@ -44,15 +49,82 @@ class favouritesViewController: UITableViewController {
         
         //set the first time opened bool to true
         first_time_opened = true
+        
+        //call the tableview delegates
+        tableView.delegate = self
+        tableView.dataSource = self
     }
+    
+    //MARK: BUTTON PRESS
+    
+    @IBAction func spinFavouritesButtonPressed(_ sender: Any) {
+        
+        //convert our core data objects here that way all we have to do is send it to the spinViewController
+        //create an array holding convert restaurants
+        var restaurantArray:[restaurant] = []
+        if usersFavourites != nil {
+            for userFav in usersFavourites {
+                
+                
+                let id = userFav.id!
+                let name = userFav.name!
+                let url = userFav.url!
+                let review_count = Int(userFav.reviewCount)
+                let rating = userFav.rating
+                let phone = userFav.phone!
+                let display_phone = userFav.displayPhone!
+                let price = userFav.price!
+                
+                //create a string to hold the transactions
+                var transactionString:[String] = []
+                if userFav.transactions != nil {
+//                    print("test123:", userFav.transactions as? [[String]])
+                    for trans in userFav.transactions as! [[String]] {
+                        transactionString.append(contentsOf: trans)
+                    }
+                }
+                
+                //convert the categories into readable files
+                //create a variable to grab all categories
+                let categories = userFav.categories
+                //create an empty array to hold the categories
+                var categoriesArray:[category] = []
+                if categories != nil {
+                    for cat in categories as! [[String:String]] {
+                        let newCategory = category(alias: cat["title"] ?? "", title: cat["title"] ?? "")
+                        categoriesArray.append(newCategory)
+                    }
+                }
+                
+                let location = userFav.location as! location
+                
+                
+                                
+                //convert the data
+                let convertedFavourite:restaurant = restaurant(id: id, name: name, url: url, review_count: review_count, rating: rating, phone: phone, display_phone: display_phone, distance: 0, price: price, categories: categoriesArray, location: location, transactions: transactionString)
+                
+                //add the new converted model to the array
+                restaurantArray.append(convertedFavourite)
+            }
+        }
+        
+        print("cnt:",restaurantArray.count)
+        
+    }
+    
+    
     
     //MARK: TABLEVIEW FUNCTIONS
     //this returns the number of data in the array
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if usersFavourites != nil {
             if usersFavourites.isEmpty == false {
+                //show the tableview holder and siplay the message
+                TableViewHolder.isHidden = false
                 return usersFavourites.count
             }else {
+                //hide the tableview holder and siplay the message
+                TableViewHolder.isHidden = true
                 return 0
             }
         }else {
@@ -62,7 +134,7 @@ class favouritesViewController: UITableViewController {
     }
     
     //this will allow us to delete favourites right from the page and allow the user to save changes
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         //connect the object context from the appdelegate
         let moc = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
@@ -89,7 +161,7 @@ class favouritesViewController: UITableViewController {
     }
     
     //this is for customizing the cell to our needs
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //grab the restaraunt data for the current cell index
         let currentRestaraunt:FavouriteRestaurant = usersFavourites[indexPath.row]
         
@@ -152,7 +224,7 @@ class favouritesViewController: UITableViewController {
         for cat in currentRestaraunt.categories as! [NSDictionary] {
             
             let categoriesNSdict = currentRestaraunt.categories as! [NSDictionary]
-            print("test123:",categoriesNSdict.count)
+//            print("test123:",categoriesNSdict.count)
             
             //because of core data we have to search a NSdictionary for the categories
             if cat == categoriesNSdict.last{
@@ -206,30 +278,19 @@ class favouritesViewController: UITableViewController {
         if currentRestaraunt.transactions != nil{
             
             for transaction in currentRestaraunt.transactions as! [NSArray] {
-                
-//                print(transaction)
-                
+                                
                 if transaction.contains("delivery") {
                     //set the available image for delivery
-                    currentCell.pickupImageView.image = #imageLiteral(resourceName: "check-mark")
-                    currentCell.pickupImageView.tintColor = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.03529411765, alpha: 1)
-                    
-                }else {
-                    //set the image to be 'not available'
-                    currentCell.pickupImageView.image = #imageLiteral(resourceName: "cancel")
-                    currentCell.pickupImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
-                    
+                    currentCell.deliveryImageView.image = #imageLiteral(resourceName: "check-mark")
+                    currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1)
                 }
                 
                 if transaction.contains("pickup") {
                     //set the available image for pickup
-                    currentCell.deliveryImageView.image = #imageLiteral(resourceName: "check-mark")
-                    currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1)
                     
-                }else {
-                    //set the image to be 'not available'
-                    currentCell.deliveryImageView.image = #imageLiteral(resourceName: "cancel")
-                    currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+                    currentCell.pickupImageView.image = #imageLiteral(resourceName: "check-mark")
+                    currentCell.pickupImageView.tintColor = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.03529411765, alpha: 1)
+                    
                 }
             }
             
@@ -253,19 +314,21 @@ class favouritesViewController: UITableViewController {
     }
     
     //this is for selecting a row
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //grab the cell connected with the clicked cell
         let currentModel = usersFavourites[indexPath.row]
-        //check if it can be converted to a URL
+//        //check if it can be converted to a URL
         if let websiteURL = URL(string: currentModel.url ?? ""){
             //launch the web view to the internet
             UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
-            
+
         }else{
             //make a popup say invalid or something?
-            
+
         }
+        
+        print(currentModel.location as! location)
         
     }
     
@@ -277,6 +340,9 @@ extension favouritesViewController:favouriteViewModelDelegate{
         usersFavourites = favouriteRestaurants
         
         DispatchQueue.main.async {
+            if self.usersFavourites.count != 0{
+                self.TableViewHolder.isHidden = false
+            }
             self.tableView.reloadData()
         }
     }

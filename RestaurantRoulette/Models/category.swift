@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class category: NSObject,Codable {
+class category: NSObject,NSCoding {
     
     var alias:String
     var title:String
@@ -20,8 +20,13 @@ class category: NSObject,Codable {
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(alias, forKey: alias)
-        coder.encode(title, forKey: title)
+        coder.encode(alias, forKey: "alias")
+        coder.encode(title, forKey: "title")
     }
-    
+
+    required init?(coder: NSCoder) {
+        self.alias = coder.decodeObject(forKey: "alias") as! String
+        self.title = coder.decodeObject(forKey: "title") as! String
+
+    }
 }

@@ -144,11 +144,14 @@ class restaurantsListTableviewController: UIViewController {
     //create a bool value to deal if the button has been clicked before or not
     var is_favourited:Bool! = false
     @IBAction func FavouriteButtonClicked(_ sender: Any) {
+        //use this generator for the button click
         //grab the current model
         let currentModel = restaurants[currentlySelectedCell.row]
         if is_favourited == false {
             //set the image on the button to be heart.fill
             restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            //create an impact
+            generator.impactOccurred()
             //set the model to represent that it is a favourite
             currentModel.is_favourite = true
             favRestaurantViewModel.saveRestaurant(restaurant: currentModel)
@@ -161,7 +164,6 @@ class restaurantsListTableviewController: UIViewController {
             if userFavourites != nil {
                 for rest in userFavourites {
                     if currentModel.id == rest.id {
-                        print("YIPPIE")
                         container.viewContext.delete(rest)
                         break
                     }
