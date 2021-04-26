@@ -41,6 +41,9 @@ class favouritesViewController: UIViewController,UITableViewDelegate,UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set the back button colors
+        self.navigationController?.navigationBar.tintColor = UIColor.init(named: "primaryColor")
+        
         //set the delegate to self to get feedback from the viewmodel
         viewModel.delegate = self
         
@@ -64,7 +67,6 @@ class favouritesViewController: UIViewController,UITableViewDelegate,UITableView
         var restaurantArray:[restaurant] = []
         if usersFavourites != nil {
             for userFav in usersFavourites {
-                
                 
                 let id = userFav.id!
                 let name = userFav.name!
@@ -97,18 +99,32 @@ class favouritesViewController: UIViewController,UITableViewDelegate,UITableView
                 }
                 
                 let location = userFav.location as! location
-                
-                
                                 
                 //convert the data
                 let convertedFavourite:restaurant = restaurant(id: id, name: name, url: url, review_count: review_count, rating: rating, phone: phone, display_phone: display_phone, distance: 0, price: price, categories: categoriesArray, location: location, transactions: transactionString)
-                
+                //set the is_favourite because this is coming from the favourites page
+                convertedFavourite.is_favourite = true
                 //add the new converted model to the array
                 restaurantArray.append(convertedFavourite)
             }
         }
         
-        print("cnt:",restaurantArray.count)
+        if restaurantArray.count != 0 {
+            //initialize a viewcontroller from the storyboard to present it with the favourites
+            let restaurantsViewController = storyboard?.instantiateViewController(identifier: "restaurantsController") as! restaurantsListTableviewController
+            
+            restaurantsViewController.is_spinning_favourites = true
+            restaurantsViewController.restaurants = restaurantArray
+            
+            //for now present it as a formsheet
+            restaurantsViewController.modalPresentationStyle = .fullScreen
+            //present it on the current VC that the cell BELONGS to
+            self.navigationController?.pushViewController(restaurantsViewController, animated: true)
+            
+            
+            
+            
+        }
         
     }
     
@@ -173,6 +189,10 @@ class favouritesViewController: UIViewController,UITableViewDelegate,UITableView
         //set the title
         currentCell.restarauntTitle.text = "\(currentRestaraunt.name ?? "N/A")"
 
+        //set the distance label, this time because its the favourites just the city, state
+        let currentRestaurantLocation = currentRestaraunt.location as? location
+        currentCell.distanceLabel.text = "\(currentRestaurantLocation?.city ?? ""), \(currentRestaurantLocation?.state ?? "")"
+        
         //set the rating
         if currentRestaraunt.rating == 5 {
             //set the imageview
@@ -327,9 +347,7 @@ class favouritesViewController: UIViewController,UITableViewDelegate,UITableView
             //make a popup say invalid or something?
 
         }
-        
-        print(currentModel.location as! location)
-        
+                
     }
     
 }

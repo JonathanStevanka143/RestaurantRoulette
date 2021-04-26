@@ -530,11 +530,8 @@
                                                                         <constraint firstAttribute="height" constant="18" id="uF6-sl-Hdg"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.8 km" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPF-gb-T0F">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.8 km" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPF-gb-T0F">
                                                                     <rect key="frame" x="341.5" y="8" width="44.5" height="25"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" constant="44.329999999999998" id="vT2-Qj-HzA"/>
-                                                                    </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <color key="textColor" systemColor="systemGray2Color"/>
                                                                     <nil key="highlightedColor"/>
@@ -693,7 +690,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2vW-fB-k0V"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstItem="Qb2-oP-TFf" firstAttribute="bottom" secondItem="2vW-fB-k0V" secondAttribute="bottom" id="05T-Tq-g39"/>
                             <constraint firstItem="2vW-fB-k0V" firstAttribute="bottom" secondItem="xJW-am-iC1" secondAttribute="bottom" id="1yJ-q1-b7t"/>
@@ -719,7 +716,7 @@
         <!--Restaurants-->
         <scene sceneID="RRj-QS-xSJ">
             <objects>
-                <viewController id="njC-6T-MoF" customClass="restaurantsListTableviewController" customModule="Roulette" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="restaurantsController" id="njC-6T-MoF" customClass="restaurantsListTableviewController" customModule="Roulette" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cGm-Sb-iNw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1264,7 +1261,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="m6u-2g-1q0"/>
+        <segue reference="Kgm-zL-UgU"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="5StarRating" width="102" height="18"/>

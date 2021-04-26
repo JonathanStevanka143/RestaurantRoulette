@@ -51,7 +51,7 @@ class restaurantsListTableviewController: UIViewController {
     //buttons
     @IBOutlet var continueButton: UIButton!
     
-    //FIRST PHASE VARIABLES
+    //MARK: FIRST PHASE VARIABLES
     //this holds the map coords that the user wanted to use
     var centerMapCoord: CLLocationCoordinate2D!
     //filter options from the phone, set by the sending VC
@@ -65,7 +65,7 @@ class restaurantsListTableviewController: UIViewController {
     //this will hold all of the tableview data
     var restaurants:[restaurant]! = []
     
-    //SECOND PHASE VARIABLES
+    //MARK: SECOND PHASE VARIABLES
     //this holds the currently selected cell number
     var currentlySelectedCell:IndexPath! = nil
     //this variable will hold the favourite restaurant data to compare against
@@ -78,7 +78,9 @@ class restaurantsListTableviewController: UIViewController {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     }
     
-    
+    //MARK: Favourites spin variables
+    //create a variable to represent the view being used for favourites so we can set the view up to detect this change
+    var is_spinning_favourites:Bool = false
     
     override func viewDidLoad() {
         
@@ -86,14 +88,35 @@ class restaurantsListTableviewController: UIViewController {
         ViewModel.delegate = self
         //set the delegate for the favourites view model this way we can run the favourites against the currently retreived. better UX
         favViewModel.delegate = self
-//        print("Device:",UIDevice.modelName)
+        //        print("Device:",UIDevice.modelName)
+        
+        //check if the view is spinning favourites
         favViewModel.grabFavourites()
         
         //disable the continue button until results have loaded in
         continueButton.isEnabled = false
         
         //1.create a function to reverse geocode an address and pass it to the API for more accurate results
-        geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
+        if is_spinning_favourites == false {
+            geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
+        }else{
+            //set the title for the controller to represent whats being spun
+            self.title = "Favourites"
+            //load the faved restaurants
+            print(restaurants.count)
+            
+            if restaurants.count != 0 {
+                //unhide the view
+                tableViewHolder.isHidden = false
+                //enable the button
+                continueButton.isEnabled = true
+                continueButton.isUserInteractionEnabled = true
+                //set the button text
+                continueButton.setTitle("Shuffle & Spin(\(restaurants.count))", for: .normal)
+            }
+            
+        }
+        
         
         //set the tableview delegate
         self.tableView.delegate = self
@@ -212,7 +235,7 @@ class restaurantsListTableviewController: UIViewController {
         //set the button to be inactive
         continueButton.isEnabled = false
         
-//        print(restaurants.count)
+        //        print(restaurants.count)
         
         //if phase2 is set changed the UI accordingly
         if phase2 == true {
@@ -320,7 +343,7 @@ class restaurantsListTableviewController: UIViewController {
                     
                 })
             }
-
+            
         }
         
     }
@@ -674,7 +697,7 @@ class restaurantsListTableviewController: UIViewController {
             })
             
         }else if UIDevice.modelName == "iPhone 11" || UIDevice.modelName == "iPhone 11 Pro Max"{
-         
+            
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
                 self.tableView.contentOffset = CGPoint(x: 0, y: -125)
@@ -913,7 +936,7 @@ class restaurantsListTableviewController: UIViewController {
         let currentCell = tableView.cellForRow(at: currentlySelectedCell) as! restarauntTableViewCell
         //grab the current model data for the specific cell
         let currentModel = restaurants[currentlySelectedCell.row]
-    
+        
         //check to see if this model has been favourited before
         if currentModel.is_favourite == true {
             restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -1011,31 +1034,31 @@ class restaurantsListTableviewController: UIViewController {
         }else if currentModel.rating == 3.5 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "3HalfStarRating")
-
+            
             
         }else if currentModel.rating == 3 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "3StarRating")
-
+            
             
         }else if currentModel.rating == 2.5 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "2HalfStarRating")
-
+            
             
         }else if currentModel.rating == 2 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "2StarRating")
-
+            
         }else if currentModel.rating == 1.5 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "1HalfStarRating")
-
+            
             
         }else if currentModel.rating == 1 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "1StarRating")
-
+            
             
         }else if currentModel.rating == 0 {
             //set the imageview
@@ -1170,8 +1193,10 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         case .delete:
             
             //remove the selected cell
-            self.restaurants.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
+            if restaurants.count != 1 {
+                self.restaurants.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .left)
+            }
             
             //set the continue button with the total left
             continueButton.setTitle("Shuffle & Spin(\(restaurants.count))", for: .normal)
@@ -1214,23 +1239,27 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         //set the title
         currentCell.restarauntTitle.text = "\(currentRestaraunt.name)"
         
-        //set the distance
-        if currentRestaraunt.distance < 1000 {
-            
-            let distance: Int = Int(currentRestaraunt.distance)
-            
-            //set the distance in meteres
-            currentCell.distanceLabel.text = "\(distance) m"
-            
-        }else {
-            let distance: Double = Double(currentRestaraunt.distance / 1000)
-            let totaldistanceString: String = String(format: "%.1f", distance)
-            //set the distance in km
-            currentCell.distanceLabel.text = "\(totaldistanceString) km"
+        if is_spinning_favourites == false {
+            //set the distance
+            if currentRestaraunt.distance < 1000 {
+                
+                let distance: Int = Int(currentRestaraunt.distance)
+                
+                //set the distance in meteres
+                currentCell.distanceLabel.text = "\(distance) m"
+                
+            }else {
+                let distance: Double = Double(currentRestaraunt.distance / 1000)
+                let totaldistanceString: String = String(format: "%.1f", distance)
+                //set the distance in km
+                currentCell.distanceLabel.text = "\(totaldistanceString) km"
+            }
+        }else{
+    
+            currentCell.distanceLabel.text = "\(currentRestaraunt.location.city), \(currentRestaraunt.location.state)"
             
         }
         
-
         //set the rating
         if currentRestaraunt.rating == 5 {
             //set the imageview
@@ -1239,19 +1268,19 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.rating == 4.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "4HalfStarRating")
-
+            
         }else if currentRestaraunt.rating == 4 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "4StarRating")
-
+            
         }else if currentRestaraunt.rating == 3.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "3HalfStarRating")
-
+            
         }else if currentRestaraunt.rating == 3 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "3StarRating")
-
+            
         }else if currentRestaraunt.rating == 2.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "2HalfStarRating")
@@ -1259,7 +1288,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.rating == 2 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "2StarRating")
-
+            
         }else if currentRestaraunt.rating == 1.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "1HalfStarRating")
@@ -1267,10 +1296,10 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.rating == 1 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "1StarRating")
-
+            
         }else if currentRestaraunt.rating == 0 {
             //set the imageview
-
+            
         }
         
         
@@ -1291,7 +1320,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         currentCell.tagsLabel.text = finalString
         
         //set the pricerange
-        print("test:",currentRestaraunt.price)
+        //        print("test:",currentRestaraunt.price)
         
         //create a variable holding the price text
         let priceString = "$$$$"
