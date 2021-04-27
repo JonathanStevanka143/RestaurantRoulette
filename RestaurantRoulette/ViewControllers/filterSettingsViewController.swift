@@ -11,12 +11,16 @@ import CoreData
 class filterSettingsViewController: UIViewController {
     
     //uiViews
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var priceRangesUIVIEW: UIView!
     @IBOutlet var distanceUIVIEW: UIView!
     
     //buttons
     @IBOutlet var resetNavButton: UIButton!
     @IBOutlet var saveButton: UIButton!
+    
+    //save button constraint
+    @IBOutlet var saveButtonTopConstraint: NSLayoutConstraint!
     
     //price range controls
     @IBOutlet var priceRangeGreateOrLessThanControl: UISegmentedControl!
@@ -52,6 +56,9 @@ class filterSettingsViewController: UIViewController {
     var is_saved:Bool = false
     //this boolean will represent when the save button has been clicked
     var is_reset:Bool = false
+    //this value is for hiding the save button after initial showing 
+    var impactTimer:Timer!
+
     
     override func viewWillDisappear(_ animated: Bool) {
         //check here too see if the save button has been pressed
@@ -86,10 +93,12 @@ class filterSettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //set the tags collection view as the delegate and datasource
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
+        
+        //set the scrollview delegate
+        scrollView.delegate = self
         
         //set up the UIviews
         priceRangesUIVIEW.layer.cornerRadius = 10
@@ -101,6 +110,9 @@ class filterSettingsViewController: UIViewController {
         distanceUIVIEW.layer.shadowRadius = 5
         distanceUIVIEW.layer.shadowOpacity = 0.3
 
+        //set up the button
+        saveButton.layer.cornerRadius = 20
+        
         //set the UIviews to have the same data as on the phone
         //1. check if the filteroptions is not nil
         //2. set the 'below price | above price
@@ -151,8 +163,31 @@ class filterSettingsViewController: UIViewController {
         //set the height constraint the be the new height of the table
         tagsCVHeightCnst.constant = tagsCollectionView.collectionViewLayout.collectionViewContentSize.height
         
+        
+        impactTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.clockForButton), userInfo: nil, repeats: true)
+        
     }
     
+    //MARK: FUNC FOR HIDING BUTTON
+    //create a var to count the time inbetween
+    var count:Int = 0
+    @objc func clockForButton(){
+        //if count is equal to two then animate the button up
+        if count == 1 {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.4,
+                               animations: {
+                                self.saveButton.isEnabled = false
+                                self.saveButtonTopConstraint.constant = -150
+                                self.view.layoutIfNeeded()
+                               })
+            }
+            //invalidate the timer so it will stop calling this function
+            impactTimer.invalidate()
+        }
+        //increase the count
+        count+=1
+    }
     
     //MARK: PRICE RANGES ACTIONS
     @IBAction func priceRangesGreaterOrBelowValueChanged(_ sender: Any) {
@@ -214,6 +249,7 @@ class filterSettingsViewController: UIViewController {
     }
     
     //MARK: BUTTON ACTIONS
+    
     @IBAction func saveButtonClicked(_ sender: Any) {
         
         //1. set the 'isBelowOrAbovePrice' controls
@@ -355,7 +391,7 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         
         return cellForTag
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //grab the current cell based on indexpath
@@ -416,6 +452,53 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         
         //add this newly selected cell into our array
         clickedOnCategories.append(currentCategory)
+        
+    }
+    
+}
+
+extension filterSettingsViewController:UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //1. grab the velocity
+        //2. animate the save button in from the top when they start to drag
+        //3. hide the save button when they scroll up
+        //testPhase = incomplete
+        print("veolicty:",scrollView.panGestureRecognizer.velocity(in: scrollView))
+        
+        let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
+        
+        if velocity != 0 {
+            DispatchQueue.main.async {
+                
+                if velocity >= 0 {
+                    // do positive stuff
+//                    print("positive")
+                    DispatchQueue.main.async {
+                        UIView.animate(withDuration: 0.4,
+                                       animations: {
+                                        self.saveButton.isEnabled = false
+                                        self.saveButtonTopConstraint.constant = -150
+                                        self.view.layoutIfNeeded()
+                                       })
+                    }
+                    
+                } else {
+                    // do negative stuff
+//                    print("negative")
+                    DispatchQueue.main.async {
+                        UIView.animate(withDuration: 0.2,
+                                       animations: {
+                                        self.saveButton.isEnabled = true
+                                        self.saveButton.isHidden = false
+                                        self.saveButtonTopConstraint.constant = 10
+                                        self.view.layoutIfNeeded()
+                                       })
+                    }
+                }
+                
+            }
+        }
         
     }
     

@@ -28,8 +28,8 @@ class restarauntsViewModel {
         
         //this will allow us to return the restaraunts that are below/above the pricerange for the users options
         
-        print(options.isBelowPriceRange)
-        print(options.priceRangeLevel)
+//        print(options.isBelowPriceRange)
+//        print(options.priceRangeLevel)
         
         //create a string to hold the price level(s)
         var priceRange:String!

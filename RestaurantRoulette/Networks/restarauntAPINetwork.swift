@@ -99,7 +99,8 @@ class restarauntAPINetwork {
     func convertRestaurantFromJson(fromJSON json: [String:Any]) -> restaurant? {
         
         //create guard statement to
-        guard let name = json["name"] as? String,
+        guard let id = json["id"] as? String,
+              let name = json["name"] as? String,
               let url = json["url"] as? String? ?? "",
               let review_count = json["review_count"] as? Int,
               let rating = json["rating"] as? Double? ?? 0,
@@ -123,8 +124,7 @@ class restarauntAPINetwork {
         
         let location = self.convertLocationFromJson(json: locationArray as! [String : Any])! as location
         
-        
-        return restaurant(name: name, url: url, review_count: review_count, rating: rating, phone: phone, display_phone: display_phone, distance: distance,price: price,categories: categoryArray,location: location, transactions: transactionArray)
+        return restaurant(id: id, name: name, url: url, review_count: review_count, rating: rating, phone: phone, display_phone: display_phone, distance: distance,price: price,categories: categoryArray,location: location, transactions: transactionArray)
     }
     
     func convertCategoryFromJson( json: [String:Any]) -> category? {
