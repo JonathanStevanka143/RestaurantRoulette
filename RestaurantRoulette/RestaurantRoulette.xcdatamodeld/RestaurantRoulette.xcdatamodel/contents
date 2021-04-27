@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Categories" representedClassName="Categories" syncable="YES" codeGenerationType="class">
         <attribute name="categoryAlias" optional="YES" attributeType="String"/>
         <attribute name="categoryTitle" optional="YES" attributeType="String"/>
         <attribute name="isCategoryChecked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="FavouriteRestaurant" representedClassName="FavouriteRestaurant" syncable="YES" codeGenerationType="class">
+        <attribute name="categories" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="displayPhone" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="location" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="String"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="reviewCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="transactions" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="url" optional="YES" attributeType="String"/>
     </entity>
     <entity name="FilterSettings" representedClassName="FilterSettings" syncable="YES" codeGenerationType="class">
         <attribute name="distance" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -13,6 +26,7 @@
     </entity>
     <elements>
         <element name="Categories" positionX="-63" positionY="27" width="128" height="88"/>
+        <element name="FavouriteRestaurant" positionX="-63" positionY="27" width="128" height="208"/>
         <element name="FilterSettings" positionX="-63" positionY="-18" width="128" height="103"/>
     </elements>
 </model>

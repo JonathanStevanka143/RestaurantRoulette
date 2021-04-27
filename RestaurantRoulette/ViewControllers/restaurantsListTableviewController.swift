@@ -37,6 +37,7 @@ class restaurantsListTableviewController: UIViewController {
     @IBOutlet var restaurantSelectedDeliveryImage: UIImageView!
     @IBOutlet var restaurantSelectedPhonenumber: UILabel!
     
+    @IBOutlet var restaurantSelectedFavouriteButton: UIButton!
     @IBOutlet var restaurantSelectedRatingImageView: UIImageView!
     @IBOutlet var callCircleView: UIView!
     @IBOutlet var callButton: UIButton!
@@ -47,11 +48,10 @@ class restaurantsListTableviewController: UIViewController {
     @IBOutlet var websiteCircleView: UIView!
     @IBOutlet var websiteButton: UIButton!
     
-    
     //buttons
     @IBOutlet var continueButton: UIButton!
     
-    //FIRST PHASE VARIABLES
+    //MARK: FIRST PHASE VARIABLES
     //this holds the map coords that the user wanted to use
     var centerMapCoord: CLLocationCoordinate2D!
     //filter options from the phone, set by the sending VC
@@ -60,21 +60,62 @@ class restaurantsListTableviewController: UIViewController {
     var categories:[Categories]!
     //hook up the view model(where updates will be made etc)
     var ViewModel = restarauntsViewModel()
+    //use the favouritesviewmodel so that we can access the save methods(code reusability)
+    var favRestaurantViewModel = favouriteViewModel()
     //this will hold all of the tableview data
     var restaurants:[restaurant]! = []
     
-    //SECOND PHASE VARIABLES
+    //MARK: SECOND PHASE VARIABLES
     //this holds the currently selected cell number
     var currentlySelectedCell:IndexPath! = nil
+    //this variable will hold the favourite restaurant data to compare against
+    var userFavourites:[FavouriteRestaurant]!
+    //this variable will represent the viewmodel for the favourites controller, this way we can access the data instead of repeating code
+    var favViewModel = favouriteViewModel()
+    //per apple documentation use this when we are adding or removing objects from the core data stack such as hitting the "favourite button"
+    var container: NSPersistentContainer! {
+        //this allows it to work on all IOS levels supported
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    }
+    
+    //MARK: Favourites spin variables
+    //create a variable to represent the view being used for favourites so we can set the view up to detect this change
+    var is_spinning_favourites:Bool = false
     
     override func viewDidLoad() {
         
+        //set the view model delegate for this page
         ViewModel.delegate = self
+        //set the delegate for the favourites view model this way we can run the favourites against the currently retreived. better UX
+        favViewModel.delegate = self
+        //        print("Device:",UIDevice.modelName)
         
-        print("Device:",UIDevice.modelName)
+        //check if the view is spinning favourites
+        favViewModel.grabFavourites()
+        
+        //disable the continue button until results have loaded in
+        continueButton.isEnabled = false
         
         //1.create a function to reverse geocode an address and pass it to the API for more accurate results
-        geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
+        if is_spinning_favourites == false {
+            geocodeLocation(lat: centerMapCoord.latitude, long: centerMapCoord.longitude)
+        }else{
+            //set the title for the controller to represent whats being spun
+            self.title = "Favourites"
+            //load the faved restaurants
+            print(restaurants.count)
+            
+            if restaurants.count != 0 {
+                //unhide the view
+                tableViewHolder.isHidden = false
+                //enable the button
+                continueButton.isEnabled = true
+                continueButton.isUserInteractionEnabled = true
+                //set the button text
+                continueButton.setTitle("Shuffle & Spin", for: .normal)
+            }
+            
+        }
         
         
         //set the tableview delegate
@@ -92,6 +133,12 @@ class restaurantsListTableviewController: UIViewController {
         directionsCircleView.layer.cornerRadius = 30
         //website setup
         websiteCircleView.layer.cornerRadius = 30
+        //favourite button setup
+        restaurantSelectedFavouriteButton.layer.cornerRadius = 20
+        
+        if is_spinning_favourites == true{
+            spinTheWheelButtonPressed(self)
+        }
     }
     
     
@@ -121,9 +168,43 @@ class restaurantsListTableviewController: UIViewController {
         
     }
     
-    @IBAction func reviewsButtonPressed(_ sender: Any) {
-        
-        
+    //create a bool value to deal if the button has been clicked before or not
+    var is_favourited:Bool! = false
+    @IBAction func FavouriteButtonClicked(_ sender: Any) {
+        //use this generator for the button click
+        //grab the current model
+        let currentModel = restaurants[currentlySelectedCell.row]
+        if is_favourited == false {
+            //set the image on the button to be heart.fill
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            //create an impact
+            generator.impactOccurred()
+            //set the model to represent that it is a favourite
+            currentModel.is_favourite = true
+            favRestaurantViewModel.saveRestaurant(restaurant: currentModel)
+            //set the bool value to indicate that it has been saved
+            is_favourited = true
+            //grab the updated list
+            favViewModel.grabFavourites()
+        }else if is_favourited == true {
+            //delete the object from the MOC
+            if userFavourites != nil {
+                for rest in userFavourites {
+                    if currentModel.id == rest.id {
+                        container.viewContext.delete(rest)
+                        //save the currentContext so that our changes are persisteddx
+                        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+                        break
+                    }
+                }
+            }
+            
+            //set the image on the button to be heart.fill
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            currentModel.is_favourite = false
+            //set the bool value to indicate that it has been un-saved
+            is_favourited = false
+        }
     }
     
     @IBAction func websiteButtonPressed(_ sender: Any) {
@@ -158,7 +239,7 @@ class restaurantsListTableviewController: UIViewController {
         //set the button to be inactive
         continueButton.isEnabled = false
         
-//        print(restaurants.count)
+        //        print(restaurants.count)
         
         //if phase2 is set changed the UI accordingly
         if phase2 == true {
@@ -221,7 +302,7 @@ class restaurantsListTableviewController: UIViewController {
             //5.change the phase so we can control flow with the button
             
             //fix the table not having the proper amount of cells to spin the table
-            if restaurants.count <= 30 {
+            if restaurants.count <= 30 && restaurants.count != 0{
                 
                 print("30 into 3", 30 / restaurants.count)
                 print("leftover", 30 % restaurants.count)
@@ -266,7 +347,7 @@ class restaurantsListTableviewController: UIViewController {
                     
                 })
             }
-
+            
         }
         
     }
@@ -620,7 +701,7 @@ class restaurantsListTableviewController: UIViewController {
             })
             
         }else if UIDevice.modelName == "iPhone 11" || UIDevice.modelName == "iPhone 11 Pro Max"{
-         
+            
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
                 self.tableView.contentOffset = CGPoint(x: 0, y: -125)
@@ -839,7 +920,6 @@ class restaurantsListTableviewController: UIViewController {
         currentlySelectedCell = visibleCells![Int(visibleCells!.count / 2)]
         
         
-        
         let allModelsTheSame = restaurants.allSatisfy({ $0 == restaurants.first })
         if allModelsTheSame == true {
             //set the title to Spin
@@ -860,6 +940,18 @@ class restaurantsListTableviewController: UIViewController {
         let currentCell = tableView.cellForRow(at: currentlySelectedCell) as! restarauntTableViewCell
         //grab the current model data for the specific cell
         let currentModel = restaurants[currentlySelectedCell.row]
+        
+        //check to see if this model has been favourited before
+        if currentModel.is_favourite == true {
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            //set the button bool to match this change
+            is_favourited = true
+        }else {
+            restaurantSelectedFavouriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            //set the button bool to match this change
+            is_favourited = false
+        }
+        
         
         var address:String!
         //set the mapview location based on the restauraunt address
@@ -946,31 +1038,31 @@ class restaurantsListTableviewController: UIViewController {
         }else if currentModel.rating == 3.5 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "3HalfStarRating")
-
+            
             
         }else if currentModel.rating == 3 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "3StarRating")
-
+            
             
         }else if currentModel.rating == 2.5 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "2HalfStarRating")
-
+            
             
         }else if currentModel.rating == 2 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "2StarRating")
-
+            
         }else if currentModel.rating == 1.5 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "1HalfStarRating")
-
+            
             
         }else if currentModel.rating == 1 {
             //set the imageview
             restaurantSelectedRatingImageView.image = UIImage(named: "1StarRating")
-
+            
             
         }else if currentModel.rating == 0 {
             //set the imageview
@@ -1105,8 +1197,10 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         case .delete:
             
             //remove the selected cell
-            self.restaurants.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
+            if restaurants.count != 1 {
+                self.restaurants.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .left)
+            }
             
             //set the continue button with the total left
             continueButton.setTitle("Shuffle & Spin(\(restaurants.count))", for: .normal)
@@ -1115,6 +1209,23 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         default:
             //code goes here
             break
+        }
+        
+    }
+    
+    //this is for selecting a row
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //grab the cell connected with the clicked cell
+        let currentModel = restaurants[indexPath.row]
+        //check if it can be converted to a URL
+        if let websiteURL = URL(string: currentModel.url){
+            //launch the web view to the internet
+            UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
+            
+        }else{
+            //make a popup say invalid or something?
+            
         }
         
     }
@@ -1132,23 +1243,27 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         //set the title
         currentCell.restarauntTitle.text = "\(currentRestaraunt.name)"
         
-        //set the distance
-        if currentRestaraunt.distance < 1000 {
-            
-            let distance: Int = Int(currentRestaraunt.distance)
-            
-            //set the distance in meteres
-            currentCell.distanceLabel.text = "\(distance) m"
-            
-        }else {
-            let distance: Double = Double(currentRestaraunt.distance / 1000)
-            let totaldistanceString: String = String(format: "%.1f", distance)
-            //set the distance in km
-            currentCell.distanceLabel.text = "\(totaldistanceString) km"
+        if is_spinning_favourites == false {
+            //set the distance
+            if currentRestaraunt.distance < 1000 {
+                
+                let distance: Int = Int(currentRestaraunt.distance)
+                
+                //set the distance in meteres
+                currentCell.distanceLabel.text = "\(distance) m"
+                
+            }else {
+                let distance: Double = Double(currentRestaraunt.distance / 1000)
+                let totaldistanceString: String = String(format: "%.1f", distance)
+                //set the distance in km
+                currentCell.distanceLabel.text = "\(totaldistanceString) km"
+            }
+        }else{
+    
+            currentCell.distanceLabel.text = "\(currentRestaraunt.location.city), \(currentRestaraunt.location.state)"
             
         }
         
-
         //set the rating
         if currentRestaraunt.rating == 5 {
             //set the imageview
@@ -1157,19 +1272,19 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.rating == 4.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "4HalfStarRating")
-
+            
         }else if currentRestaraunt.rating == 4 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "4StarRating")
-
+            
         }else if currentRestaraunt.rating == 3.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "3HalfStarRating")
-
+            
         }else if currentRestaraunt.rating == 3 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "3StarRating")
-
+            
         }else if currentRestaraunt.rating == 2.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "2HalfStarRating")
@@ -1177,7 +1292,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.rating == 2 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "2StarRating")
-
+            
         }else if currentRestaraunt.rating == 1.5 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "1HalfStarRating")
@@ -1185,10 +1300,10 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         }else if currentRestaraunt.rating == 1 {
             //set the imageview
             currentCell.ratingImageView.image = UIImage(named: "1StarRating")
-
+            
         }else if currentRestaraunt.rating == 0 {
             //set the imageview
-
+            
         }
         
         
@@ -1209,7 +1324,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         currentCell.tagsLabel.text = finalString
         
         //set the pricerange
-        print("test:",currentRestaraunt.price)
+        //        print("test:",currentRestaraunt.price)
         
         //create a variable holding the price text
         let priceString = "$$$$"
@@ -1271,6 +1386,15 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
             }
             
             
+        }else {
+            //set both the pickup and delivery logo to be red x's
+            //set the image to be 'not available' for delivery
+            currentCell.deliveryImageView.image = #imageLiteral(resourceName: "cancel")
+            currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
+            //set the image to be 'not available' for pickup
+            //set the image to be 'not available'
+            currentCell.pickupImageView.image = #imageLiteral(resourceName: "cancel")
+            currentCell.pickupImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
         }
         
         
@@ -1288,6 +1412,17 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
         //set the restauraunts array to be that of the returned array
         self.restaurants = closeRestaraunts
         
+        if userFavourites != nil {
+            for fav in userFavourites {
+                for place in (closeRestaraunts)! {
+                    if fav.id == place.id {
+                        //set the is_favourited bool in the 'closerestaraunts' array
+                        place.is_favourite = true
+                    }
+                }
+            }
+        }
+        
         //using the main thread for UI updates
         DispatchQueue.main.async {
             //reload the data
@@ -1296,7 +1431,8 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
             self.tableViewHolder.isHidden = false
             //stop the indicatorview
             self.indicatorView.stopAnimating()
-            
+            //enable the button
+            self.continueButton.isEnabled = true
             //set the continue button with the total left
             self.continueButton.setTitle("Shuffle & Spin(\(self.restaurants.count))", for: .normal)
         }
@@ -1304,7 +1440,12 @@ extension restaurantsListTableviewController:restarauntsViewModelDelegate {
         
     }
     
+}
+extension restaurantsListTableviewController: favouriteViewModelDelegate {
     
-    
+    //set the local data so we can use it
+    func returnAllFavourites(favouriteRestaurants: [FavouriteRestaurant]?) {
+        userFavourites = favouriteRestaurants
+    }
     
 }

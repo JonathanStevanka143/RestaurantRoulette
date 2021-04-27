@@ -1,15 +1,14 @@
 //
-//  restarauntTableViewCell.swift
-//  RestaurantRoulette
+//  favouriteTableViewCell.swift
+//  Roulette
 //
-//  Created by Mac User on 2021-01-21.
+//  Created by Mac User on 2021-04-25.
 //
 
 import Foundation
 import UIKit
-import CoreData
 
-class restarauntTableViewCell: UITableViewCell {
+class favouriteTableViewCell: UITableViewCell {
     
     //this is the view that holds the data, used for adding a corner radius and giving it a nice "pop" look
     @IBOutlet var dataView: UIView!
@@ -25,6 +24,7 @@ class restarauntTableViewCell: UITableViewCell {
     
     @IBOutlet var ratingImageView: UIImageView!
     
+    
     override func prepareForReuse() {
         //reset visual items
         pickupImageView.image = #imageLiteral(resourceName: "cancel")
@@ -32,4 +32,5 @@ class restarauntTableViewCell: UITableViewCell {
         deliveryImageView.image = #imageLiteral(resourceName: "cancel")
         deliveryImageView.tintColor = #colorLiteral(red: 0.8274509804, green: 0.1843137255, blue: 0.1843137255, alpha: 1)
     }
+    
 }
