@@ -11,12 +11,16 @@ import CoreData
 class filterSettingsViewController: UIViewController {
     
     //uiViews
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var priceRangesUIVIEW: UIView!
     @IBOutlet var distanceUIVIEW: UIView!
     
     //buttons
     @IBOutlet var resetNavButton: UIButton!
     @IBOutlet var saveButton: UIButton!
+    
+    //save button constraint
+    @IBOutlet var saveButtonTopConstraint: NSLayoutConstraint!
     
     //price range controls
     @IBOutlet var priceRangeGreateOrLessThanControl: UISegmentedControl!
@@ -91,6 +95,9 @@ class filterSettingsViewController: UIViewController {
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
         
+        //set the scrollview delegate
+        scrollView.delegate = self
+        
         //set up the UIviews
         priceRangesUIVIEW.layer.cornerRadius = 10
         priceRangesUIVIEW.layer.shadowOffset = .zero
@@ -101,6 +108,9 @@ class filterSettingsViewController: UIViewController {
         distanceUIVIEW.layer.shadowRadius = 5
         distanceUIVIEW.layer.shadowOpacity = 0.3
 
+        //set up the button
+        saveButton.layer.cornerRadius = 20
+        
         //set the UIviews to have the same data as on the phone
         //1. check if the filteroptions is not nil
         //2. set the 'below price | above price
@@ -355,7 +365,7 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         
         return cellForTag
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //grab the current cell based on indexpath
@@ -416,6 +426,43 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
         
         //add this newly selected cell into our array
         clickedOnCategories.append(currentCategory)
+        
+    }
+    
+}
+
+extension filterSettingsViewController:UIScrollViewDelegate {
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        
+    }
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //1. grab the velocity
+        //2. animate the save button in from the top when they start to drag
+        //3. hide the save button when they scroll up
+        //testPhase = incomplete
+        print("veolicty:",scrollView.panGestureRecognizer.velocity(in: scrollView))
+        
+        let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
+        
+        if velocity != 0 {
+            DispatchQueue.main.async {
+                
+                if velocity >= 0 {
+                    // do positive stuff
+                    print("positive")
+                    self.saveButton.raiseSaveButtonOutOfView()
+                } else {
+                    // do negative stuff
+                    print("negative")
+                    self.saveButton.lowerSaveButtonIntoView()
+
+                }
+                
+            }
+        }
         
     }
     
