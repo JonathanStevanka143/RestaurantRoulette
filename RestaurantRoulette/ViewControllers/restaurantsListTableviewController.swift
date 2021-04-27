@@ -112,7 +112,7 @@ class restaurantsListTableviewController: UIViewController {
                 continueButton.isEnabled = true
                 continueButton.isUserInteractionEnabled = true
                 //set the button text
-                continueButton.setTitle("Shuffle & Spin(\(restaurants.count))", for: .normal)
+                continueButton.setTitle("Shuffle & Spin", for: .normal)
             }
             
         }
@@ -135,6 +135,10 @@ class restaurantsListTableviewController: UIViewController {
         websiteCircleView.layer.cornerRadius = 30
         //favourite button setup
         restaurantSelectedFavouriteButton.layer.cornerRadius = 20
+        
+        if is_spinning_favourites == true{
+            spinTheWheelButtonPressed(self)
+        }
     }
     
     

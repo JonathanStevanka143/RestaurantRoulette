@@ -229,8 +229,8 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="Up3-dg-dn6"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="wyQ-FK-VvH"/>
                             </scrollView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31T-4e-4WP">
-                                <rect key="frame" x="107" y="-6" width="200" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31T-4e-4WP">
+                                <rect key="frame" x="107" y="54" width="200" height="50"/>
                                 <color key="backgroundColor" red="0.60392156862745094" green="0.0" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="59v-Wz-eHK"/>
@@ -252,7 +252,7 @@
                             <constraint firstItem="zWi-ee-Ws4" firstAttribute="trailing" secondItem="ZMb-qv-kh8" secondAttribute="trailing" id="Hbd-AP-BbL"/>
                             <constraint firstItem="zWi-ee-Ws4" firstAttribute="top" secondItem="ZMb-qv-kh8" secondAttribute="top" id="Joe-wK-BZn"/>
                             <constraint firstItem="31T-4e-4WP" firstAttribute="centerX" secondItem="ehg-Bx-BrP" secondAttribute="centerX" id="pqB-NU-Zrt"/>
-                            <constraint firstItem="31T-4e-4WP" firstAttribute="top" secondItem="ZMb-qv-kh8" secondAttribute="top" constant="-50" id="qdO-Eh-p9Y"/>
+                            <constraint firstItem="31T-4e-4WP" firstAttribute="top" secondItem="ZMb-qv-kh8" secondAttribute="top" constant="10" id="qdO-Eh-p9Y"/>
                             <constraint firstItem="zWi-ee-Ws4" firstAttribute="leading" secondItem="ZMb-qv-kh8" secondAttribute="leading" id="tFu-aE-QMZ"/>
                         </constraints>
                     </view>

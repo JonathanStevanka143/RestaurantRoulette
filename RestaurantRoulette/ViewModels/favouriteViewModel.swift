@@ -45,8 +45,9 @@ class favouriteViewModel {
                 self.delegate?.returnAllFavourites(favouriteRestaurants: fetchedResultsController?.fetchedObjects)
                 
             }else {
-                //do nothing
-//                print("objects:",fetchedResultsController?.fetchedObjects?.count)
+                //return the delegate even if there is no objects, the delegate functions should be setup to handle empty arrays to show UIX changes
+                self.delegate?.returnAllFavourites(favouriteRestaurants: fetchedResultsController?.fetchedObjects)
+                
             }
         }catch {
             print("fetch request failed")

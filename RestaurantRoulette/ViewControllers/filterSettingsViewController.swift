@@ -56,6 +56,9 @@ class filterSettingsViewController: UIViewController {
     var is_saved:Bool = false
     //this boolean will represent when the save button has been clicked
     var is_reset:Bool = false
+    //this value is for hiding the save button after initial showing 
+    var impactTimer:Timer!
+
     
     override func viewWillDisappear(_ animated: Bool) {
         //check here too see if the save button has been pressed
@@ -90,7 +93,6 @@ class filterSettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //set the tags collection view as the delegate and datasource
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
@@ -161,8 +163,31 @@ class filterSettingsViewController: UIViewController {
         //set the height constraint the be the new height of the table
         tagsCVHeightCnst.constant = tagsCollectionView.collectionViewLayout.collectionViewContentSize.height
         
+        
+        impactTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.clockForButton), userInfo: nil, repeats: true)
+        
     }
     
+    //MARK: FUNC FOR HIDING BUTTON
+    //create a var to count the time inbetween
+    var count:Int = 0
+    @objc func clockForButton(){
+        //if count is equal to two then animate the button up
+        if count == 1 {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.4,
+                               animations: {
+                                self.saveButton.isEnabled = false
+                                self.saveButtonTopConstraint.constant = -150
+                                self.view.layoutIfNeeded()
+                               })
+            }
+            //invalidate the timer so it will stop calling this function
+            impactTimer.invalidate()
+        }
+        //increase the count
+        count+=1
+    }
     
     //MARK: PRICE RANGES ACTIONS
     @IBAction func priceRangesGreaterOrBelowValueChanged(_ sender: Any) {
@@ -224,6 +249,7 @@ class filterSettingsViewController: UIViewController {
     }
     
     //MARK: BUTTON ACTIONS
+    
     @IBAction func saveButtonClicked(_ sender: Any) {
         
         //1. set the 'isBelowOrAbovePrice' controls
@@ -433,11 +459,6 @@ extension filterSettingsViewController:UICollectionViewDelegate,UICollectionView
 
 extension filterSettingsViewController:UIScrollViewDelegate {
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        
-    }
-    
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //1. grab the velocity
         //2. animate the save button in from the top when they start to drag
@@ -452,13 +473,28 @@ extension filterSettingsViewController:UIScrollViewDelegate {
                 
                 if velocity >= 0 {
                     // do positive stuff
-                    print("positive")
-                    self.saveButton.raiseSaveButtonOutOfView()
+//                    print("positive")
+                    DispatchQueue.main.async {
+                        UIView.animate(withDuration: 0.4,
+                                       animations: {
+                                        self.saveButton.isEnabled = false
+                                        self.saveButtonTopConstraint.constant = -150
+                                        self.view.layoutIfNeeded()
+                                       })
+                    }
+                    
                 } else {
                     // do negative stuff
-                    print("negative")
-                    self.saveButton.lowerSaveButtonIntoView()
-
+//                    print("negative")
+                    DispatchQueue.main.async {
+                        UIView.animate(withDuration: 0.2,
+                                       animations: {
+                                        self.saveButton.isEnabled = true
+                                        self.saveButton.isHidden = false
+                                        self.saveButtonTopConstraint.constant = 10
+                                        self.view.layoutIfNeeded()
+                                       })
+                    }
                 }
                 
             }

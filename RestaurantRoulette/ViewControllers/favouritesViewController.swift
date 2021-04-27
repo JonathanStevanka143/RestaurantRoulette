@@ -354,10 +354,11 @@ class favouritesViewController: UIViewController,UITableViewDelegate,UITableView
 extension favouritesViewController:favouriteViewModelDelegate{
     
     func returnAllFavourites(favouriteRestaurants: [FavouriteRestaurant]?) {
-        //set the data top-level
-        usersFavourites = favouriteRestaurants
         
         DispatchQueue.main.async {
+            //set the data top-level
+            self.usersFavourites = favouriteRestaurants
+            
             if self.usersFavourites.count != 0{
                 self.TableViewHolder.isHidden = false
             }
