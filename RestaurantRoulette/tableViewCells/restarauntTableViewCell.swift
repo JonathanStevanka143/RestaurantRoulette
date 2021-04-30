@@ -25,6 +25,9 @@ class restarauntTableViewCell: UITableViewCell {
     
     @IBOutlet var ratingImageView: UIImageView!
     
+    @IBOutlet var distanceLabelConstraint: NSLayoutConstraint!
+    
+    
     override func prepareForReuse() {
         //reset visual items
         pickupImageView.image = #imageLiteral(resourceName: "cancel")
