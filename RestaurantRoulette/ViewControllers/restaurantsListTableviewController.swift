@@ -84,6 +84,8 @@ class restaurantsListTableviewController: UIViewController {
     
     override func viewDidLoad() {
         
+        
+        
         //set the view model delegate for this page
         ViewModel.delegate = self
         //set the delegate for the favourites view model this way we can run the favourites against the currently retreived. better UX
@@ -216,8 +218,11 @@ class restaurantsListTableviewController: UIViewController {
             
             if let websiteURL = URL(string: selected.url){
                 
-                UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
-                
+                //run this on the main thread to avoid random crashes in the crash log
+                //date- April 30th, 2021
+                DispatchQueue.main.async {
+                    UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
+                }
             }else{
                 
                 //make a popup say invalid or something?
@@ -999,10 +1004,12 @@ class restaurantsListTableviewController: UIViewController {
         })
         
         //copy contents from the cell over to the main view
-        //set the title
-        restaurantSelectedTitle.text = currentCell.restarauntTitle.text
         //set the distance
         restaurantSelectedDistance.text = currentCell.distanceLabel.text
+        restaurantSelectedDistance.sizeToFit()
+        //set the title
+        restaurantSelectedTitle.text = currentCell.restarauntTitle.text
+        restaurantSelectedTitle.sizeToFit()
         //set the reviews
         restaurantSelectedReviews.text = currentCell.totalReviewsLabel.text
         //set the tags
@@ -1101,7 +1108,7 @@ class restaurantsListTableviewController: UIViewController {
         
         //1.
         if restaurants.count < 30 {
-            print("p:",restaurants.count)
+//            print("p:",restaurants.count)
             restaurants += restaurants
         }
         restaurants = restaurants.shuffled()
@@ -1240,8 +1247,6 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         //set a corner radius on the cell
         currentCell.dataView.layer.cornerRadius = 15
         
-        //set the title
-        currentCell.restarauntTitle.text = "\(currentRestaraunt.name)"
         
         if is_spinning_favourites == false {
             //set the distance
@@ -1257,13 +1262,15 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
                 let totaldistanceString: String = String(format: "%.1f", distance)
                 //set the distance in km
                 currentCell.distanceLabel.text = "\(totaldistanceString) km"
+                currentCell.distanceLabel.sizeToFit()
             }
         }else{
-    
             currentCell.distanceLabel.text = "\(currentRestaraunt.location.city), \(currentRestaraunt.location.state)"
-            
+            currentCell.distanceLabel.sizeToFit()
         }
         
+        //set the title
+        currentCell.restarauntTitle.text = "\(currentRestaraunt.name)"
         //set the rating
         if currentRestaraunt.rating == 5 {
             //set the imageview
