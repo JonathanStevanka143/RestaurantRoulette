@@ -166,7 +166,9 @@ class restaurantsListTableviewController: UIViewController {
     var directionsForMap:MKMapItem!
     @IBAction func directionButtonPressed(_ sender: Any) {
         
-        directionsForMap.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+        DispatchQueue.main.async {
+            self.directionsForMap.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+        }
         
     }
     
