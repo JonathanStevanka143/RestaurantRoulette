@@ -8,6 +8,7 @@
 import CoreData
 
 class tabVC1ViewModel {
+    
     //this will allow viewcontrollers to set their own delegate to get relative information back
     weak var delegate: tabVC1ViewControllerDelegate?
     //per apple documentation
