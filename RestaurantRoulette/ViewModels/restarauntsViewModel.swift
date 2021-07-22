@@ -14,10 +14,8 @@ class restarauntsViewModel {
     weak var delegate: restarauntsViewModelDelegate?
     //per apple documentation
     var container: NSPersistentContainer!
-    
+    //init our api network class that way we can utilize its methods
     var apiNetwork = restarauntAPINetwork()
-
-    
     //this function will find all of the close restaraunts in the vicinity by using the user filterOptions
     func getCloseRestaraunts(address:String,options:FilterSettings,categories:[Categories]){
         
