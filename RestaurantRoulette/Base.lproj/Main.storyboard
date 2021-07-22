@@ -319,7 +319,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.2418473065" green="0.2418473065" blue="0.2418473065" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.24313725490196078" green="0.24313725490196078" blue="0.24313725490196078" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="qoU-aL-gWn" firstAttribute="top" secondItem="D0z-Z9-OIs" secondAttribute="top" constant="8" id="7JX-qX-7Uq"/>
                                             <constraint firstAttribute="bottom" secondItem="qoU-aL-gWn" secondAttribute="bottom" constant="8" id="9XR-hQ-XOt"/>
@@ -740,6 +740,12 @@
                                     <action selector="spinTheWheelButtonPressed:" destination="njC-6T-MoF" eventType="touchUpInside" id="fsI-q9-hzB"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching near you..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdf-IB-FUo">
+                                <rect key="frame" x="20" y="234" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemGray2Color"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="3I0-2V-i6A">
                                 <rect key="frame" x="182" y="170" width="50" height="50"/>
                                 <constraints>
@@ -747,12 +753,6 @@
                                     <constraint firstAttribute="width" constant="50" id="PuQ-yi-YLs"/>
                                 </constraints>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching near you..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdf-IB-FUo">
-                                <rect key="frame" x="20" y="234" width="374" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" systemColor="systemGray2Color"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpA-kf-slz">
                                 <rect key="frame" x="0.0" y="44" width="414" height="590"/>
                                 <subviews>
@@ -1220,6 +1220,13 @@
                                     <constraint firstItem="VUI-TT-r1e" firstAttribute="leading" secondItem="cpA-kf-slz" secondAttribute="leading" id="wPa-KE-VRZ"/>
                                 </constraints>
                             </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mym-oP-Ude">
+                                <rect key="frame" x="0.0" y="584" width="414" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="7SH-PL-IM8"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Lf3-mH-6nz"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -1229,17 +1236,21 @@
                             <constraint firstItem="Jdf-IB-FUo" firstAttribute="top" secondItem="3I0-2V-i6A" secondAttribute="bottom" constant="14" id="95z-ja-2OL"/>
                             <constraint firstItem="cpA-kf-slz" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" id="BNO-Aa-mak"/>
                             <constraint firstItem="3I0-2V-i6A" firstAttribute="top" secondItem="Lf3-mH-6nz" secondAttribute="top" constant="126" id="GOe-WI-RlM"/>
+                            <constraint firstItem="mym-oP-Ude" firstAttribute="trailing" secondItem="Lf3-mH-6nz" secondAttribute="trailing" id="PJW-rG-gPf"/>
                             <constraint firstItem="3I0-2V-i6A" firstAttribute="centerX" secondItem="cGm-Sb-iNw" secondAttribute="centerX" id="R7d-9S-dqW"/>
                             <constraint firstItem="cpA-kf-slz" firstAttribute="top" secondItem="Lf3-mH-6nz" secondAttribute="top" id="X1D-BC-ape"/>
                             <constraint firstItem="Lf3-mH-6nz" firstAttribute="trailing" secondItem="Jdf-IB-FUo" secondAttribute="trailing" constant="20" id="eBS-7f-j89"/>
                             <constraint firstItem="Lf3-mH-6nz" firstAttribute="bottom" secondItem="rCl-2i-Ytj" secondAttribute="bottom" id="eu0-eF-otp"/>
+                            <constraint firstItem="rCl-2i-Ytj" firstAttribute="top" secondItem="mym-oP-Ude" secondAttribute="bottom" id="onU-wN-sgp"/>
                             <constraint firstItem="rCl-2i-Ytj" firstAttribute="top" secondItem="cpA-kf-slz" secondAttribute="bottom" id="tdz-HI-azI"/>
                             <constraint firstItem="cpA-kf-slz" firstAttribute="trailing" secondItem="Lf3-mH-6nz" secondAttribute="trailing" id="unI-eD-HCc"/>
                             <constraint firstItem="Jdf-IB-FUo" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" constant="20" id="wE4-pP-rRp"/>
+                            <constraint firstItem="mym-oP-Ude" firstAttribute="leading" secondItem="Lf3-mH-6nz" secondAttribute="leading" id="ydz-Lc-vKl"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Restaurants" id="OZu-Ei-8do"/>
                     <connections>
+                        <outlet property="bannerAdView" destination="mym-oP-Ude" id="aYO-n8-hCB"/>
                         <outlet property="callButton" destination="COa-JJ-BWW" id="vs8-lQ-HGR"/>
                         <outlet property="callCircleView" destination="vyl-07-eL0" id="BpI-9Q-umX"/>
                         <outlet property="continueButton" destination="rCl-2i-Ytj" id="mTx-Ia-FjZ"/>

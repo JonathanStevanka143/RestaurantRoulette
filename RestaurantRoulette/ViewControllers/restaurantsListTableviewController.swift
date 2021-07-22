@@ -7,12 +7,16 @@
 
 import Foundation
 import UIKit
+import GoogleMobileAds
 import AVFoundation
 import CoreData
 import MapKit
 import CoreLocation
 
 class restaurantsListTableviewController: UIViewController {
+    
+    //AD VIEWS
+    @IBOutlet var bannerAdView: UIView!
     
     //FIRST PHASE OUTLETS
     //views
@@ -51,6 +55,12 @@ class restaurantsListTableviewController: UIViewController {
     //buttons
     @IBOutlet var continueButton: UIButton!
     
+    //MARK: AD VARIABLES
+    //this will allow us to display an ad to the users
+    var bannerAD: GADBannerView!
+    //this var represents the fullpage ad that gets triggered every 15 clicks
+    private var interstitial: GADInterstitialAd?
+    
     //MARK: FIRST PHASE VARIABLES
     //this holds the map coords that the user wanted to use
     var centerMapCoord: CLLocationCoordinate2D!
@@ -83,6 +93,38 @@ class restaurantsListTableviewController: UIViewController {
     var is_spinning_favourites:Bool = false
     
     override func viewDidLoad() {
+        
+        //setup the adview here, make the ad size the size of our bannerAdView frame
+        bannerAD = GADBannerView(adSize: GADAdSizeFromCGSize(bannerAdView.frame.size))
+        
+        //add the bannerAD to the bannerView
+        bannerAdView.addSubview(bannerAD)
+        
+        //setup the ad properties
+        bannerAD.adUnitID = "ca-app-pub-8976469642443868/2028190240"
+        bannerAD.rootViewController = self
+        //load the GAD request so that we can display it to the user
+        bannerAD.load(GADRequest())
+        //set the delegate for the bannerAD
+        bannerAD.delegate = self
+        
+        //create a request to load the interstitial ad in
+        let request = GADRequest()
+        //load an ad
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-8976469642443868/9028712867",
+                               request: request,
+                               completionHandler: { [self] ad, error in
+                                if let error = error {
+                                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                    return
+                                }
+                                //set the ad
+                                interstitial = ad
+                                //set the
+                                interstitial?.fullScreenContentDelegate = self
+                               }
+        )
+        
         
         
         
@@ -166,7 +208,9 @@ class restaurantsListTableviewController: UIViewController {
     var directionsForMap:MKMapItem!
     @IBAction func directionButtonPressed(_ sender: Any) {
         
-        directionsForMap.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+        DispatchQueue.main.async {
+            self.directionsForMap.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+        }
         
     }
     
@@ -240,11 +284,15 @@ class restaurantsListTableviewController: UIViewController {
     var phase2:Bool! = false
     //this represents if the tableview has been spun yet, this will allow us to reset the layout if need be
     var hasSpun:Bool! = false
+    //create a counter so we can see how many times a user has pressed the button
+    //once this hits 15, we will present an ad
+    var clickCounter = 0
     @IBAction func spinTheWheelButtonPressed(_ sender: Any) {
         //set the button to be inactive
         continueButton.isEnabled = false
         
-        //        print(restaurants.count)
+        //increase the click counter so when we know when to display an ad
+        clickCounter += 1
         
         //if phase2 is set changed the UI accordingly
         if phase2 == true {
@@ -268,7 +316,6 @@ class restaurantsListTableviewController: UIViewController {
                     //DO SOMETHING HERE INSTEAD OF JUST SPINNING THE VIEW OVER AND OVER
                     
                 }
-                
                 
                 //reset the tableview
                 resetAndShuffle(completionHandler: {
@@ -1094,6 +1141,19 @@ class restaurantsListTableviewController: UIViewController {
             //set the userInteraction to enabled so the users can use the buttons
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
+            //check to see if the click counter is greater than 15, show a full screen ad if it is
+            if self.clickCounter == 15 {
+                //make sure the ad is not nil
+                if self.interstitial != nil {
+                    //show the fullscreen ad after a place has been chosen. gives user incentive to watch the ad entirely
+                    self.interstitial!.present(fromRootViewController: self)
+                    //reset the counter to 0
+                    self.clickCounter = 0
+                  } else {
+                    print("Ad wasn't ready")
+                  }
+            }
+            
         })
         
         
@@ -1108,7 +1168,7 @@ class restaurantsListTableviewController: UIViewController {
         
         //1.
         if restaurants.count < 30 {
-//            print("p:",restaurants.count)
+            //            print("p:",restaurants.count)
             restaurants += restaurants
         }
         restaurants = restaurants.shuffled()
@@ -1410,6 +1470,74 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
     }
     
 }
+
+
+//MARK: GAD BANNER VIEW DELEGATE METHODS
+extension restaurantsListTableviewController:GADBannerViewDelegate {
+    
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("bannerViewDidReceiveAd")
+    }
+    
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+        print("bannerViewDidRecordImpression")
+    }
+    
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("bannerViewWillPresentScreen")
+    }
+    
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("bannerViewWillDIsmissScreen")
+    }
+    
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("bannerViewDidDismissScreen")
+    }
+    
+}
+
+
+//MARK: GAD INTERSTITIAL AD DELEGATES
+extension restaurantsListTableviewController:GADFullScreenContentDelegate {
+    
+    // Tells the delegate that the ad failed to present full screen content.
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        print("Ad did fail to present full screen content.")
+    }
+    
+    // Tells the delegate that the ad presented full screen content.
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did present full screen content.")
+    }
+    
+    // Tells the delegate that the ad dismissed full screen content.
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did dismiss full screen content.")
+        
+        //create a request to create a new interstitialAD
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-8976469642443868/9028712867",
+                               request: request,
+                               completionHandler: { [self] ad, error in
+                                if let error = error {
+                                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                    return
+                                }
+                                //set the new ad
+                                interstitial = ad
+                               }
+        )
+        
+        
+    }
+    
+}
+
 
 extension restaurantsListTableviewController:restarauntsViewModelDelegate {
     
