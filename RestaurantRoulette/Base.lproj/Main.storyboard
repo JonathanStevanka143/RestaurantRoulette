@@ -693,6 +693,14 @@
                                     <imageReference key="image" image="pin.fill" catalog="system" symbolScale="large"/>
                                 </state>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ilp-qL-NWP">
+                                <rect key="frame" x="0.0" y="584" width="414" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="cfx-lN-cqJ"/>
+                                    <constraint firstAttribute="width" constant="414" id="odS-bs-Imv"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2vW-fB-k0V"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -701,15 +709,19 @@
                             <constraint firstItem="2vW-fB-k0V" firstAttribute="bottom" secondItem="xJW-am-iC1" secondAttribute="bottom" id="1yJ-q1-b7t"/>
                             <constraint firstItem="Qb2-oP-TFf" firstAttribute="top" secondItem="2vW-fB-k0V" secondAttribute="top" id="5ps-TD-RSe"/>
                             <constraint firstItem="Qb2-oP-TFf" firstAttribute="trailing" secondItem="2vW-fB-k0V" secondAttribute="trailing" id="76w-qU-8an"/>
+                            <constraint firstItem="Ilp-qL-NWP" firstAttribute="trailing" secondItem="2vW-fB-k0V" secondAttribute="trailing" id="Dk5-P2-zJT"/>
                             <constraint firstItem="Qb2-oP-TFf" firstAttribute="leading" secondItem="2vW-fB-k0V" secondAttribute="leading" id="G7w-uU-Ysb"/>
                             <constraint firstItem="qIu-Jf-RTV" firstAttribute="centerY" secondItem="QAF-aT-88v" secondAttribute="centerY" id="ULI-9O-qjp"/>
                             <constraint firstItem="qIu-Jf-RTV" firstAttribute="centerX" secondItem="QAF-aT-88v" secondAttribute="centerX" id="gX8-MF-H2q"/>
+                            <constraint firstItem="xJW-am-iC1" firstAttribute="top" secondItem="Ilp-qL-NWP" secondAttribute="bottom" id="if2-sa-Yca"/>
                             <constraint firstItem="xJW-am-iC1" firstAttribute="leading" secondItem="2vW-fB-k0V" secondAttribute="leading" id="jiq-K7-Kvc"/>
                             <constraint firstItem="2vW-fB-k0V" firstAttribute="trailing" secondItem="xJW-am-iC1" secondAttribute="trailing" id="x8J-vu-drQ"/>
+                            <constraint firstItem="Ilp-qL-NWP" firstAttribute="leading" secondItem="2vW-fB-k0V" secondAttribute="leading" id="yMu-LW-9uK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Choose location" id="nXD-Gq-8Ha"/>
                     <connections>
+                        <outlet property="adBannerView" destination="Ilp-qL-NWP" id="9vk-Yd-4Qy"/>
                         <outlet property="customLocationMap" destination="Qb2-oP-TFf" id="VaO-8z-nOA"/>
                         <outlet property="selectMapLocation" destination="xJW-am-iC1" id="Zka-db-HqU"/>
                     </connections>
@@ -1283,7 +1295,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Kgm-zL-UgU"/>
+        <segue reference="m6u-2g-1q0"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="5StarRating" width="102" height="18"/>
