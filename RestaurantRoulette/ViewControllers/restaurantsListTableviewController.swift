@@ -285,7 +285,7 @@ class restaurantsListTableviewController: UIViewController {
     //this represents if the tableview has been spun yet, this will allow us to reset the layout if need be
     var hasSpun:Bool! = false
     //create a counter so we can see how many times a user has pressed the button
-    //once this hits 15, we will present an ad
+    //once this hits 5, we will present an ad
     var clickCounter = 0
     @IBAction func spinTheWheelButtonPressed(_ sender: Any) {
         //set the button to be inactive
@@ -1142,7 +1142,7 @@ class restaurantsListTableviewController: UIViewController {
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
             //check to see if the click counter is greater than 15, show a full screen ad if it is
-            if self.clickCounter == 15 {
+            if self.clickCounter == 5 {
                 //make sure the ad is not nil
                 if self.interstitial != nil {
                     //show the fullscreen ad after a place has been chosen. gives user incentive to watch the ad entirely
