@@ -17,17 +17,7 @@ class restarauntsViewModel {
     //init our api network class that way we can utilize its methods
     var apiNetwork = restarauntAPINetwork()
     //this function will find all of the close restaraunts in the vicinity by using the user filterOptions
-    func getCloseRestaraunts(address:String,options:FilterSettings,categories:[Categories]){
-        
-        //left off here
-//        print(options)
-        
-        
-        
-        //this will allow us to return the restaraunts that are below/above the pricerange for the users options
-        
-//        print(options.isBelowPriceRange)
-//        print(options.priceRangeLevel)
+    func getCloseRestaraunts(country:String?,address:String,options:FilterSettings,categories:[Categories]){
         
         //create a string to hold the price level(s)
         var priceRange:String!
@@ -96,7 +86,7 @@ class restarauntsViewModel {
 //        print(optionString)
         
         
-        apiNetwork.getCloseRestaraunts(priceLevel: priceRange,address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
+        apiNetwork.getCloseRestaraunts(isUsingLocalOnly: true ,country: country ,priceLevel: priceRange,address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
             
             //call the delegate so the viewcontroller can get restaraunts back
             self.delegate?.returnCloseRestaraunts(closeRestaraunts: restaurants)
