@@ -16,7 +16,7 @@ class restarauntAPINetwork {
     //this will connect the endpoint
     let endpoint = "https://api.yelp.com/v3/businesses/search"
     
-    func getCloseRestaraunts(priceLevel:String,address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
+    func getCloseRestaraunts(isUsingLocalOnly: Bool,country:String?, priceLevel:String,address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
         
         var url = URLComponents(string: "\(endpoint)")!
         
@@ -75,9 +75,12 @@ class restarauntAPINetwork {
 
 //                            print(self.convertRestaurantFromJson(fromJSON: restaurant))
 
-                            convertedArray.append(self.convertRestaurantFromJson(fromJSON: restaurant)!)
+                            guard let convertedRestaurant = self.convertRestaurantFromJson(localCountryOnly: isUsingLocalOnly, country: country,fromJSON: restaurant) else{
+                                continue
+                            }
                             
-
+                            convertedArray.append(convertedRestaurant)
+                        
                         }
                         
                         completionHandler(convertedArray)
@@ -96,7 +99,7 @@ class restarauntAPINetwork {
         
     }
     
-    func convertRestaurantFromJson(fromJSON json: [String:Any]) -> restaurant? {
+    func convertRestaurantFromJson(localCountryOnly:Bool,country:String?,fromJSON json: [String:Any]) -> restaurant? {
         
         //create guard statement to
         guard let id = json["id"] as? String,
@@ -124,7 +127,23 @@ class restarauntAPINetwork {
         
         let location = self.convertLocationFromJson(json: locationArray as! [String : Any])! as location
         
+        //if the user is only using the local country
+        //get rid of all other countries in the returned results
+        if localCountryOnly == true {
+            
+//            print(location.country)
+//            print(country)
+            
+            if location.country != country {
+                return nil
+            }
+            
+        }
+        
+        //if the user is not, return the restaurant
         return restaurant(id: id, name: name, url: url, review_count: review_count, rating: rating, phone: phone, display_phone: display_phone, distance: distance,price: price,categories: categoryArray,location: location, transactions: transactionArray)
+        
+        
     }
     
     func convertCategoryFromJson( json: [String:Any]) -> category? {

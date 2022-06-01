@@ -1142,7 +1142,7 @@ class restaurantsListTableviewController: UIViewController {
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
             //check to see if the click counter is greater than 15, show a full screen ad if it is
-            if self.clickCounter == 5 {
+            if self.clickCounter == 2 {
                 //make sure the ad is not nil
                 if self.interstitial != nil {
                     //show the fullscreen ad after a place has been chosen. gives user incentive to watch the ad entirely
@@ -1212,19 +1212,20 @@ class restaurantsListTableviewController: UIViewController {
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
             
             if let marker = placemarks?.first {
-                
                 let street = marker.subThoroughfare ?? ""
                 let city = marker.thoroughfare ?? ""
                 let province = marker.locality ?? ""
                 let zip = marker.postalCode ?? ""
                 let country = marker.country ?? ""
+                let ISOcode = marker.isoCountryCode ?? ""
+                
                 
                 //set the address string to be that of the conjoined address
                 address = "\(street), \(city), \(province), \(zip), \(country)"
                 
                 //now that we have the address fire the search
                 //tableview delegete set inside return delegate function
-                self.ViewModel.getCloseRestaraunts(address: address ,options: self.filterOptions,categories: self.categories)
+                self.ViewModel.getCloseRestaraunts(country: ISOcode ,address: address ,options: self.filterOptions,categories: self.categories)
                 
                 
             }
