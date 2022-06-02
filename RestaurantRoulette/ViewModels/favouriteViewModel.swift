@@ -136,15 +136,18 @@ class favouriteViewModel {
 
         //create a mutable array to store the transactions
         let transactionArray = NSMutableArray()
-        for transaction in restaurant.transactions {
-            if transaction == "delivery" {
-                transactionArray.add(["delivery"])
+        
+        if restaurant.transactions?.isEmpty == false {
+            for transaction in restaurant.transactions! {
+                if transaction == "delivery" {
+                    transactionArray.add(["delivery"])
+                }
+                if transaction == "pickup" {
+                    transactionArray.add(["pickup"])
+                }
+    //            print("tt:",transaction)
+                
             }
-            if transaction == "pickup" {
-                transactionArray.add(["pickup"])
-            }
-//            print("tt:",transaction)
-            
         }
         
         favouriteRestaurant.transactions = transactionArray

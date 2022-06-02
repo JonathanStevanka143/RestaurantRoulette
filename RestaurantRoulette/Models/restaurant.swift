@@ -56,14 +56,14 @@ class restaurant: NSObject,NSCoding {
     var phone:String
     var display_phone:String
     var distance:Double
-    var price:String
+    var price:String?
     
-    var transactions:[String]
+    var transactions:[String]?
     
     //this variable will keep track if the model is a favourite or not
     var is_favourite:Bool = false
     
-    init(id:String,name:String,url:String,review_count:Int,rating:Double,phone:String,display_phone:String,distance:Double,price:String,categories:[category],location:location,transactions:[String]) {
+    init(id:String,name:String,url:String,review_count:Int,rating:Double,phone:String,display_phone:String,distance:Double,price:String?,categories:[category],location:location,transactions:[String]?) {
         
         self.id = id
         self.name = name

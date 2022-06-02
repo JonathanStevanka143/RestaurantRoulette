@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 class restarauntAPINetwork {
     
@@ -16,19 +17,38 @@ class restarauntAPINetwork {
     //this will connect the endpoint
     let endpoint = "https://api.yelp.com/v3/businesses/search"
     
-    func getCloseRestaraunts(isUsingLocalOnly: Bool,country:String?, priceLevel:String,address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
+    func getCloseRestaraunts(location:CLLocation,isUsingLocalOnly: Bool,country:String?, priceLevel:String,address:String,radius:String,categories:String, completionHandler: @escaping ([restaurant]) -> ()){
         
         var url = URLComponents(string: "\(endpoint)")!
         
-        url.queryItems = [
-            URLQueryItem(name: "term", value: "food"),
-            URLQueryItem(name: "price", value: priceLevel),
-            URLQueryItem(name: "location", value: address),
-            URLQueryItem(name: "radius", value: "\(radius)"),
-            URLQueryItem(name: "sort_by", value: "distance"),
-            URLQueryItem(name: "limit", value: "40"),
-            URLQueryItem(name: "categories", value: categories)
-        ]
+        if address == "NA" {
+            
+//            print(String(location.coordinate.latitude))
+//            print(String(location.coordinate.longitude))
+
+            url.queryItems = [
+                URLQueryItem(name: "term", value: "food"),
+                URLQueryItem(name: "price", value: priceLevel),
+                URLQueryItem(name: "latitude", value: String(location.coordinate.latitude)),
+                URLQueryItem(name: "longitude", value: String(location.coordinate.longitude)),
+                URLQueryItem(name: "radius", value: "\(radius)"),
+                URLQueryItem(name: "sort_by", value: "distance"),
+                URLQueryItem(name: "limit", value: "40"),
+                URLQueryItem(name: "categories", value: categories)
+            ]
+            
+        }else{
+            url.queryItems = [
+                URLQueryItem(name: "term", value: "food"),
+                URLQueryItem(name: "price", value: priceLevel),
+                URLQueryItem(name: "location", value: address),
+                URLQueryItem(name: "radius", value: "\(radius)"),
+                URLQueryItem(name: "sort_by", value: "distance"),
+                URLQueryItem(name: "limit", value: "40"),
+                URLQueryItem(name: "categories", value: categories)
+            ]
+        }
+        
         
         //create the request we will send off to our server
         var request = URLRequest(url: url.url!)
@@ -101,6 +121,9 @@ class restarauntAPINetwork {
     
     func convertRestaurantFromJson(localCountryOnly:Bool,country:String?,fromJSON json: [String:Any]) -> restaurant? {
         
+        let transactionArray = json["transactions"] as? [String]? ?? [""]
+        let price = json["price"] as? String? ?? ""
+
         //create guard statement to
         guard let id = json["id"] as? String,
               let name = json["name"] as? String,
@@ -110,9 +133,7 @@ class restarauntAPINetwork {
               let phone = json["phone"] as? String? ?? "",
               let display_phone = json["display_phone"] as? String? ?? "",
               let distance = json["distance"] as? Double,
-              let price = json["price"] as? String? ?? "",
               let categoriesArray = json["categories"] as? Array<Any>,
-              let transactionArray = json["transactions"] as? [String]? ?? [""],
               let locationArray = json["location"] else {
             
             print("not enough, or wrong information to make: restaurant object")
@@ -131,8 +152,11 @@ class restarauntAPINetwork {
         //get rid of all other countries in the returned results
         if localCountryOnly == true {
             
-//            print(location.country)
-//            print(country)
+            //if the location of the restaurant does not equal
+            //the country from device then skip
+            
+            print("loc1:",location.country)
+            print("loc2:",country)
             
             if location.country != country {
                 return nil
@@ -142,7 +166,6 @@ class restarauntAPINetwork {
         
         //if the user is not, return the restaurant
         return restaurant(id: id, name: name, url: url, review_count: review_count, rating: rating, phone: phone, display_phone: display_phone, distance: distance,price: price,categories: categoryArray,location: location, transactions: transactionArray)
-        
         
     }
     
