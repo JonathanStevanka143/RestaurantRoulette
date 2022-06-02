@@ -23,17 +23,11 @@
 		63416F4225BCC4CE007B16D3 /* category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63416F4125BCC4CE007B16D3 /* category.swift */; };
 		63416F4725BCD0FA007B16D3 /* location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63416F4625BCD0FA007B16D3 /* location.swift */; };
 		6349E02B284934F5004F0D22 /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63426A5F8E100E9FEF0 /* GoogleAppMeasurement.xcframework */; };
-		6349E02C284934F6004F0D22 /* GoogleAppMeasurement.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63426A5F8E100E9FEF0 /* GoogleAppMeasurement.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6349E02E284934F7004F0D22 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63326A5F8E100E9FEF0 /* GoogleMobileAds.xcframework */; };
-		6349E02F284934F7004F0D22 /* GoogleMobileAds.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63326A5F8E100E9FEF0 /* GoogleMobileAds.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6349E030284934F8004F0D22 /* GoogleUtilities.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63526A5F8E100E9FEF0 /* GoogleUtilities.xcframework */; };
-		6349E031284934F8004F0D22 /* GoogleUtilities.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63526A5F8E100E9FEF0 /* GoogleUtilities.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6349E032284934F9004F0D22 /* nanopb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD62B26A5F8E100E9FEF0 /* nanopb.xcframework */; };
-		6349E033284934F9004F0D22 /* nanopb.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD62B26A5F8E100E9FEF0 /* nanopb.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6349E034284934FB004F0D22 /* PromisesObjC.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63126A5F8E100E9FEF0 /* PromisesObjC.xcframework */; };
-		6349E035284934FB004F0D22 /* PromisesObjC.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63126A5F8E100E9FEF0 /* PromisesObjC.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6349E036284934FC004F0D22 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63226A5F8E100E9FEF0 /* UserMessagingPlatform.xcframework */; };
-		6349E037284934FC004F0D22 /* UserMessagingPlatform.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 637CD63226A5F8E100E9FEF0 /* UserMessagingPlatform.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		63AE464025B9FAE9001FA57D /* customLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE463F25B9FAE9001FA57D /* customLocationViewController.swift */; };
 		63AE464525BA628B001FA57D /* restaurantsListTableviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE464425BA628B001FA57D /* restaurantsListTableviewController.swift */; };
 		63AE465E25BA7C3A001FA57D /* restarauntTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AE465D25BA7C3A001FA57D /* restarauntTableViewCell.swift */; };
@@ -62,25 +56,6 @@
 			remoteInfo = RestaurantRoulette;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		6349E02D284934F6004F0D22 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				6349E02C284934F6004F0D22 /* GoogleAppMeasurement.xcframework in Embed Frameworks */,
-				6349E02F284934F7004F0D22 /* GoogleMobileAds.xcframework in Embed Frameworks */,
-				6349E031284934F8004F0D22 /* GoogleUtilities.xcframework in Embed Frameworks */,
-				6349E033284934F9004F0D22 /* nanopb.xcframework in Embed Frameworks */,
-				6349E037284934FC004F0D22 /* UserMessagingPlatform.xcframework in Embed Frameworks */,
-				6349E035284934FB004F0D22 /* PromisesObjC.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6309DD4C25AEBF6600C79246 /* Roulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -327,7 +302,6 @@
 				6309DD4825AEBF6600C79246 /* Sources */,
 				6309DD4925AEBF6600C79246 /* Frameworks */,
 				6309DD4A25AEBF6600C79246 /* Resources */,
-				6349E02D284934F6004F0D22 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -646,7 +620,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4Q5R34W6CG;
 				INFOPLIST_FILE = RestaurantRoulette/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -668,7 +642,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4Q5R34W6CG;
 				INFOPLIST_FILE = RestaurantRoulette/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
