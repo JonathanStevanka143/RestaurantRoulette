@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import CoreData
+import MapKit
 
 class restarauntsViewModel {
     //this will allow viewcontrollers to set their own delegate to get relative information back
@@ -17,7 +18,7 @@ class restarauntsViewModel {
     //init our api network class that way we can utilize its methods
     var apiNetwork = restarauntAPINetwork()
     //this function will find all of the close restaraunts in the vicinity by using the user filterOptions
-    func getCloseRestaraunts(country:String?,address:String,options:FilterSettings,categories:[Categories]){
+    func getCloseRestaraunts(location:CLLocation, country:String?,address:String,options:FilterSettings,categories:[Categories]){
         
         //create a string to hold the price level(s)
         var priceRange:String!
@@ -86,7 +87,7 @@ class restarauntsViewModel {
 //        print(optionString)
         
         
-        apiNetwork.getCloseRestaraunts(isUsingLocalOnly: true ,country: country ,priceLevel: priceRange,address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
+        apiNetwork.getCloseRestaraunts(location: location ,isUsingLocalOnly: true ,country: country ,priceLevel: priceRange,address: address , radius: "\(distanceMeteres ?? 5000)", categories: optionString) { restaurants in
             
             //call the delegate so the viewcontroller can get restaraunts back
             self.delegate?.returnCloseRestaraunts(closeRestaraunts: restaurants)

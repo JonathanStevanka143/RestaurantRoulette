@@ -420,9 +420,11 @@ class restaurantsListTableviewController: UIViewController {
             continueButton.setTitle("Spin", for: .normal)
         }
         
+        //for testing new devices to add them into 'UIDeviceExtension' in future OS updates
+//        print(UIDevice.modelName)
         
         //here we need to check the type of device being used for the app so we can properly set our animations so that it wont make UI errors
-        if UIDevice.modelName == "iPhone SE"{
+        if UIDevice.modelName == "iPhone SE" || UIDevice.modelName == "iPhone SE (3nd generation)"{
             
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
@@ -894,7 +896,7 @@ class restaurantsListTableviewController: UIViewController {
                 
             })
             
-        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" {
+        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" || UIDevice.modelName == "iPhone 13" || UIDevice.modelName == "iPhone 13 Pro" || UIDevice.modelName == "iPhone 13 Pro Max" {
             
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
@@ -1219,13 +1221,17 @@ class restaurantsListTableviewController: UIViewController {
                 let country = marker.country ?? ""
                 let ISOcode = marker.isoCountryCode ?? ""
                 
+                if street.isEmpty == true || city.isEmpty == true || zip.isEmpty == true {
+                    address = "NA"
+                }else{
+                    //set the address string to be that of the conjoined address
+                    address = "\(street), \(city), \(province), \(zip), \(country)"
+                }
                 
-                //set the address string to be that of the conjoined address
-                address = "\(street), \(city), \(province), \(zip), \(country)"
                 
                 //now that we have the address fire the search
                 //tableview delegete set inside return delegate function
-                self.ViewModel.getCloseRestaraunts(country: ISOcode ,address: address ,options: self.filterOptions,categories: self.categories)
+                self.ViewModel.getCloseRestaraunts(location: location,country: ISOcode ,address: address ,options: self.filterOptions,categories: self.categories)
                 
                 
             }
@@ -1428,9 +1434,9 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         
         //set the pickup/delivery availability
         //check if the restaraunt has 'transactions'
-        if currentRestaraunt.transactions.isEmpty == false{
+        if currentRestaraunt.transactions?.isEmpty == false{
             
-            if currentRestaraunt.transactions.contains("delivery") {
+            if ((currentRestaraunt.transactions?.contains("delivery")) != nil) {
                 //set the available image for delivery
                 currentCell.pickupImageView.image = #imageLiteral(resourceName: "check-mark")
                 currentCell.pickupImageView.tintColor = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.03529411765, alpha: 1)
@@ -1442,7 +1448,7 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
                 
             }
             
-            if currentRestaraunt.transactions.contains("pickup") {
+            if ((currentRestaraunt.transactions?.contains("pickup")) != nil) {
                 //set the available image for pickup
                 currentCell.deliveryImageView.image = #imageLiteral(resourceName: "check-mark")
                 currentCell.deliveryImageView.tintColor = #colorLiteral(red: 0.001247007969, green: 0.6028117069, blue: 0.0351134165, alpha: 1)
