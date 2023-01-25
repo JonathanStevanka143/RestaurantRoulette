@@ -18,6 +18,9 @@ public extension UIDevice {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
+        //for adding new devices when they come out, dont forget to print the system name too
+//        print("Device-Identifier: ",identifier)
+        
         
         func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
             #if os(iOS)

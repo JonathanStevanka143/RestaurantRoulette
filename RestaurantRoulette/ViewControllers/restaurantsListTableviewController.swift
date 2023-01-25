@@ -93,6 +93,11 @@ class restaurantsListTableviewController: UIViewController {
     var is_spinning_favourites:Bool = false
     
     override func viewDidLoad() {
+        //test the devices ID & name, useful for adding new devices
+        //test the identifier in 'Extensions->UIDeviceExtension'
+//        print("Device-ModelName:",UIDevice.modelName)
+        
+        
         
         //setup the adview here, make the ad size the size of our bannerAdView frame
         bannerAD = GADBannerView(adSize: GADAdSizeFromCGSize(bannerAdView.frame.size))
@@ -109,21 +114,21 @@ class restaurantsListTableviewController: UIViewController {
         bannerAD.delegate = self
         
         //create a request to load the interstitial ad in
-        let request = GADRequest()
-        //load an ad
-        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-8976469642443868/9028712867",
-                               request: request,
-                               completionHandler: { [self] ad, error in
-                                if let error = error {
-                                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                                    return
-                                }
-                                //set the ad
-                                interstitial = ad
-                                //set the
-                                interstitial?.fullScreenContentDelegate = self
-                               }
-        )
+//        let request = GADRequest()
+//        //load an ad
+//        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-8976469642443868/9028712867",
+//                               request: request,
+//                               completionHandler: { [self] ad, error in
+//                                if let error = error {
+//                                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+//                                    return
+//                                }
+//                                //set the ad
+//                                interstitial = ad
+//                                //set the
+//                                interstitial?.fullScreenContentDelegate = self
+//                               }
+//        )
         
         
         
@@ -132,7 +137,6 @@ class restaurantsListTableviewController: UIViewController {
         ViewModel.delegate = self
         //set the delegate for the favourites view model this way we can run the favourites against the currently retreived. better UX
         favViewModel.delegate = self
-        //        print("Device:",UIDevice.modelName)
         
         //check if the view is spinning favourites
         favViewModel.grabFavourites()
@@ -1144,7 +1148,7 @@ class restaurantsListTableviewController: UIViewController {
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
             //check to see if the click counter is greater than 15, show a full screen ad if it is
-            if self.clickCounter == 2 {
+            if self.clickCounter == 3 {
                 //make sure the ad is not nil
                 if self.interstitial != nil {
                     //show the fullscreen ad after a place has been chosen. gives user incentive to watch the ad entirely
@@ -1518,9 +1522,9 @@ extension restaurantsListTableviewController:GADFullScreenContentDelegate {
     }
     
     // Tells the delegate that the ad presented full screen content.
-    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        print("Ad did present full screen content.")
-    }
+//    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+//        print("Ad did present full screen content.")
+//    }
     
     // Tells the delegate that the ad dismissed full screen content.
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
