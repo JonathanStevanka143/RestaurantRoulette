@@ -94,8 +94,8 @@ class restaurantsListTableviewController: UIViewController {
     
     override func viewDidLoad() {
         //test the devices ID & name, useful for adding new devices
-        //test the identifier in 'Extensions->UIDeviceExtension'
-//        print("Device-ModelName:",UIDevice.modelName)
+//        test the identifier in 'Extensions->UIDeviceExtension'
+        print("Device-ModelName:",UIDevice.modelName)
         
         
         
@@ -900,7 +900,7 @@ class restaurantsListTableviewController: UIViewController {
                 
             })
             
-        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" || UIDevice.modelName == "iPhone 13" || UIDevice.modelName == "iPhone 13 Pro" || UIDevice.modelName == "iPhone 13 Pro Max" {
+        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" || UIDevice.modelName == "iPhone 13" || UIDevice.modelName == "iPhone 13 Pro" || UIDevice.modelName == "iPhone 13 Pro Max" || UIDevice.modelName == "iPhone 14" || UIDevice.modelName == "iPhone 14 Plus" || UIDevice.modelName == "iPhone 14 Pro Max" || UIDevice.modelName == "iPhone Simulator"{
             
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 

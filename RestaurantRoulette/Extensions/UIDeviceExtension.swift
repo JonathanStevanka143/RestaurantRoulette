@@ -19,13 +19,13 @@ public extension UIDevice {
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
         //for adding new devices when they come out, dont forget to print the system name too
-//        print("Device-Identifier: ",identifier)
+        print("Device-Identifier: ",identifier)
         
         
         func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
             #if os(iOS)
             switch identifier {
-            
+            case "arm64":                                   return "iPhone Simulator"
             case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
             case "iPhone4,1":                               return "iPhone 4s"
             case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
@@ -57,6 +57,10 @@ public extension UIDevice {
             case "iPhone14,3":                              return "iPhone 13 Pro Max"
             case "iPhone14,4":                              return "iPhone 13 mini"
             case "iPhone14,6":                              return "iPhone SE (3nd generation)"
+            case "iPhone14,7":                              return "iPhone 14"
+            case "iPhone14,8":                              return "iPhone 14 Plus"
+            case "iPhone15,2":                              return "iPhone 14 Pro"
+            case "iPhone15,3":                              return "iPhone 14 Pro Max"
             case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
             case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad (3rd generation)"
             case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad (4th generation)"

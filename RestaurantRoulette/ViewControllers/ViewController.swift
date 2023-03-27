@@ -40,20 +40,21 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         //updated the top current location map everytime the app has been opened except for the first time since closing using the boolean value
         if isFirstTimeOpening == false {
-            //check to see if the location services are enabled
-            if CLLocationManager.locationServicesEnabled() {
-                
-                //start updating the users location
-                locationManager.startUpdatingLocation()
-                
-                //grab the filter results incase the user has updated them this keeps the user settings updated at all times
-                ViewModel.getFilterResults()
-                ViewModel.getCategoryData()
-                
-            }else {
-                //location services not enabled do something here
-                
-                
+            DispatchQueue.global().async {
+                //check to see if the location services are enabled
+                if CLLocationManager.locationServicesEnabled() {
+                    
+                    //start updating the users location
+                    self.locationManager.startUpdatingLocation()
+                    
+                    //grab the filter results incase the user has updated them this keeps the user settings updated at all times
+                    self.ViewModel.getFilterResults()
+                    self.ViewModel.getCategoryData()
+                    
+                }else {
+                    //location services not enabled do something here
+                    
+                }
             }
         }
     }
@@ -78,21 +79,23 @@ class ViewController: UIViewController {
         //ask for permission from the user to display the map
         locationManager.requestWhenInUseAuthorization()
         //check to see if the location services are enabled
-        if CLLocationManager.locationServicesEnabled() {
-            //ask to use while in use
-            locationManager.requestWhenInUseAuthorization()
-            //set the distance property where the app should update the location
-            locationManager.distanceFilter = 10
-            //start updating the location
-            locationManager.startUpdatingLocation()
-            //set the accuracy
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-            //set pauses location updates to false
-            locationManager.pausesLocationUpdatesAutomatically = false
-            
-        }else {
-            //location services not enabled do something here
-            
+        DispatchQueue.global().async {
+            if CLLocationManager.locationServicesEnabled() {
+                //ask to use while in use
+                self.locationManager.requestWhenInUseAuthorization()
+                //set the distance property where the app should update the location
+                self.locationManager.distanceFilter = 10
+                //start updating the location
+                self.locationManager.startUpdatingLocation()
+                //set the accuracy
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+                //set pauses location updates to false
+                self.locationManager.pausesLocationUpdatesAutomatically = false
+                
+            }else {
+                //location services not enabled do something here
+                
+            }
         }
         //set the container, for some reason this would not work in the scenedelegate(ios 14^)
         //this allows it to work on all IOS levels supported

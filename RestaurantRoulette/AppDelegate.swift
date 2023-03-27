@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //MARK: CREATE DEFAULT FILTER OPTIONS
         self.createDefaultFilterOptions()
-        
+            
         //MARK: CREATE DEFAULT CATEGORY OPTIONS
         self.createDefaultCategories()
                 
