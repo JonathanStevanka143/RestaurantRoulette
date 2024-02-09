@@ -8,12 +8,16 @@
 import UIKit
 import CoreData
 import GoogleMobileAds
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        FirebaseApp.configure()
+        
         
         //init the google ads so we can use them
         GADMobileAds.sharedInstance().start(completionHandler: nil)

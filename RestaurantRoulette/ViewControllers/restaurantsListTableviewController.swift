@@ -12,6 +12,7 @@ import AVFoundation
 import CoreData
 import MapKit
 import CoreLocation
+import Firebase
 
 class restaurantsListTableviewController: UIViewController {
     
@@ -114,21 +115,21 @@ class restaurantsListTableviewController: UIViewController {
         bannerAD.delegate = self
         
         //create a request to load the interstitial ad in
-//        let request = GADRequest()
-//        //load an ad
-//        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-8976469642443868/9028712867",
-//                               request: request,
-//                               completionHandler: { [self] ad, error in
-//                                if let error = error {
-//                                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-//                                    return
-//                                }
-//                                //set the ad
-//                                interstitial = ad
-//                                //set the
-//                                interstitial?.fullScreenContentDelegate = self
-//                               }
-//        )
+        let request = GADRequest()
+        //load an ad
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-8976469642443868/9028712867",
+                               request: request,
+                               completionHandler: { [self] ad, error in
+                                if let error = error {
+                                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                    return
+                                }
+                                //set the ad
+                                interstitial = ad
+                                //set the
+                                interstitial?.fullScreenContentDelegate = self
+                               }
+        )
         
         
         
@@ -204,6 +205,10 @@ class restaurantsListTableviewController: UIViewController {
         
         if UIApplication.shared.canOpenURL(url!) == true {
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+            Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                AnalyticsParameterItemID: "Call Button Clicked",
+                AnalyticsParameterContentType: "Button",
+            ])
         }
         
     }
@@ -214,6 +219,10 @@ class restaurantsListTableviewController: UIViewController {
         
         DispatchQueue.main.async {
             self.directionsForMap.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+            Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                AnalyticsParameterItemID: "Directions Button Clicked",
+                AnalyticsParameterContentType: "Button",
+            ])
         }
         
     }
@@ -236,6 +245,14 @@ class restaurantsListTableviewController: UIViewController {
             is_favourited = true
             //grab the updated list
             favViewModel.grabFavourites()
+            
+            Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                AnalyticsParameterItemID: "Restaurant Set as Favourite",
+                AnalyticsParameterContentType: "Button",
+                "Restaurant Name": "\(currentModel.name)",
+                "Restaurant Location": "\(currentModel.location.display_address)",
+            ])
+            
         }else if is_favourited == true {
             //delete the object from the MOC
             if userFavourites != nil {
@@ -244,6 +261,14 @@ class restaurantsListTableviewController: UIViewController {
                         container.viewContext.delete(rest)
                         //save the currentContext so that our changes are persisteddx
                         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+                        
+                        Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                            AnalyticsParameterItemID: "Restaurant Unadded From Favourites",
+                            AnalyticsParameterContentType: "Button",
+                            "Restaurant Name": "\(currentModel.name)",
+                            "Restaurant Location": "\(currentModel.location.display_address)",
+                        ])
+                        
                         break
                     }
                 }
@@ -270,6 +295,11 @@ class restaurantsListTableviewController: UIViewController {
                 //date- April 30th, 2021
                 DispatchQueue.main.async {
                     UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
+                    Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                        AnalyticsParameterItemID: "Website Button Clicked",
+                        AnalyticsParameterContentType: "Button",
+                        "Url": "\(websiteURL)",
+                    ])
                 }
             }else{
                 
@@ -297,6 +327,14 @@ class restaurantsListTableviewController: UIViewController {
         
         //increase the click counter so when we know when to display an ad
         clickCounter += 1
+        
+        
+        Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemID: "Spin Button Clicked",
+            AnalyticsParameterContentType: "Button",
+            "phase": "1",
+        ])
+        
         
         //if phase2 is set changed the UI accordingly
         if phase2 == true {
@@ -348,6 +386,13 @@ class restaurantsListTableviewController: UIViewController {
         }
         //if phase2 is not been enabled yet
         else{
+            
+            Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                AnalyticsParameterItemID: "Spin Button Clicked",
+                AnalyticsParameterContentType: "Button",
+                "phase": "2",
+            ])
+            
             //hide the tableview
             tableView.isHidden = true
             
@@ -389,6 +434,10 @@ class restaurantsListTableviewController: UIViewController {
                 self.resetAndShuffle(completionHandler: {
                     didReset in
                     
+                    Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                        AnalyticsParameterItemID: "List Shuffled",
+                    ])
+                    
                     //set the layout on the table to update the new position of the tableview(repositioned back at the top)
                     self.tableView.layoutIfNeeded()
                     
@@ -410,6 +459,8 @@ class restaurantsListTableviewController: UIViewController {
     
     //MARK: WHEEL SPIN FUNCTION
     func spinthewheel(){
+        
+        Analytics.logEvent("Wheel Spin", parameters: nil)
         
         var impactTimer:Timer!
         let generator = UIImpactFeedbackGenerator(style: .heavy)
@@ -900,7 +951,7 @@ class restaurantsListTableviewController: UIViewController {
                 
             })
             
-        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" || UIDevice.modelName == "iPhone 13" || UIDevice.modelName == "iPhone 13 Pro" || UIDevice.modelName == "iPhone 13 Pro Max" || UIDevice.modelName == "iPhone 14" || UIDevice.modelName == "iPhone 14 Plus" || UIDevice.modelName == "iPhone 14 Pro Max" || UIDevice.modelName == "iPhone Simulator"{
+        }else if UIDevice.modelName == "iPhone 12" || UIDevice.modelName == "iPhone 12 Pro" || UIDevice.modelName == "iPhone 12 Pro Max" || UIDevice.modelName == "iPhone 13" || UIDevice.modelName == "iPhone 13 Pro" || UIDevice.modelName == "iPhone 13 Pro Max" || UIDevice.modelName == "iPhone 14" || UIDevice.modelName == "iPhone 14 Plus" || UIDevice.modelName == "iPhone 14 Pro" || UIDevice.modelName == "iPhone 14 Pro Max" ||  UIDevice.modelName == "iPhone 15" || UIDevice.modelName == "iPhone 15 Pro" || UIDevice.modelName == "iPhone 15 Plus" || UIDevice.modelName == "iPhone 15 Pro Max" || UIDevice.modelName == "iPhone Simulator"{
             
             UIView.animate(withDuration: 0.3, delay: 0.150, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 
@@ -1009,6 +1060,13 @@ class restaurantsListTableviewController: UIViewController {
             //set the button bool to match this change
             is_favourited = false
         }
+        
+        
+        Analytics.logEvent("Random Restaurant Selected", parameters: [
+            AnalyticsParameterItemID: "\(currentModel.name)",
+            "location": "\(currentModel.location.display_address)",
+            "isFavourite": "\(currentModel.is_favourite)",
+        ])
         
         
         var address:String!
@@ -1148,14 +1206,23 @@ class restaurantsListTableviewController: UIViewController {
             self.restaurantSelectedView.isUserInteractionEnabled = true
             
             //check to see if the click counter is greater than 15, show a full screen ad if it is
-            if self.clickCounter == 3 {
+            if self.clickCounter == 2 {
                 //make sure the ad is not nil
                 if self.interstitial != nil {
+                    
+                    Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+                        AnalyticsParameterItemID: "30s Ad Shown",
+                        AnalyticsParameterContentType: "Ad",
+                        "content_area":"Restaurant List",
+                        "FromPage":"Roulette(2)",
+                    ])
+                    
                     //show the fullscreen ad after a place has been chosen. gives user incentive to watch the ad entirely
                     self.interstitial!.present(fromRootViewController: self)
                     //reset the counter to 0
                     self.clickCounter = 0
                   } else {
+                      Analytics.logEvent("30s ad-load error", parameters: nil)
                     print("Ad wasn't ready")
                   }
             }
@@ -1178,6 +1245,8 @@ class restaurantsListTableviewController: UIViewController {
             restaurants += restaurants
         }
         restaurants = restaurants.shuffled()
+        
+        Analytics.logEvent("Restaurants Shuffled", parameters: nil)
         
         //3
         UIView.animate(withDuration: 0.2, animations: {
@@ -1300,6 +1369,13 @@ extension restaurantsListTableviewController: UITableViewDelegate,UITableViewDat
         if let websiteURL = URL(string: currentModel.url){
             //launch the web view to the internet
             UIApplication.shared.open(websiteURL, options: [:], completionHandler: nil)
+            
+            Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                AnalyticsParameterItemID: "Restaurant Cell Clicked",
+                AnalyticsParameterContentType: "Website Display",
+                "Restaurant Name": "\(currentModel.name)",
+                "Restaurant Location": "\(currentModel.location.display_address)",
+            ])
             
         }else{
             //make a popup say invalid or something?
