@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreData
 import StoreKit
-//import Firebase
+import Firebase
 
 class ViewController: UIViewController {
     
@@ -166,10 +166,13 @@ class ViewController: UIViewController {
                 //set the categories on the filter screen
                 destinationVC.categories = categories
                 
-//                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-//                    AnalyticsParameterItemID: "Filter Button Clicked",
-//                    AnalyticsParameterContentType: "Button",
-//                ])
+                DispatchQueue.global(qos: .utility).async {
+                    Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                        AnalyticsParameterItemID: "Filter_Button_Clicked",
+                        AnalyticsParameterContentType: "Button",
+                    ])
+                }
+                
             }
             
             break
@@ -185,10 +188,13 @@ class ViewController: UIViewController {
                 //set the categories
                 destinationVC.categories = categories
                 
-//                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-//                    AnalyticsParameterItemID: "Current Location Clicked",
-//                    AnalyticsParameterContentType: "Button",
-//                ])
+                DispatchQueue.global(qos: .utility).async {
+                    Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                        AnalyticsParameterItemID: "Current_Location_Clicked",
+                        AnalyticsParameterContentType: "Button",
+                    ])
+                }
+                
                 
             }
             
@@ -204,10 +210,13 @@ class ViewController: UIViewController {
                 //set the categories
                 destinationVC.categories = categories
                 
-//                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-//                    AnalyticsParameterItemID: "Custom Location Clicked",
-//                    AnalyticsParameterContentType: "Button",
-//                ])
+                DispatchQueue.global(qos: .utility).async {
+                    Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                        AnalyticsParameterItemID: "Custom_Location_Clicked",
+                        AnalyticsParameterContentType: "Button",
+                    ])
+                }
+                
             }
             
             break

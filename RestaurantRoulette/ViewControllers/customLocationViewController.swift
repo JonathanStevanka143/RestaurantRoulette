@@ -9,7 +9,7 @@ import UIKit
 import GoogleMobileAds
 import Foundation
 import MapKit
-//import Firebase
+import Firebase
 
 class customLocationViewController: UIViewController {
     
@@ -80,11 +80,15 @@ class customLocationViewController: UIViewController {
     @IBAction func selectMapLocationClicked(_ sender: Any) {
         print("mapCenterCoord:",customLocationMap.centerCoordinate)
         
-//        Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-//            AnalyticsParameterItemID: "Custom Location Selected",
-//            AnalyticsParameterContentType: "Location",
-//            "Coords":"\(customLocationMap.centerCoordinate)"
-//        ])
+        
+        DispatchQueue.global(qos: .utility).async {
+            Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                AnalyticsParameterItemID: "Custom_Location_Selected",
+                AnalyticsParameterContentType: "Location",
+                "Coords":"\(self.customLocationMap.centerCoordinate)"
+            ])
+        }
+        
     }
     
     
