@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreData
 import StoreKit
-import Firebase
+//import Firebase
 
 class ViewController: UIViewController {
     
@@ -166,10 +166,10 @@ class ViewController: UIViewController {
                 //set the categories on the filter screen
                 destinationVC.categories = categories
                 
-                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-                    AnalyticsParameterItemID: "Filter Button Clicked",
-                    AnalyticsParameterContentType: "Button",
-                ])
+//                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+//                    AnalyticsParameterItemID: "Filter Button Clicked",
+//                    AnalyticsParameterContentType: "Button",
+//                ])
             }
             
             break
@@ -185,10 +185,10 @@ class ViewController: UIViewController {
                 //set the categories
                 destinationVC.categories = categories
                 
-                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-                    AnalyticsParameterItemID: "Current Location Clicked",
-                    AnalyticsParameterContentType: "Button",
-                ])
+//                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+//                    AnalyticsParameterItemID: "Current Location Clicked",
+//                    AnalyticsParameterContentType: "Button",
+//                ])
                 
             }
             
@@ -204,10 +204,10 @@ class ViewController: UIViewController {
                 //set the categories
                 destinationVC.categories = categories
                 
-                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
-                    AnalyticsParameterItemID: "Custom Location Clicked",
-                    AnalyticsParameterContentType: "Button",
-                ])
+//                Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+//                    AnalyticsParameterItemID: "Custom Location Clicked",
+//                    AnalyticsParameterContentType: "Button",
+//                ])
             }
             
             break
