@@ -170,6 +170,12 @@ class ViewController: UIViewController {
                     Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
                         AnalyticsParameterItemID: "Filter_Button_Clicked",
                         AnalyticsParameterContentType: "Button",
+                        "Coords":"N/A",
+                        "Restaurant_Name":"N/A",
+                        "Restaurant_Location":"N/A",
+                        "Url":"N/A",
+                        "Phase":"N/A",
+                        "FromPage":"ViewController"
                     ])
                 }
                 
@@ -192,6 +198,12 @@ class ViewController: UIViewController {
                     Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
                         AnalyticsParameterItemID: "Current_Location_Clicked",
                         AnalyticsParameterContentType: "Button",
+                        "Coords":"N/A",
+                        "Restaurant_Name":"N/A",
+                        "Restaurant_Location":"N/A",
+                        "Url":"N/A",
+                        "phase":"N/A",
+                        "FromPage":"ViewController"
                     ])
                 }
                 
@@ -214,6 +226,12 @@ class ViewController: UIViewController {
                     Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
                         AnalyticsParameterItemID: "Custom_Location_Clicked",
                         AnalyticsParameterContentType: "Button",
+                        "Coords":"N/A",
+                        "Restaurant_Name":"N/A",
+                        "Restaurant_Location":"N/A",
+                        "Url":"N/A",
+                        "phase":"N/A",
+                        "FromPage":"ViewController"
                     ])
                 }
                 

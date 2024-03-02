@@ -9,6 +9,8 @@ import UIKit
 import CoreData
 import GoogleMobileAds
 import Firebase
+import OneSignalFramework
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,16 +20,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        
         //init the google ads so we can use them
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
         //MARK: CREATE DEFAULT FILTER OPTIONS
         self.createDefaultFilterOptions()
-            
+        
         //MARK: CREATE DEFAULT CATEGORY OPTIONS
         self.createDefaultCategories()
-                
+        
+        // Remove this method to stop OneSignal Debugging
+        //        OneSignal.Debug.setLogLevel(.LL_VERBOSE)
+        
+        OneSignal.initialize("d36dd7dd-e0ec-4169-a7ff-05d506b3b9c7", withLaunchOptions: launchOptions)
+        
+        // requestPermission will show the native iOS notification permission prompt.
+        // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+        OneSignal.Notifications.requestPermission({ accepted in
+            print("User accepted notifications: \(accepted)")
+        }, fallbackToSettings: true)
+        
         return true
     }
     

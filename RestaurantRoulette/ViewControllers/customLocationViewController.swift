@@ -85,7 +85,12 @@ class customLocationViewController: UIViewController {
             Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
                 AnalyticsParameterItemID: "Custom_Location_Selected",
                 AnalyticsParameterContentType: "Location",
-                "Coords":"\(self.customLocationMap.centerCoordinate)"
+                "Coords":"\(self.customLocationMap.centerCoordinate.latitude) \(self.customLocationMap.centerCoordinate.longitude)",
+                "Restaurant_Name":"N/A",
+                "Restaurant_Location":"N/A",
+                "Url":"N/A",
+                "phase":"N/A",
+                "FromPage":"customLocationViewController"
             ])
         }
         
